@@ -7,7 +7,7 @@ type InputProp = {
 	handler: (e: InputType) => void;
 	type?: string;
 	hint?: string;
-	value?: string;
+	value?: string | null;
 	isLoading?: boolean;
 	showLabel?: boolean;
 	error?: string;
@@ -28,7 +28,7 @@ const Input = ({
 			{showLabel && (
 				<label
 					htmlFor={name}
-					className='capitalize font-semibold text-sm ml-3 text-slate-600'
+					className='capitalize font-semibold text-sm  text-slate-600'
 				>
 					{hint}
 				</label>
