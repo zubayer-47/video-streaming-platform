@@ -12,7 +12,7 @@ const UserModal: FC<UserModalProps> = ({ setOpen }) => {
     const onClose = () => setOpen(false)
 
     return (
-        <div className="absolute right-0 top-10 bg-white rounded-xl shadow-xl">
+        <div className="fixed right-0 top-12 bg-white rounded-xl shadow-xl z-30">
             <div className="grid grid-cols-5 gap-4 border-b p-3">
                 <p className="col-span-1">
                     <FaCircleUser className="w-8 h-8" />
