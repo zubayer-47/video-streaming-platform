@@ -1,7 +1,7 @@
 import { FiSearch } from "react-icons/fi"
 
 const SearchBar = () => (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden max-w-4xl">
         <input
             type='search'
             name='search'
@@ -14,7 +14,7 @@ const SearchBar = () => (
             autoComplete='off'
         />
 
-        <p title="Search" className="bg-indigo-100 w-[50px] h-full absolute right-0 top-0 rounded-r-full border border-indigo-200">
+        <p title="Search" className="hidden md:block bg-indigo-100 w-[50px] h-full absolute right-0 top-0 rounded-r-full border border-indigo-200">
             <FiSearch className="w-6 h-6 absolute right-3 top-2 text-gray-900" />
 
         </p>
