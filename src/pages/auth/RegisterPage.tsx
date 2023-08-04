@@ -1,34 +1,60 @@
 import { isAxiosError } from "axios";
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../../components/Buttons/Button";
-import Input from "../../components/Inputs/Input";
+import Input, { PasswordInput } from "../../components/Inputs/Input";
 import CenterLayout from "../../components/Layouts/CenterLayout";
 import PageLayout from "../../components/Layouts/PageLayout";
 import { UserContext } from "../../contexts/user/Provider";
 import { FormHandler } from "../../types/custom";
 
-type LoginCredentials = {
+type RegisterCredentials = {
     username: string | null;
     password: string | null;
+    email: string | null;
+    confirmPassword: string | null;
     error: string | null;
     loading: boolean;
 }
 
+type RegisterErrors = {
+    username: string | null;
+    password: string | null;
+    email: string | null;
+    confirmPassword: string | null;
+    commonError: string | null;
+}
+
 export default function RegisterPage() {
     const { state, dispatch } = useContext(UserContext);
-    const [loginCredentials, setLoginCredentials] = useState<LoginCredentials>({ username: null, password: null, error: null, loading: false });
+    const [registerCredentials, setRegisterCredentials] = useState<RegisterCredentials>({
+        username: null,
+        password: null,
+        confirmPassword: null,
+        email: null,
+        error: null,
+        loading: false
+    });
+    const [registerErrors, setRegisterErrors] = useState<RegisterErrors>({
+        username: null,
+        password: null,
+        confirmPassword: null,
+        email: null,
+        commonError: null,
+    });
+    const navigation = useNavigate();
 
     const onSubmit: FormHandler = async (e) => {
         e.preventDefault();
 
-        setLoginCredentials(prev => ({
+        setRegisterCredentials(prev => ({
             ...prev,
             loading: true
         }))
 
         try {
             setTimeout(() => {
-                setLoginCredentials(prev => ({
+                setRegisterCredentials(prev => ({
                     ...prev,
                     error: null,
                     loading: false,
@@ -41,14 +67,15 @@ export default function RegisterPage() {
             if (isAxiosError(error)) {
                 const message = error.response?.data
 
-                setLoginCredentials(prev => ({
+                console.log(message, error.response);
+
+                setRegisterErrors(prev => ({
                     ...prev,
-                    loading: false,
-                    error: message
+                    commonError: message
                 }))
             }
 
-            setLoginCredentials(prev => ({
+            setRegisterCredentials(prev => ({
                 ...prev,
                 loading: false,
                 error: "Something Went Wrong!"
@@ -61,40 +88,77 @@ export default function RegisterPage() {
         <PageLayout>
             <CenterLayout noWidth>
                 <div className="text-center space-y-2">
-                    <h1 className="text-2xl font-bold tracking-wide">User Login</h1>
-                    <p>Hey, Enter Your Details to get Sign In to Your Account</p>
+                    <h1 className="text-2xl font-bold tracking-wide">Registration</h1>
+                    <p className="text-sm text-gray-500">Hey, Enter Your Details to Register Account</p>
                 </div>
 
+                {!registerErrors.commonError ? null : (
+                    <p className='ml-2 text-center text-sm text-red-400 tracking-wide'>{registerErrors.commonError}</p>
+                )}
                 <form onSubmit={onSubmit} className="mt-5 space-y-2">
                     <Input
                         name="username"
-                        handler={(e) => setLoginCredentials(prev => ({
+                        handler={(e) => setRegisterCredentials(prev => ({
                             ...prev,
                             username: e.target.value
                         }))}
-                        value={loginCredentials.username}
+                        value={registerCredentials.username}
                         hint="Username"
                         showLabel
+                        isLoading={registerCredentials.loading}
+                        error={registerErrors.username}
+                    />
+                    <Input
+                        name="email"
+                        handler={(e) => setRegisterCredentials(prev => ({
+                            ...prev,
+                            email: e.target.value
+                        }))}
+                        value={registerCredentials.email}
+                        hint="Username"
+                        showLabel
+                        isLoading={registerCredentials.loading}
+                        error={registerErrors.email}
                     />
 
-                    <Input
+                    <PasswordInput
                         name="password"
-                        handler={(e) => setLoginCredentials(prev => ({
+                        handler={(e) => setRegisterCredentials(prev => ({
                             ...prev,
                             password: e.target.value
                         }))}
-                        value={loginCredentials.password}
+                        value={registerCredentials.password}
                         hint="Password"
                         showLabel
+                        isLoading={registerCredentials.loading}
+                        error={registerErrors.password}
+                    />
+                    <PasswordInput
+                        name="confirmPassword"
+                        handler={(e) => setRegisterCredentials(prev => ({
+                            ...prev,
+                            confirmPassword: e.target.value
+                        }))}
+                        value={registerCredentials.confirmPassword}
+                        hint="Confirm Password"
+                        showLabel
+                        isLoading={registerCredentials.loading}
+                        error={registerErrors.confirmPassword}
                     />
 
                     <br />
                     <Button
-                        title="Submit"
+                        title="Register"
                         type="submit"
-                        isLoading={loginCredentials.loading}
+                        isLoading={registerCredentials.loading}
                     />
                 </form>
+
+                <p className="text-center mt-5">
+                    <span className="text-gray-600 font-light">Already Have an Account?</span> <button type="button" onClick={() => {
+                        navigation('/login')
+                    }} className="font-bold">Login Now</button>
+                </p>
             </CenterLayout>
         </PageLayout>
     )
