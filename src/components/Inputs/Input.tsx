@@ -10,7 +10,7 @@ type InputProp = {
 	value?: string | null;
 	isLoading?: boolean;
 	showLabel?: boolean;
-	error?: string;
+	error?: string | null;
 };
 
 const Input = ({
@@ -55,10 +55,10 @@ export default Input;
 export const PasswordInput = ({
 	name,
 	handler,
-	type = 'text',
 	hint = '',
 	value,
 	isLoading = false,
+	showLabel = false,
 	error = '',
 }: InputProp) => {
 	const [show, setShow] = useState(false);
@@ -67,6 +67,14 @@ export const PasswordInput = ({
 
 	return (
 		<div className='bg-transparent'>
+			{showLabel && (
+				<label
+					htmlFor={name}
+					className='capitalize font-semibold text-sm  text-slate-600'
+				>
+					{hint}
+				</label>
+			)}
 			<div className='flex items-stretch border border-indigo-200 rounded-lg'>
 				<input
 					type={show ? 'text' : 'password'}
