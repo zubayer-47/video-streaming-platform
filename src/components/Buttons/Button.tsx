@@ -2,7 +2,8 @@ import React from 'react';
 import { FiRefreshCw } from 'react-icons/fi';
 type BtnProp = {
     title: string;
-    handler: () => void;
+    handler?: () => void;
+    type?: 'button' | 'submit';
     children?: React.ReactNode;
     transparent?: boolean;
     isDisabled?: boolean;
@@ -11,15 +12,15 @@ type BtnProp = {
 const Button = ({
     title,
     handler,
+    type = 'button',
     transparent,
     isDisabled,
-    isLoading,
-    children,
+    isLoading
 }: BtnProp) => {
     return (
         <button
-            type='button'
-            className={`px-4 p-3 rounded-lg outline-none tracking-wide ${isDisabled && 'opacity-25'
+            type={type}
+            className={`px-4 p-3 rounded-lg outline-none tracking-wide ${isDisabled && 'opacity-50'
                 } ${transparent
                     ? 'bg-transparent text-indigo-500 hover:underline'
                     : 'bg-indigo-500 text-white'
