@@ -10,7 +10,7 @@ export default {
         "initial": "60px 1fr",
         "md": "200px repeat(2, 1fr)",
         "lg": "250px repeat(3, 1fr)",
-        "xl": "250px repeat(10, 1fr)",
+        "xl": "250px repeat(8, 1fr)",
       }
     },
   },
