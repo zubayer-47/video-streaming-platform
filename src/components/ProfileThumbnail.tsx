@@ -1,5 +1,6 @@
 import { FaCircleUser } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
+import { trunc } from '../libs/helper';
 
 type Props = {
 	thumbnail: string;
@@ -22,15 +23,20 @@ const ProfileThumbnail = ({
 	channelName,
 	vidLink = '/',
 	chnLink = '/',
-	isList = false,
+	isList = true,
 }: Props) => {
 	const channelLen = !isList ? 15 : 10;
 	//max-h-56 md:max-h-52 h-2/5
+	//className={`rounded-md object-cover ${!isList ? "w-full max-h-56 md:max-h-52" : "w-40 max-h-24"}`}
 	return (
-		<div className={`m-3 md:m-0`}>
+		<div
+			className={`flex m-3 md:m-0 gap-2 ${!isList ? 'flex-col' : 'flex-row'}`}
+		>
 			<Link
 				to={vidLink}
-				className='relative w-full h-2/5 rounded-md overflow-hidden'
+				className={`relative rounded-md overflow-hidden ${
+					!isList ? 'w-full max-h-56 md:max-h-52' : 'w-40 max-h-24'
+				}`}
 			>
 				<img
 					className='w-full h-full object-cover'
@@ -48,27 +54,28 @@ const ProfileThumbnail = ({
 				</div>
 			</Link>
 
-			<div className='flex gap-2'>
+			<div className='flex-1 flex gap-2'>
 				{!isList && <FaCircleUser className='h-10 w-10' />}
 				<div className='flex flex-col gap-1'>
 					<Link
 						to={vidLink}
-						className='font-semibold text-sm tracking-wide text-gray-800'
+						className={`text-sm tracking-wide text-gray-800 ${
+							!isList ? 'font-semibold' : 'font-medium'
+						}`}
 					>
-						{title}
+						{trunc(title, 30)}
 					</Link>
 					<div className={`flex items-center ${!isList ? 'gap-3' : 'gap-1.5'}`}>
-						{isList && <FaCircleUser className='h-6 w-6' />}
 						<Link
 							to={chnLink}
-							className='text-sm text-gray-700 tracking-wide font-medium'
+							className='text-sm text-gray-700 tracking-wide font-medium flex-shrink-0'
 						>
-							{channelName.length > channelLen
-								? channelName.split('').slice(0, channelLen).join('') + '...'
-								: channelName}
+							{trunc(channelName, channelLen)}
 						</Link>
 
-						<p className='text-gray-500 text-sm'>{uploadedAt} ago</p>
+						<p className='text-gray-500 text-sm flex-shrink-0'>
+							{uploadedAt} ago
+						</p>
 					</div>
 				</div>
 			</div>
