@@ -7,18 +7,17 @@ export default function VideoContent() {
   const createdAt = dayjs('2023-08-04').toNow(true);
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-4 gap-5 md:pr-3 pb-10'>
+    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 md:pr-3 pb-10'>
       {new Array(30).fill(true).map(() => (
         <ProfileThumbnail
           thumbnail={demoImg}
           views='7.6M'
           timetamp='05:44'
-          title='The Craft of Writing Effectively UChicago Social
-								Sciences'
+          title='LEADERSHIP LAB: The Craft of Writing Effectively UChicago Social Sciences The Craft of Writing Effectivel'
           uploadedAt={createdAt}
           channelName={channelName}
-          chnLink='/'
-          vidLink='/'
+          chnLink='/channel123'
+          vidLink='/video1234'
         />
       ))}
     </div>
