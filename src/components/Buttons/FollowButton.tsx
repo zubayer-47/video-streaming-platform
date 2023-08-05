@@ -21,7 +21,7 @@ const FollowButton = ({
     return (
         <button
             type={type}
-            className={`px-5 py-1.5 rounded-full outline-none tracking-wide bg-indigo-100 font-semibold ${isDisabled && 'opacity-50'} ${classes}`}
+            className={`px-6 py-3 rounded-full outline-none tracking-wider bg-indigo-100 font-semibold ${isDisabled && 'opacity-50'} ${classes}`}
             onClick={handler}
             disabled={isLoading || isDisabled}
         >

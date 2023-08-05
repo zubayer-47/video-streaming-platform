@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/Buttons/Button";
 import Input, { PasswordInput } from "../../components/Inputs/Input";
 import CenterLayout from "../../components/Layouts/CenterLayout";
-import PageLayout from "../../components/Layouts/PageLayout";
 import { UserContext } from "../../contexts/user/Provider";
 import { FormHandler } from "../../types/custom";
 
@@ -85,81 +84,79 @@ export default function RegisterPage() {
     }
 
     return (
-        <PageLayout>
-            <CenterLayout noWidth>
-                <div className="text-center space-y-2">
-                    <h1 className="text-2xl font-bold tracking-wide">Registration</h1>
-                    <p className="text-sm text-gray-500">Hey, Enter Your Details to Register Account</p>
-                </div>
+        <CenterLayout noWidth>
+            <div className="text-center space-y-2">
+                <h1 className="text-2xl font-bold tracking-wide">Registration</h1>
+                <p className="text-sm text-gray-500">Hey, Enter Your Details to Register Account</p>
+            </div>
 
-                {!registerErrors.commonError ? null : (
-                    <p className='ml-2 text-center text-sm text-red-400 tracking-wide'>{registerErrors.commonError}</p>
-                )}
-                <form onSubmit={onSubmit} className="mt-5 space-y-2">
-                    <Input
-                        name="username"
-                        handler={(e) => setRegisterCredentials(prev => ({
-                            ...prev,
-                            username: e.target.value
-                        }))}
-                        value={registerCredentials.username}
-                        hint="Username"
-                        showLabel
-                        isLoading={registerCredentials.loading}
-                        error={registerErrors.username}
-                    />
-                    <Input
-                        name="email"
-                        handler={(e) => setRegisterCredentials(prev => ({
-                            ...prev,
-                            email: e.target.value
-                        }))}
-                        value={registerCredentials.email}
-                        hint="Username"
-                        showLabel
-                        isLoading={registerCredentials.loading}
-                        error={registerErrors.email}
-                    />
+            {!registerErrors.commonError ? null : (
+                <p className='ml-2 text-center text-sm text-red-400 tracking-wide'>{registerErrors.commonError}</p>
+            )}
+            <form onSubmit={onSubmit} className="mt-5 space-y-2">
+                <Input
+                    name="username"
+                    handler={(e) => setRegisterCredentials(prev => ({
+                        ...prev,
+                        username: e.target.value
+                    }))}
+                    value={registerCredentials.username}
+                    hint="Username"
+                    showLabel
+                    isLoading={registerCredentials.loading}
+                    error={registerErrors.username}
+                />
+                <Input
+                    name="email"
+                    handler={(e) => setRegisterCredentials(prev => ({
+                        ...prev,
+                        email: e.target.value
+                    }))}
+                    value={registerCredentials.email}
+                    hint="Username"
+                    showLabel
+                    isLoading={registerCredentials.loading}
+                    error={registerErrors.email}
+                />
 
-                    <PasswordInput
-                        name="password"
-                        handler={(e) => setRegisterCredentials(prev => ({
-                            ...prev,
-                            password: e.target.value
-                        }))}
-                        value={registerCredentials.password}
-                        hint="Password"
-                        showLabel
-                        isLoading={registerCredentials.loading}
-                        error={registerErrors.password}
-                    />
-                    <PasswordInput
-                        name="confirmPassword"
-                        handler={(e) => setRegisterCredentials(prev => ({
-                            ...prev,
-                            confirmPassword: e.target.value
-                        }))}
-                        value={registerCredentials.confirmPassword}
-                        hint="Confirm Password"
-                        showLabel
-                        isLoading={registerCredentials.loading}
-                        error={registerErrors.confirmPassword}
-                    />
+                <PasswordInput
+                    name="password"
+                    handler={(e) => setRegisterCredentials(prev => ({
+                        ...prev,
+                        password: e.target.value
+                    }))}
+                    value={registerCredentials.password}
+                    hint="Password"
+                    showLabel
+                    isLoading={registerCredentials.loading}
+                    error={registerErrors.password}
+                />
+                <PasswordInput
+                    name="confirmPassword"
+                    handler={(e) => setRegisterCredentials(prev => ({
+                        ...prev,
+                        confirmPassword: e.target.value
+                    }))}
+                    value={registerCredentials.confirmPassword}
+                    hint="Confirm Password"
+                    showLabel
+                    isLoading={registerCredentials.loading}
+                    error={registerErrors.confirmPassword}
+                />
 
-                    <br />
-                    <Button
-                        title="Register"
-                        type="submit"
-                        isLoading={registerCredentials.loading}
-                    />
-                </form>
+                <br />
+                <Button
+                    title="Register"
+                    type="submit"
+                    isLoading={registerCredentials.loading}
+                />
+            </form>
 
-                <p className="text-center mt-5">
-                    <span className="text-gray-600 font-light">Already Have an Account?</span> <button type="button" onClick={() => {
-                        navigation('/login')
-                    }} className="font-bold">Login Now</button>
-                </p>
-            </CenterLayout>
-        </PageLayout>
+            <p className="text-center mt-5">
+                <span className="text-gray-600 font-light">Already Have an Account?</span> <button type="button" onClick={() => {
+                    navigation('/login')
+                }} className="font-bold">Login Now</button>
+            </p>
+        </CenterLayout>
     )
 }
