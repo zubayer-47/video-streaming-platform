@@ -23,7 +23,7 @@ const ProfileThumbnail = ({
 	channelName,
 	vidLink = '/',
 	chnLink = '/',
-	isList = true,
+	isList = false,
 }: Props) => {
 	const channelLen = !isList ? 15 : 10;
 	//max-h-56 md:max-h-52 h-2/5
@@ -35,7 +35,7 @@ const ProfileThumbnail = ({
 			<Link
 				to={vidLink}
 				className={`relative rounded-md overflow-hidden ${
-					!isList ? 'w-full max-h-56 md:max-h-52' : 'w-40 max-h-24'
+					!isList ? 'w-full max-h-52 md:max-h-36' : 'w-40 max-h-24'
 				}`}
 			>
 				<img
@@ -55,27 +55,29 @@ const ProfileThumbnail = ({
 			</Link>
 
 			<div className='flex-1 flex gap-2'>
-				{!isList && <FaCircleUser className='h-10 w-10' />}
-				<div className='flex flex-col gap-1'>
+				{!isList && <FaCircleUser className='h-7 w-7' />}
+				<div className='flex-1 flex flex-col gap-1'>
 					<Link
 						to={vidLink}
 						className={`text-sm tracking-wide text-gray-800 ${
 							!isList ? 'font-semibold' : 'font-medium'
 						}`}
 					>
-						{trunc(title, 30)}
+						{trunc(title, 70)}
 					</Link>
-					<div className={`flex items-center ${!isList ? 'gap-3' : 'gap-1.5'}`}>
+					<div
+						className={`flex items-center text-xs tracking-wide ${
+							!isList ? 'gap-3' : 'gap-1.5'
+						}`}
+					>
 						<Link
 							to={chnLink}
-							className='text-sm text-gray-700 tracking-wide font-medium flex-shrink-0'
+							className='text-gray-700 font-medium flex-shrink-0'
 						>
 							{trunc(channelName, channelLen)}
 						</Link>
 
-						<p className='text-gray-500 text-sm flex-shrink-0'>
-							{uploadedAt} ago
-						</p>
+						<p className='text-gray-500 flex-shrink-0'>{uploadedAt} ago</p>
 					</div>
 				</div>
 			</div>
