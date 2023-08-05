@@ -34,9 +34,8 @@ const ProfileThumbnail = ({
 		>
 			<Link
 				to={vidLink}
-				className={`relative rounded-md overflow-hidden ${
-					!isList ? 'w-full max-h-52 md:max-h-36' : 'w-40 max-h-24'
-				}`}
+				className={`relative rounded-md overflow-hidden ${!isList ? 'w-full max-h-52 md:max-h-38' : 'w-40 max-h-24'
+					}`}
 			>
 				<img
 					className='w-full h-full object-cover'
@@ -55,20 +54,18 @@ const ProfileThumbnail = ({
 			</Link>
 
 			<div className='flex-1 flex gap-2'>
-				{!isList && <FaCircleUser className='h-7 w-7' />}
-				<div className='flex-1 flex flex-col gap-1'>
+				{!isList && <FaCircleUser className='h-9 w-9' />}
+				<div className='flex-1 flex flex-col gap-1.5'>
 					<Link
 						to={vidLink}
-						className={`text-sm tracking-wide text-gray-800 ${
-							!isList ? 'font-semibold' : 'font-medium'
-						}`}
+						className={`text-sm tracking-wide text-gray-800 ${!isList ? 'font-semibold line-clamp-2' : 'font-medium line-clamp-3'
+							}`}
 					>
-						{trunc(title, 70)}
+						{title}
 					</Link>
 					<div
-						className={`flex items-center text-xs tracking-wide ${
-							!isList ? 'gap-3' : 'gap-1.5'
-						}`}
+						className={`flex items-center text-xs tracking-wide ${!isList ? 'gap-3' : 'gap-1.5'
+							}`}
 					>
 						<Link
 							to={chnLink}
