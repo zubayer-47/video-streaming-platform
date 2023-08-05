@@ -31,6 +31,6 @@ export default function useAuth() {
 		/**
 		 * Redirect login page / home page
 		 */
-	}, []);
+	}, [dispatch]);
 	return { ...context, logout };
 }
