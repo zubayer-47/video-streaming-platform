@@ -40,9 +40,9 @@ const ThumbnailImg: FC<ThumbnailImgProps> = ({ demoImg, isList }) => {
                 <div className='flex flex-col gap-1'>
                     <Link
                         to='/video123'
-                        className={`text-sm tracking-wide text-gray-800 ${!isList ? "font-bold" : "font-medium"}`}
+                        className={`text-sm tracking-wide text-gray-800 ${!isList ? "font-bold" : "font-medium line-clamp-3"}`}
                     >
-                        {!isList ? title : title.length > 80 ? title.split('').slice(0, 80).join('') + '...' : title}
+                        {title}
                     </Link>
                     <div className={`flex ${!isList ? "items-center gap-3" : "flex-col justify-center "}`}>
                         <Link
