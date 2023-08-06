@@ -9,9 +9,9 @@ export default function ContentBio() {
     const [showDescription, setShowDescription] = useState(false)
 
     return (
-        <div className="flex-1">
-            <button className="w-full h-[600px] ">
-                <img src={videoImage} className="w-full h-full object-cover" />
+        <div className="flex-1 w-full h-full">
+            <button className="w-full h-2/6 lg:h-4/6 xl:h-5/6">
+                <img src={videoImage} className="w-full max-h-full  object-cover" />
             </button>
 
             <p className='text-lg font-bold'>How to Build Your Perfect Resume: Learn from a FAANG Employee Example!</p>
@@ -24,7 +24,7 @@ export default function ContentBio() {
                         <span className="text-sm text-gray-800">94.3k followers</span>
                     </p>
 
-                    <FollowButton classes="ml-5" title="Follow" />
+                    <FollowButton classes="ml-5 py-3" title="Follow" />
                 </div>
 
                 <div className="flex gap-2 items-center">
