@@ -7,7 +7,7 @@ export default function VideoContent() {
   const createdAt = dayjs('2023-08-04').toNow(true);
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 md:pr-3 pb-10'>
+    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:pr-3 pb-10'>
       {new Array(30).fill(true).map(() => (
         <ProfileThumbnail
           thumbnail={demoImg}
