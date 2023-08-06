@@ -12,6 +12,7 @@ type Props = {
 	vidLink: string;
 	chnLink: string;
 	isList?: boolean;
+	classes?: string
 };
 
 const ProfileThumbnail = ({
@@ -24,6 +25,7 @@ const ProfileThumbnail = ({
 	vidLink = '/',
 	chnLink = '/',
 	isList = false,
+	classes
 }: Props) => {
 	const channelLen = !isList ? 15 : 10;
 	//max-h-56 md:max-h-52 h-2/5
@@ -35,7 +37,7 @@ const ProfileThumbnail = ({
 			<Link
 				to={vidLink}
 				className={`relative rounded-md overflow-hidden ${!isList ? 'w-full max-h-52 md:max-h-38' : 'w-40 max-h-24'
-					}`}
+					} ${classes}`}
 			>
 				<img
 					className='w-full h-full object-cover'
