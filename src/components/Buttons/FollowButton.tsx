@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { FiRefreshCw } from 'react-icons/fi';
 type BtnProp = {
     title: string;
@@ -8,7 +8,8 @@ type BtnProp = {
     transparent?: boolean;
     isDisabled?: boolean;
     isLoading?: boolean;
-    classes?: string
+    classes?: string;
+    icon?: ReactNode;
 };
 const FollowButton = ({
     title,
@@ -16,15 +17,18 @@ const FollowButton = ({
     type = 'button',
     isDisabled,
     isLoading,
-    classes
+    classes,
+    icon
 }: BtnProp) => {
     return (
         <button
             type={type}
-            className={`px-6 py-3 rounded-full outline-none tracking-wider bg-indigo-100 font-semibold ${isDisabled && 'opacity-50'} ${classes}`}
+            className={`rounded-full outline-none tracking-wider bg-indigo-200/50 hover:bg-indigo-200/90 font-semibold ${!icon ? "px-6" : "flex items-center gap-2 px-3"} ${isDisabled && 'opacity-50'} ${classes}`}
             onClick={handler}
             disabled={isLoading || isDisabled}
         >
+            {!icon ? null : icon}
+
             <span className='flex items-center'>
                 <span>{title}</span>
                 {!isLoading ? null : (
