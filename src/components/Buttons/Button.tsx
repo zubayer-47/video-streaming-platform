@@ -20,7 +20,7 @@ const Button = ({
     return (
         <button
             type={type}
-            className={`px-4 p-3 rounded-lg outline-none tracking-wide ${isDisabled && 'opacity-50'
+            className={`px-4 p-2 rounded-lg outline-none tracking-wide ${isDisabled && 'opacity-50'
                 } ${transparent
                     ? 'bg-transparent text-indigo-500 hover:underline'
                     : 'bg-indigo-500 text-white'
