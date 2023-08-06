@@ -9,11 +9,11 @@ dayjs.extend(relativeTime);
 export default function VideoDashboard() {
 	return (
 		<div className='fixed inset-0 flex flex-col'>
-			<div className='flex items-stretch gap-3'>
+			<div className='flex gap-3'>
 				<Sidebar />
-				<div className='flex-1 overflow-hidden'>
+				<div className='pt-20 flex-1 overflow-hidden'>
 					<Tags />
-					<div className='w-full h-[85vh] overflow-scroll'>
+					<div className='w-full h-[85vh] overflow-auto'>
 						<VideoContent />
 					</div>
 				</div>
