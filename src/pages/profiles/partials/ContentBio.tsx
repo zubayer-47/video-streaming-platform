@@ -56,9 +56,7 @@ export default function ContentBio() {
                         console.log(descStatus)
                     }} className={`font-bold  ml-auto ${!descStatus ? "inline-block" : "block"}`}>{!descStatus ? "more" : "Show less"}</button>
                 </p>
-
             </div>
-
             <CommentSection />
         </div>
     )
