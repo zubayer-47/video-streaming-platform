@@ -14,7 +14,7 @@ const Header = () => {
 	const modalContext = useModal()
 
 	return (
-		<div className='z-40 bg-indigo-50 flex flex-col justify-center pb-2 mx-5'>
+		<div className='z-40 bg-indigo-50 flex flex-col justify-center pb-2 px-5'>
 			<div className='grid grid-cols-3 gap-3 p-2'>
 				<Link to={'/'}>
 					<span>Cloned YouTube</span>
@@ -28,9 +28,9 @@ const Header = () => {
 						<div className="inline-block">
 							<FollowButton
 								title='Log In'
-								handler={() => modalContext.dispatch({ type: "UPDATE_LOGIN_MODAL", payload: true })}
-								icon={<FaCircleUser className='w-6 h-6 fill-slate-500' />}
-								classes='py-2.5 text-sm'
+								handler={() => modalContext.dispatch({ type: "UPDATE_AUTH_MODAL", payload: true })}
+								icon={<FaCircleUser className='w-5 h-5 fill-slate-500' />}
+								classes='py-2.5 text-xs md:text-sm'
 							/>
 						</div>
 					) : (
