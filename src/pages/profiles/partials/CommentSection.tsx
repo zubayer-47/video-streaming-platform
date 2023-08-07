@@ -32,7 +32,7 @@ export default CommonSection;
 interface CommentProps { }
 const Comment: FC<CommentProps> = () => {
     return <div className="flex gap-3 w-11/12 my-5">
-        <FaCircleUser className="w-14 h-14 -mt-2" />
+        <FaCircleUser className="w-16 h-16 -mt-3" />
         <div>
             <p className='text-sm flex gap-1 items-center'>
                 <span className='font-medium tracking-wide'>@zubayer47</span>
