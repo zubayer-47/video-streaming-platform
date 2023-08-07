@@ -4,14 +4,17 @@ import { FiThumbsDown, FiThumbsUp } from 'react-icons/fi';
 import videoImage from '../../../assets/demo.jpg';
 import FollowButton from '../../../components/Buttons/FollowButton';
 import { trunc } from '../../../libs/helper';
+import CommentSection from './CommentSection';
 
 export default function ContentBio() {
-    const [showDescription, setShowDescription] = useState(false)
+    const [descStatus, setDescStatus] = useState(false);
+
+    console.log(descStatus)
 
     return (
-        <div className="flex-1 w-full h-full">
-            <button className="w-full h-2/6 lg:h-4/6 xl:h-5/6">
-                <img src={videoImage} className="w-full max-h-full  object-cover" />
+        <div className="flex-1 flex flex-col  w-full">
+            <button className="w-full  bg-red-400 ">
+                <img src={videoImage} className="w-full max-h-96 sm:max-h-104 md:max-h-106 lg:max-h-110 object-cover" />
             </button>
 
             <p className='text-lg font-bold'>How to Build Your Perfect Resume: Learn from a FAANG Employee Example!</p>
@@ -41,20 +44,22 @@ export default function ContentBio() {
                 </div>
             </div>
 
-            <div onClick={() => setShowDescription(() => true)} className={`text-left bg-indigo-100/70 hover:bg-indigo-100 p-3 rounded-xl relative ${!showDescription ? "cursor-pointer" : "cursor-text"}`}>
+            <div onClick={() => !descStatus ? setDescStatus(true) : undefined} className={`text-left bg-indigo-100/70 hover:bg-indigo-100 p-3 rounded-xl ${!descStatus ? "cursor-pointer" : "cursor-text"}`}>
                 <p className='font-medium space-x-2'>
                     <span>6k views</span>
                     <span>2days ago</span>
                 </p>
-                <p className='font-normal text-gray-700 relative'>
-                    {trunc("How to Build Your Perfect Resume: Learn from a FAANG Employee Example! Are you ready to take your career to new heights and secure your dream job at a top tech company? Join us on this exclusive journey inside the mind of a FAANG employee as we unveil the secrets of their perfect resume! In this eye-opening video, you'll discover the exact strategies and tips used by the industry's finest to stand out from the crowd and impress recruiters. Music from #InAudio: https://inaudio.org/ Reality How to Build Your Perfect Resume: Learn from a FAANG Employee Example! Are you ready to take your career to new heights and secure your dream job at a top tech company? Join us on this exclusive journey inside the mind of a FAANG employee as we unveil the secrets of their perfect resume! In this eye-opening video, you'll discover the exact strategies and tips used by the industry's finest to stand out from the crowd and impress recruiters. Music from #InAudio: https://inaudio.org/ Reality How to Build Your Perfect Resume: Learn from a FAANG Employee Example! Are you ready to take your career to new heights and secure your dream job at a top tech company? Join us on this exclusive journey inside the mind of a FAANG employee as we unveil the secrets of their perfect resume! In this eye-opening video, you'll discover the exact strategies and tips used by the industry's finest to stand out from the crowd and impress recruiters.Music from #InAudio: https://inaudio.org/Reality", !showDescription ? 500 : undefined)}
-                    <button onClick={() => setShowDescription(prev => {
-                        console.log(prev)
-                        return !prev
-                    })} className={`font-bold  ml-auto ${!showDescription ? "inline-block" : "block"}`}>{!showDescription ? "more" : "Show less"}</button>
+                <p className='font-normal text-gray-700'>
+                    {trunc("How to Build Your Perfect Resume: Learn from a FAANG Employee Example! Are you ready to take your career to new heights and secure your dream job at a top tech company? Join us on this exclusive journey inside the mind of a FAANG employee as we unveil the secrets of their perfect resume! In this eye-opening video, you'll discover the exact strategies and tips used by the industry's finest to stand out from the crowd and impress recruiters. Music from #InAudio: https://inaudio.org/ Reality How to Build Your Perfect Resume: Learn from a FAANG Employee Example! Are you ready to take your career to new heights and secure your dream job at a top tech company? Join us on this exclusive journey inside the mind of a FAANG employee as we unveil the secrets of their perfect resume! In this eye-opening video, you'll discover the exact strategies and tips used by the industry's finest to stand out from the crowd and impress recruiters. Music from #InAudio: https://inaudio.org/ Reality How to Build Your Perfect Resume: Learn from a FAANG Employee Example! Are you ready to take your career to new heights and secure your dream job at a top tech company? Join us on this exclusive journey inside the mind of a FAANG employee as we unveil the secrets of their perfect resume! In this eye-opening video, you'll discover the exact strategies and tips used by the industry's finest to stand out from the crowd and impress recruiters.Music from #InAudio: https://inaudio.org/Reality", !descStatus ? 500 : undefined)}
+                    <button onClick={() => {
+                        setDescStatus(false)
+                        console.log(descStatus)
+                    }} className={`font-bold  ml-auto ${!descStatus ? "inline-block" : "block"}`}>{!descStatus ? "more" : "Show less"}</button>
                 </p>
 
             </div>
+
+            <CommentSection />
         </div>
     )
 }
