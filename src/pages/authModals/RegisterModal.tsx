@@ -1,10 +1,7 @@
 import { isAxiosError } from "axios";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Button from "../../components/Buttons/Button";
 import Input, { PasswordInput } from "../../components/Inputs/Input";
-import CenterLayout from "../../components/Layouts/CenterLayout";
-import { UserContext } from "../../contexts/user/Provider";
 import { FormHandler } from "../../types/custom";
 
 type RegisterCredentials = {
@@ -24,8 +21,14 @@ type RegisterErrors = {
     commonError: string | null;
 }
 
-export default function RegisterModal() {
-    const { state, dispatch } = useContext(UserContext);
+import { FC } from 'react';
+
+interface RegisterModalProps {
+    setLoginModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const RegisterModal: FC<RegisterModalProps> = ({ setLoginModal }) => {
+    // const { dispatch: modalDispatch } = useModal();
     const [registerCredentials, setRegisterCredentials] = useState<RegisterCredentials>({
         username: null,
         password: null,
@@ -41,7 +44,6 @@ export default function RegisterModal() {
         email: null,
         commonError: null,
     });
-    const navigation = useNavigate();
 
     const onSubmit: FormHandler = async (e) => {
         e.preventDefault();
@@ -84,7 +86,7 @@ export default function RegisterModal() {
     }
 
     return (
-        <CenterLayout noWidth>
+        <>
             <div className="text-center space-y-2">
                 <h1 className="text-2xl font-bold tracking-wide">Registration</h1>
                 <p className="text-sm text-gray-500">Hey, Enter Your Details to Register Account</p>
@@ -107,13 +109,14 @@ export default function RegisterModal() {
                     error={registerErrors.username}
                 />
                 <Input
+                    type="email"
                     name="email"
                     handler={(e) => setRegisterCredentials(prev => ({
                         ...prev,
                         email: e.target.value
                     }))}
                     value={registerCredentials.email}
-                    hint="Username"
+                    hint="Email"
                     showLabel
                     isLoading={registerCredentials.loading}
                     error={registerErrors.email}
@@ -153,10 +156,9 @@ export default function RegisterModal() {
             </form>
 
             <p className="text-center mt-5">
-                <span className="text-gray-600 font-light">Already Have an Account?</span> <button type="button" onClick={() => {
-                    navigation('/login')
-                }} className="font-bold">Login Now</button>
+                <span className="text-gray-600 font-light">Already Have an Account?</span> <button type="button" onClick={() => setLoginModal(true)} className="font-bold">Login Now</button>
             </p>
-        </CenterLayout>
+        </>
     )
 }
+export default RegisterModal;
