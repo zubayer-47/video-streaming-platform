@@ -29,7 +29,7 @@ const Header = () => {
 							<FollowButton
 								title='Log In'
 								handler={() => modalContext.dispatch({ type: "UPDATE_AUTH_MODAL", payload: true })}
-								icon={<FaCircleUser className='w-5 h-5 fill-slate-500' />}
+								icon={<FaCircleUser className='w-5 h-5 fill-slate-200' />}
 								classes='py-2.5 text-xs md:text-sm'
 							/>
 						</div>
