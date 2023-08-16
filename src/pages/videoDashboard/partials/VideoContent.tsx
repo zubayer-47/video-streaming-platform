@@ -17,7 +17,7 @@ export default function VideoContent() {
           uploadedAt={createdAt}
           channelName={channelName}
           chnLink='/channel123'
-          vidLink='/video1234'
+          vidLink='watch/video123'
         />
       ))}
     </div>
