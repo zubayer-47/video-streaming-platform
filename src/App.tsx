@@ -1,7 +1,8 @@
 import { Outlet, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import PageLayout from './components/Layouts/PageLayout';
-import VideoProfile from './pages/profiles/VideoProfile';
+import ChannelProfile from './pages/profiles/channel/ChannelProfile';
+import VideoProfile from './pages/profiles/video/VideoProfile';
 import VideoDashboard from './pages/videoDashboard/VideoDashboard';
 
 function App() {
@@ -11,7 +12,8 @@ function App() {
 			<Routes>
 				<Route path='/' element={<Outlet />}>
 					<Route index element={<VideoDashboard />} />
-					<Route path=':videoID' element={<VideoProfile />} />
+					<Route path='watch/:videoID' element={<VideoProfile />} />
+					<Route path=':channelName' element={<ChannelProfile />} />
 
 					{/* <Route element={<Protected />}>
           <Route path='register' element={<RegisterPage />} />
