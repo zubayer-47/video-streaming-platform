@@ -11,6 +11,7 @@ type Props = {
 	channelName: string;
 	vidLink: string;
 	chnLink: string;
+	isProfileIconVisible?: boolean;
 	isList?: boolean;
 	classes?: string
 };
@@ -22,8 +23,9 @@ const ProfileThumbnail = ({
 	title,
 	uploadedAt,
 	channelName,
-	vidLink = '/',
-	chnLink = '/',
+	vidLink,
+	chnLink,
+	isProfileIconVisible,
 	isList = false,
 	classes
 }: Props) => {
@@ -56,7 +58,7 @@ const ProfileThumbnail = ({
 			</Link>
 
 			<div className='flex-1 flex gap-2'>
-				{!isList && <FaCircleUser className='h-9 w-9' />}
+				{!isList && <FaCircleUser className={`h-9 w-9 ${!isProfileIconVisible ? "block" : "hidden"}`} />}
 				<div className='flex-1 flex flex-col gap-1.5'>
 					<Link
 						to={vidLink}
