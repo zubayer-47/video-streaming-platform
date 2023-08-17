@@ -16,8 +16,8 @@ const ChannelProfile: FC<ChannelProfileProps> = () => {
                 <img className='h-64 w-full object-cover' src={demoImg} alt="" />
 
                 <div className='max-w-7xl mx-auto mt-7'>
-                    <div className="flex gap-7 items-center">
-                        <div className='w-32 h-32 rounded-full overflow-hidden'>
+                    <div className="flex gap-7 items-center px-3">
+                        <div className='hidden md:block w-32 h-32 rounded-full overflow-hidden'>
                             <img className='w-full h-full object-cover' src={demoImg} alt="" />
                         </div>
                         <div className='flex-1 max-w-lg'>
@@ -42,14 +42,15 @@ const ChannelProfile: FC<ChannelProfileProps> = () => {
             </div>
 
             <div className='border-b border-gray-300'>
-                <div className="max-w-7xl mx-auto">
+                <div className="max-w-7xl mx-auto w-full overflow-auto scrollbar-track-slate-200 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-thumb-rounded-full">
                     <ChannelNav />
                 </div>
             </div>
-            <Outlet />
+            <div className="px-2">
+                <Outlet />
+            </div>
         </div>
     )
 }
-// https://youtu.be/i6dNQFdVuLM?t=502
 
 export default ChannelProfile;
