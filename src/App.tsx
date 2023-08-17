@@ -19,6 +19,7 @@ function App() {
 					<Route index element={<VideoDashboard />} />
 					<Route path='watch/:videoID' element={<VideoProfile />} />
 					<Route path=':channelName' element={<ChannelProfile />} >
+						<Route index element={<Featured />} />
 						<Route path='featured' element={<Featured />} />
 						<Route path='videos' element={<Video />} />
 						<Route path='playlists' element={<Playlists />} />
