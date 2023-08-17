@@ -18,9 +18,7 @@ const AuthModal = () => {
                     <LoginModal setLoginModal={setLoginModal} />
                 ) : (
                     <RegisterModal setLoginModal={setLoginModal} />
-
                 )}
-
             </div>
         </ModalBox>
     )

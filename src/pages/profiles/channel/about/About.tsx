@@ -64,8 +64,13 @@ const About: FC<AboutProps> = () => {
                 <hr className='border border-gray-200' />
 
                 <div className='flex gap-10 items-center'>
-                    <FiFlag className="w-5 h-5" />
-                    <PiShareFat className="w-5 h-5" />
+                    <button type='button'>
+                        <FiFlag className="w-5 h-5" />
+                    </button>
+
+                    <button type='button'>
+                        <PiShareFat className="w-5 h-5" />
+                    </button>
                 </div>
             </div>
         </div>
