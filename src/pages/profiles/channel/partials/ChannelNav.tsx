@@ -16,9 +16,9 @@ const ChannelNav: FC<ChannelNavProps> = () => {
         <NavLink to={`playlists`} className={({ isActive }) => (
             !isActive ? "text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium" : "text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 font-medium px-5 py-2"
         )}>PLAYLIST</NavLink>
-        <NavLink to={`channels`} className={({ isActive }) => (
+        {/* <NavLink to={`channels`} className={({ isActive }) => (
             !isActive ? "text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium" : "text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 font-medium px-5 py-2"
-        )}>CHANNELS</NavLink>
+        )}>CHANNELS</NavLink> */}
         <NavLink to={`about`} className={({ isActive }) => (
             !isActive ? "text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium" : "text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 font-medium px-5 py-2"
         )}>ABOUT</NavLink>
