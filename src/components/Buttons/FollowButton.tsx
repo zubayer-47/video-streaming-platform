@@ -10,6 +10,7 @@ type BtnProp = {
     isLoading?: boolean;
     classes?: string;
     icon?: ReactNode;
+    bg?: string
 };
 
 const FollowButton = ({
@@ -19,12 +20,13 @@ const FollowButton = ({
     isDisabled,
     isLoading,
     classes,
-    icon
+    icon,
+    bg
 }: BtnProp) => {
     return (
         <button
             type={type}
-            className={`rounded-full outline-none tracking-wider text-gray-50 bg-gray-900 hover:bg-gray-800 font-semibold ${!icon ? "px-6" : "flex items-center gap-2 px-3"} ${isDisabled && 'opacity-50'} ${classes}`}
+            className={`rounded-full outline-none tracking-wider  font-semibold ${!bg ? "text-gray-50 bg-gray-900 hover:bg-gray-800" : bg} ${!icon ? "px-6" : "flex items-center gap-2 px-3"} ${isDisabled && 'opacity-50'} ${classes}`}
             onClick={handler}
             disabled={isLoading || isDisabled}
         >
