@@ -6,9 +6,9 @@ import useModal from './hooks/useModal';
 import AuthModal from './pages/authModals/AuthModal';
 import ChannelProfile from './pages/profiles/channel/ChannelProfile';
 import About from './pages/profiles/channel/about/About';
-import Channels from './pages/profiles/channel/channels/Channels';
 import Featured from './pages/profiles/channel/featured/Featured';
 import Playlists from './pages/profiles/channel/playlists/Playlists';
+import UploadVideo from './pages/profiles/channel/upload/UploadVideo';
 import Video from './pages/profiles/channel/videos/Videos';
 import VideoProfile from './pages/profiles/video/VideoProfile';
 import VideoDashboard from './pages/videoDashboard/VideoDashboard';
@@ -29,9 +29,10 @@ function App() {
 						<Route path='featured' element={<Featured />} />
 						<Route path='videos' element={<Video />} />
 						<Route path='playlists' element={<Playlists />} />
-						<Route path='channels' element={<Channels />} />
+						{/* <Route path='channels' element={<Channels />} /> */}
 						<Route path='about' element={<About />} />
 					</Route>
+					<Route path='upload' element={<UploadVideo />} />
 
 					{/* <Route element={<Protected />}>
           <Route path='register' element={<RegisterPage />} />
