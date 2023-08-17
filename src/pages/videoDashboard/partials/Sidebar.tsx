@@ -2,7 +2,7 @@ import { PiHouseFill } from 'react-icons/pi';
 
 export default function Sidebar() {
 	return (
-		<div className='hidden md:w-3/12 lg:w-3/12 xl:w-2/12 pt-20 md:flex flex-col h-screen overflow-y-auto bg-indigo-100/40'>
+		<div className='hidden md:w-3/12 lg:w-3/12 xl:w-2/12 pt-20 md:flex flex-col h-screen overflow-y-auto bg-indigo-100/40 scrollbar-thin scrollbar-track-gray-200/90 scrollbar-thumb-gray-400/90 scrollbar-thumb-rounded-full'>
 			{new Array(40).fill(true).map(() => (
 				<button
 					type='button'
