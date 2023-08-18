@@ -9,6 +9,7 @@ type InputProp = {
 	hint?: string;
 	value?: string | null;
 	isLoading?: boolean;
+	isRequired?: boolean;
 	showLabel?: boolean;
 	error?: string | null;
 };
@@ -20,6 +21,7 @@ const Input = ({
 	hint = '',
 	value,
 	isLoading = false,
+	isRequired = false,
 	showLabel = false,
 	error = '',
 }: InputProp) => {
@@ -42,6 +44,7 @@ const Input = ({
 				onChange={handler}
 				autoComplete='off'
 				disabled={isLoading}
+				required={isRequired}
 			/>
 			{!error ? null : (
 				<p className='ml-2 text-sm text-red-400 tracking-wide'>{error}</p>
@@ -59,6 +62,7 @@ export const PasswordInput = ({
 	value,
 	isLoading = false,
 	showLabel = false,
+	isRequired,
 	error = '',
 }: InputProp) => {
 	const [show, setShow] = useState(false);
@@ -84,6 +88,7 @@ export const PasswordInput = ({
 					value={value || ''}
 					onChange={handler}
 					disabled={isLoading}
+					required={isRequired}
 				/>
 				{!value ? null : (
 					<button type='button' className='p-2' onClick={onVisible}>
