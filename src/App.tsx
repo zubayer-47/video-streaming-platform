@@ -1,6 +1,7 @@
 import { Outlet, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import PageLayout from './components/Layouts/PageLayout';
+import NotFound from './components/NotFound';
 import useAuth from './hooks/useAuth';
 import useModal from './hooks/useModal';
 import Register from './pages/auth/Register';
@@ -26,7 +27,10 @@ function App() {
 					<Route index element={<VideoDashboard />} />
 					<Route path='register' element={<Register />} />
 					<Route path='watch/:videoID' element={<VideoProfile />} />
-					<Route path=':channelName' element={<ChannelProfile />} >
+					<Route
+						path=':channelName'
+						element={<ChannelProfile />}
+					>
 						<Route index element={<Featured />} />
 						<Route path='featured' element={<Featured />} />
 						<Route path='videos' element={<Video />} />
@@ -39,6 +43,8 @@ function App() {
 					{/* <Route element={<Protected />}>
           <Route path='register' element={<RegisterPage />} />
         </Route> */}
+
+					<Route path='*' element={<NotFound />} />
 				</Route>
 			</Routes>
 		</PageLayout>
