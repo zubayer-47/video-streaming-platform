@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useParams } from 'react-router-dom';
 import demoImg from '../../../assets/demo.jpg';
 import FollowButton from '../../../components/Buttons/FollowButton';
 import ChannelNav from './partials/ChannelNav';
@@ -8,7 +8,8 @@ import ChannelNav from './partials/ChannelNav';
 interface ChannelProfileProps { }
 
 const ChannelProfile: FC<ChannelProfileProps> = () => {
-    // const params = useParams();
+    const params = useParams();
+    console.log(params)
 
     return (
         <div className='overflow-auto pb-5 h-full'>
