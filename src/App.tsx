@@ -1,11 +1,11 @@
 import { Outlet, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import PageLayout from './components/Layouts/PageLayout';
-import NotFound from './components/NotFound';
 import useAuth from './hooks/useAuth';
 import useModal from './hooks/useModal';
 import Register from './pages/auth/Register';
 import AuthModal from './pages/auth/authModals/AuthModal';
+import NotFound from './pages/notfound/NotFound';
 import ChannelProfile from './pages/profiles/channel/ChannelProfile';
 import About from './pages/profiles/channel/about/About';
 import Featured from './pages/profiles/channel/featured/Featured';
