@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { FiPlay } from 'react-icons/fi';
 import defaultThumbnail from '../../assets/demo.jpg';
 // import { BASE_URL } from '../../libs/axios';
-import videoContent from '../../assets/screen-capture.webm';
 import { ButtonClickHandler, InputType } from '../../types/custom';
 import VideoController from './partials/VideoController';
 
@@ -63,7 +62,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 	const togglePlay = () => {
 		setPlay((prev) => !prev);
 		if (isSettings) {
-			setIsSettings(false)
+			setIsSettings(false);
 		}
 		const video = vidRef?.current;
 		// console.log(video?.paused || video?.ended)
@@ -113,18 +112,21 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 	}, []);
 
 	const toggleSettings = () => {
-		setIsSettings(prev => !prev)
-	}
+		setIsSettings((prev) => !prev);
+	};
 
 	const togglePlaybackSpeedVisible = useCallback(() => {
-		setIsPlaybackSpeedVisible(prev => !prev);
-		setIsSettings(prev => !prev)
+		setIsPlaybackSpeedVisible((prev) => !prev);
+		setIsSettings((prev) => !prev);
 	}, []);
 
-	const selectPlaybackSpeed: ButtonClickHandler = useCallback((e) => {
-		setPlaybackSpeed(e.currentTarget.name)
-		togglePlaybackSpeedVisible()
-	}, [togglePlaybackSpeedVisible])
+	const selectPlaybackSpeed: ButtonClickHandler = useCallback(
+		(e) => {
+			setPlaybackSpeed(e.currentTarget.name);
+			togglePlaybackSpeedVisible();
+		},
+		[togglePlaybackSpeedVisible]
+	);
 
 	useEffect(() => {
 		function onFullscreenChange() {
@@ -132,7 +134,8 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 		}
 		document.addEventListener('fullscreenchange', onFullscreenChange);
 
-		return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
+		return () =>
+			document.removeEventListener('fullscreenchange', onFullscreenChange);
 	}, []);
 
 	return (
@@ -143,8 +146,9 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				onClick={togglePlay}
 			>
 				<div
-					className={`px-10 py-5 rounded-2xl grid place-content-center bg-indigo-600/50 hover:bg-indigo-600/70 cursor-pointer ${!isPlay ? 'block' : 'hidden'
-						}`}
+					className={`px-10 py-5 rounded-2xl grid place-content-center bg-indigo-600/50 hover:bg-indigo-600/70 cursor-pointer ${
+						!isPlay ? 'block' : 'hidden'
+					}`}
 				>
 					<FiPlay className='w-7 h-7 text-white' />
 				</div>
@@ -176,13 +180,13 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				height={'auto'}
 				poster={thumbnail || defaultThumbnail}
 				crossOrigin='anonymous'
-				preload='metadata'
+				preload='auto'
 				className='w-full h-full'
 			>
 				{/* <source src={`${BASE_URL}/videos/${source}`} type='video/mp4' /> */}
-				<source src={videoContent} type='video/mp4' />
+				<source src={source} type='video/mp4' />
 			</video>
-		</div >
+		</div>
 	);
 };
 
