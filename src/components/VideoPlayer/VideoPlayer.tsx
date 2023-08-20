@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FiPlay } from 'react-icons/fi';
 import defaultThumbnail from '../../assets/demo.jpg';
 // import { BASE_URL } from '../../libs/axios';
-import videoContent from '../../screen-capture.webm';
-import { InputType } from '../../types/custom';
+import videoContent from '../../assets/screen-capture.webm';
+import { ButtonClickHandler, InputType } from '../../types/custom';
 import VideoController from './partials/VideoController';
 
 type Props = {
@@ -12,6 +12,7 @@ type Props = {
 };
 
 const VideoPlayer = ({ source, thumbnail }: Props) => {
+	const parentRef = useRef<HTMLDivElement>(null);
 	const vidRef = useRef<HTMLVideoElement>(null);
 
 	const [isPlay, setPlay] = useState(false);
@@ -19,6 +20,9 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 	const [duration, setDuration] = useState(0);
 	const [timeElapsed, setTimeElapsed] = useState(0);
 	const [volume, setVolume] = useState(0);
+	const [isSettings, setIsSettings] = useState(false);
+	const [isPlaybackSpeedVisible, setIsPlaybackSpeedVisible] = useState(false);
+	const [playbackSpeed, setPlaybackSpeed] = useState('');
 	const [isFullScreen, setIsFullScreen] = useState(false);
 
 	useEffect(() => {
@@ -38,7 +42,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 			vid.addEventListener('loadedmetadata', () => {
 				setVolume(vid.volume);
 				setDuration(+vid?.duration || 0);
-				console.log(vid.duration)
+				// console.log(vid.duration)
 				// AutoPlay
 				play();
 			});
@@ -58,8 +62,11 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 
 	const togglePlay = () => {
 		setPlay((prev) => !prev);
+		if (isSettings) {
+			setIsSettings(false)
+		}
 		const video = vidRef?.current;
-		console.log(video?.paused || video?.ended)
+		// console.log(video?.paused || video?.ended)
 		if (video?.paused || video?.ended) {
 			video.play();
 		} else {
@@ -94,21 +101,42 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 		}
 	};
 
-	const toggleFullScreen = () => {
-		const video = vidRef?.current;
-		if (video) {
-			if (!isFullScreen) {
-				video.requestFullscreen();
-				setIsFullScreen(true);
+	const toggleFullScreen = useCallback(async () => {
+		const parent = parentRef?.current;
+		if (parent) {
+			if (!document.fullscreenElement) {
+				await parent.requestFullscreen();
 			} else {
-				document.exitFullscreen();
-				setIsFullScreen(false);
+				await document.exitFullscreen();
 			}
 		}
-	};
+	}, []);
+
+	const toggleSettings = () => {
+		setIsSettings(prev => !prev)
+	}
+
+	const togglePlaybackSpeedVisible = useCallback(() => {
+		setIsPlaybackSpeedVisible(prev => !prev);
+		setIsSettings(prev => !prev)
+	}, []);
+
+	const selectPlaybackSpeed: ButtonClickHandler = useCallback((e) => {
+		setPlaybackSpeed(e.currentTarget.name)
+		togglePlaybackSpeedVisible()
+	}, [togglePlaybackSpeedVisible])
+
+	useEffect(() => {
+		function onFullscreenChange() {
+			setIsFullScreen(!!document.fullscreenElement);
+		}
+		document.addEventListener('fullscreenchange', onFullscreenChange);
+
+		return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
+	}, []);
 
 	return (
-		<div className='w-full relative group/video-player-item'>
+		<div className='w-full relative group/video-player-item' ref={parentRef}>
 			<button
 				type='button'
 				className='absolute inset-0 bg-transparent outline-none grid place-content-center z-10 cursor-default'
@@ -122,33 +150,38 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				</div>
 			</button>
 
-			<div className='aspect-video'>
-				<video
-					ref={vidRef}
-					width={'100%'}
-					height={'auto'}
-					poster={thumbnail || defaultThumbnail}
-					crossOrigin='anonymous'
-					preload='metadata'
-					className='w-full h-full'
-				>
-					{/* <source src={`${BASE_URL}/videos/${source}`} type='video/mp4' /> */}
-					<source src={videoContent} type='video/mp4' />
-				</video>
-			</div>
-
 			<VideoController
 				isPlay={isPlay}
 				isMuted={isMuted}
 				duration={duration}
 				timeElapsed={timeElapsed}
 				volume={volume}
+				isFullScreen={isFullScreen}
+				isSettings={isSettings}
+				isPlaybackSpeedVisible={isPlaybackSpeedVisible}
+				playbackSpeed={playbackSpeed}
+				togglePlaybackSpeedVisible={togglePlaybackSpeedVisible}
 				togglePlay={togglePlay}
 				toggleMute={toggleMute}
 				updateSeekBar={updateSeekBar}
 				updateVolumeBar={updateVolumeBar}
 				toggleFullScreen={toggleFullScreen}
+				toggleSettings={toggleSettings}
+				selectPlaybackSpeed={selectPlaybackSpeed}
 			/>
+
+			<video
+				ref={vidRef}
+				width={'100%'}
+				height={'auto'}
+				poster={thumbnail || defaultThumbnail}
+				crossOrigin='anonymous'
+				preload='metadata'
+				className='w-full h-full'
+			>
+				{/* <source src={`${BASE_URL}/videos/${source}`} type='video/mp4' /> */}
+				<source src={videoContent} type='video/mp4' />
+			</video>
 		</div >
 	);
 };
