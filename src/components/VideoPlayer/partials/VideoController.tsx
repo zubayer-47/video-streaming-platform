@@ -1,5 +1,8 @@
 import {
+	FiChevronLeft,
+	FiChevronRight,
 	FiMaximize,
+	FiMinimize,
 	FiPause,
 	FiPlay,
 	// FiPlayCircle,
@@ -7,8 +10,9 @@ import {
 	FiVolume2,
 	FiVolumeX
 } from 'react-icons/fi';
+import '../../../index.css';
 import { formateTime } from '../../../libs/helper';
-import { InputType } from '../../../types/custom';
+import { ButtonClickHandler, InputType } from '../../../types/custom';
 
 type Props = {
 	isPlay: boolean;
@@ -16,11 +20,18 @@ type Props = {
 	duration: number;
 	timeElapsed: number;
 	volume: number;
+	isFullScreen: boolean;
+	isSettings: boolean;
+	isPlaybackSpeedVisible: boolean;
+	playbackSpeed: string;
 	togglePlay: () => void;
 	toggleMute: () => void;
 	updateSeekBar: (e: InputType) => void;
 	updateVolumeBar: (e: InputType) => void;
 	toggleFullScreen: () => void;
+	toggleSettings: () => void;
+	togglePlaybackSpeedVisible: () => void;
+	selectPlaybackSpeed: ButtonClickHandler
 };
 
 const VideoController = ({
@@ -29,14 +40,22 @@ const VideoController = ({
 	duration,
 	timeElapsed,
 	volume,
+	isFullScreen,
+	isSettings,
+	isPlaybackSpeedVisible,
+	playbackSpeed,
 	togglePlay,
 	toggleMute,
 	updateSeekBar,
 	updateVolumeBar,
 	toggleFullScreen,
+	toggleSettings,
+	togglePlaybackSpeedVisible,
+	selectPlaybackSpeed
 }: Props) => {
+
 	return (
-		<div className={`absolute bottom-0 left-0 right-0 px-1 py-2 z-20 opacity-0 group-hover/video-player-item:opacity-100 transition-opacity duration-300 ${!isPlay ? "opacity-100" : "opacity-0"}`}>
+		<div className={`video-controls-container absolute bottom-0 left-0 right-0 px-1 py-2 z-20 opacity-0 group-hover/video-player-item:opacity-100 transition-opacity duration-300 ${!isPlay ? "opacity-100" : "opacity-0"}`}>
 			{/* Video SeekBar */}
 			<div className='flex items-center'>
 				<input
@@ -97,54 +116,110 @@ const VideoController = ({
 					<button
 						type='button'
 						className='p-1 bg-transparent outline-none'
-						onClick={toggleFullScreen}
+						onClick={toggleSettings}
 					>
-						<FiSettings className='w-5 h-5 text-white stroke-2' />
+						<FiSettings className={`w-5 h-5 text-white stroke-2 ${!isSettings ? "-rotate-[20deg] transition-transform" : "rotate-[20deg] transition-transform"}`} />
 					</button>
 					<button
 						type='button'
 						className='p-1 bg-transparent outline-none'
 						onClick={toggleFullScreen}
 					>
-						<FiMaximize className='w-5 h-5 text-white stroke-2' />
+						{!isFullScreen ? (
+							<FiMaximize className='w-5 h-5 text-white stroke-2' />
+						) : (
+							<FiMinimize className='w-5 h-5 text-white stroke-2' />
+						)}
 					</button>
 				</div>
 			</div>
 
 			{/* settings popup window gose here  */}
-			<div className='absolute -top-20 right-0 bg-black/80 rounded-xl'>
-				{/* <ul>
-					<li className='px-3.5 py-1.5 text-white flex items-center justify-between'>
-						<span className='flex items-center gap-1'>
-							<FiPlayCircle className='w-5 h-5 stroke-1' />
-							<span>Playback Speed</span>
-						</span>
-						<span className='flex items-center gap-1 text-xs'>
-							<span className='underline'>Normal</span>
-							<FiChevronRight className='w-5 h-5 stroke-1' />
-						</span>
-					</li>
-					<li className='px-3.5 py-1.5 text-white flex items-center justify-between'>
-						<span className='flex items-center gap-1'>
-							<FiPlayCircle className='w-5 h-5 stroke-1' />
-							<span>Subtitle</span>
-						</span>
-						<span className='flex items-center gap-1 text-xs'>
-							<span className='underline'>Off</span>
-							<FiChevronRight className='w-5 h-5 stroke-1' />
-						</span>
-					</li>
-					<li className='px-3.5 py-1.5 text-white flex items-center justify-between'>
-						<span className='flex items-center gap-1'>
-							<FiPlayCircle className='w-5 h-5 stroke-1' />
-							<span>Quality</span>
-						</span>
-						<span className='flex items-center gap-1 text-xs'>
-							<span className='underline'>Auto</span>
-							<FiChevronRight className='w-5 h-5 stroke-1' />
-						</span>
-					</li>
-				</ul> */}
+			<div className={`absolute py-1 right-4 bg-black/75 rounded-xl overflow-hidden ${!isPlaybackSpeedVisible ? "-top-32" : "-top-64"}`}>
+				{!isSettings ? null : (
+					<ul>
+						<li>
+							<button className='text-white px-3 py-2 w-full flex gap-8 items-center justify-between hover:bg-black/50' onClick={togglePlaybackSpeedVisible}>
+								<span className='flex items-center gap-2'>
+									<span className='text-md text-gray-300'>Playback Speed</span>
+								</span>
+								<span className='flex items-center text-xs'>
+									<span className='underline text-gray-300'>{playbackSpeed || "Normal"}</span>
+									<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
+								</span>
+							</button>
+						</li>
+						<li>
+							<button type='button' className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50'>
+								<span className='flex items-center gap-2'>
+									<span className='text-md text-gray-300'>Subtitle</span>
+								</span>
+								<span className='flex items-center text-xs'>
+									<span className='underline text-gray-300'>Off</span>
+									<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
+								</span>
+							</button>
+						</li>
+						<li>
+							<button type='button' className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50'>
+								<span className='flex items-center gap-2'>
+									<span className='text-md text-gray-300'>Quality</span>
+								</span>
+								<span className='flex items-center text-xs'>
+									<span className='underline text-gray-300'>Auto</span>
+									<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
+								</span>
+							</button>
+						</li>
+					</ul>
+				)}
+				{!isPlaybackSpeedVisible ? null : (
+					<ul className='w-60'>
+						<li className='border-b border-gray-300/30'>
+							<button type='button' className='text-white px-3 py-2 w-full flex gap-8 items-center justify-between hover:bg-black/50' onClick={togglePlaybackSpeedVisible}>
+								<span className='flex items-center'>
+									<FiChevronLeft className='w-5 h-5 text-gray-300' />
+									<span className='text-md text-gray-300'>Playback Speed</span>
+								</span>
+							</button>
+						</li>
+						<li>
+							<button type='button' onClick={selectPlaybackSpeed} className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50' name='0.25'>
+								<span className='flex items-center gap-2'>
+									<span className='text-md text-gray-300'>0.25</span>
+								</span>
+							</button>
+						</li>
+						<li>
+							<button type='button' onClick={selectPlaybackSpeed} className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50' name='0.5'>
+								<span className='flex items-center gap-2'>
+									<span className='text-md text-gray-300'>0.5</span>
+								</span>
+							</button>
+						</li>
+						<li>
+							<button type='button' onClick={selectPlaybackSpeed} className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50' name='Normal'>
+								<span className='flex items-center gap-2'>
+									<span className='text-md text-gray-300'>Normal</span>
+								</span>
+							</button>
+						</li>
+						<li>
+							<button type='button' onClick={selectPlaybackSpeed} className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50' name='1.25'>
+								<span className='flex items-center gap-2'>
+									<span className='text-md text-gray-300'>1.25</span>
+								</span>
+							</button>
+						</li>
+						<li>
+							<button type='button' onClick={selectPlaybackSpeed} className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50' name='2'>
+								<span className='flex items-center gap-2'>
+									<span className='text-md text-gray-300'>2</span>
+								</span>
+							</button>
+						</li>
+					</ul>
+				)}
 			</div>
 		</div>
 	);
