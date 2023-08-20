@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import demoImg from '../../../../assets/demo.jpg';
 import ProfileThumbnail from '../../../../components/ProfileThumbnail';
 import Playlist from './Playlist';
@@ -10,6 +11,7 @@ export default function RelatedContent() {
 
             {new Array(30).fill(true).map(() => (
                 <ProfileThumbnail
+                    key={uuidv4()}
                     thumbnail={demoImg}
                     views='7.6M'
                     timetamp='05:44'
