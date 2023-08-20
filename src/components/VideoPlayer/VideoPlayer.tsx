@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { FiPlay } from 'react-icons/fi';
 import defaultThumbnail from '../../assets/demo.jpg';
-import { BASE_URL } from '../../libs/axios';
+// import { BASE_URL } from '../../libs/axios';
+import videoContent from '../../screen-capture.webm';
 import { InputType } from '../../types/custom';
 import VideoController from './partials/VideoController';
 
@@ -37,6 +38,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 			vid.addEventListener('loadedmetadata', () => {
 				setVolume(vid.volume);
 				setDuration(+vid?.duration || 0);
+				console.log(vid.duration)
 				// AutoPlay
 				play();
 			});
@@ -57,6 +59,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 	const togglePlay = () => {
 		setPlay((prev) => !prev);
 		const video = vidRef?.current;
+		console.log(video?.paused || video?.ended)
 		if (video?.paused || video?.ended) {
 			video.play();
 		} else {
@@ -112,25 +115,27 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				onClick={togglePlay}
 			>
 				<div
-					className={`px-10 py-5 rounded-2xl grid place-content-center bg-indigo-600/50 hover:bg-indigo-600/70 cursor-pointer ${
-						!isPlay ? 'block' : 'hidden'
-					}`}
+					className={`px-10 py-5 rounded-2xl grid place-content-center bg-indigo-600/50 hover:bg-indigo-600/70 cursor-pointer ${!isPlay ? 'block' : 'hidden'
+						}`}
 				>
 					<FiPlay className='w-7 h-7 text-white' />
 				</div>
 			</button>
 
-			<video
-				ref={vidRef}
-				width={'100%'}
-				height={'auto'}
-				poster={thumbnail || defaultThumbnail}
-				crossOrigin='anonymous'
-				preload='metadata'
-				// className='object-fill'
-			>
-				<source src={`${BASE_URL}/videos/${source}`} type='video/mp4' />
-			</video>
+			<div className='aspect-video'>
+				<video
+					ref={vidRef}
+					width={'100%'}
+					height={'auto'}
+					poster={thumbnail || defaultThumbnail}
+					crossOrigin='anonymous'
+					preload='metadata'
+					className='w-full h-full'
+				>
+					{/* <source src={`${BASE_URL}/videos/${source}`} type='video/mp4' /> */}
+					<source src={videoContent} type='video/mp4' />
+				</video>
+			</div>
 
 			<VideoController
 				isPlay={isPlay}
@@ -144,7 +149,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				updateVolumeBar={updateVolumeBar}
 				toggleFullScreen={toggleFullScreen}
 			/>
-		</div>
+		</div >
 	);
 };
 
