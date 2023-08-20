@@ -1,12 +1,11 @@
 import {
-	// FiChevronRight,
 	FiMaximize,
 	FiPause,
 	FiPlay,
 	// FiPlayCircle,
 	FiSettings,
 	FiVolume2,
-	FiVolumeX,
+	FiVolumeX
 } from 'react-icons/fi';
 import { formateTime } from '../../../libs/helper';
 import { InputType } from '../../../types/custom';
@@ -37,7 +36,7 @@ const VideoController = ({
 	toggleFullScreen,
 }: Props) => {
 	return (
-		<div className='absolute bottom-0 left-0 right-0 px-1 py-2 z-20 opacity-100 group-hover/video-player-item:opacity-100 transition-opacity duration-300'>
+		<div className={`absolute bottom-0 left-0 right-0 px-1 py-2 z-20 opacity-0 group-hover/video-player-item:opacity-100 transition-opacity duration-300 ${!isPlay ? "opacity-100" : "opacity-0"}`}>
 			{/* Video SeekBar */}
 			<div className='flex items-center'>
 				<input
