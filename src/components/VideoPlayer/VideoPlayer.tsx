@@ -22,6 +22,8 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 	const [isSettings, setIsSettings] = useState(false);
 	const [isPlaybackSpeedVisible, setIsPlaybackSpeedVisible] = useState(false);
 	const [playbackSpeed, setPlaybackSpeed] = useState('');
+	const [isVideoQualityVisible, setIsVideoQualityVisible] = useState(false);
+	const [videoQuality, setVideoQuality] = useState('');
 	const [isFullScreen, setIsFullScreen] = useState(false);
 
 	useEffect(() => {
@@ -120,12 +122,26 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 		setIsSettings((prev) => !prev);
 	}, []);
 
-	const selectPlaybackSpeed: ButtonClickHandler = useCallback(
+	const toggleVideoQualityVisible = useCallback(() => {
+		setIsVideoQualityVisible((prev) => !prev);
+		setIsSettings((prev) => !prev);
+	}, []);
+
+	const selectSettingsMode: ButtonClickHandler = useCallback(
 		(e) => {
-			setPlaybackSpeed(e.currentTarget.name);
-			togglePlaybackSpeedVisible();
+			switch (e.currentTarget.id) {
+				case "playback": {
+					setPlaybackSpeed(e.currentTarget.name);
+					togglePlaybackSpeedVisible();
+					break;
+				}
+				case "quality": {
+					setVideoQuality(e.currentTarget.name);
+					toggleVideoQualityVisible();
+				}
+			}
 		},
-		[togglePlaybackSpeedVisible]
+		[togglePlaybackSpeedVisible, toggleVideoQualityVisible]
 	);
 
 	useEffect(() => {
@@ -146,9 +162,8 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				onClick={togglePlay}
 			>
 				<div
-					className={`px-10 py-5 rounded-2xl grid place-content-center bg-indigo-600/50 hover:bg-indigo-600/70 cursor-pointer ${
-						!isPlay ? 'block' : 'hidden'
-					}`}
+					className={`px-10 py-5 rounded-2xl grid place-content-center bg-indigo-600/50 hover:bg-indigo-600/70 cursor-pointer ${!isPlay ? 'block' : 'hidden'
+						}`}
 				>
 					<FiPlay className='w-7 h-7 text-white' />
 				</div>
@@ -164,6 +179,8 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				isSettings={isSettings}
 				isPlaybackSpeedVisible={isPlaybackSpeedVisible}
 				playbackSpeed={playbackSpeed}
+				isQualityVisible={isVideoQualityVisible}
+				quality={videoQuality}
 				togglePlaybackSpeedVisible={togglePlaybackSpeedVisible}
 				togglePlay={togglePlay}
 				toggleMute={toggleMute}
@@ -171,7 +188,8 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				updateVolumeBar={updateVolumeBar}
 				toggleFullScreen={toggleFullScreen}
 				toggleSettings={toggleSettings}
-				selectPlaybackSpeed={selectPlaybackSpeed}
+				toggleQualityVisible={toggleVideoQualityVisible}
+				selectSettingsMode={selectSettingsMode}
 			/>
 
 			<video
