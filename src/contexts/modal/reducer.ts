@@ -5,15 +5,10 @@ const modalReducer = (
   action: ModalActionType
 ): ModalStateType => {
   switch (action.type) {
-    case "UPDATE_LOGIN_MODAL":
+    case "UPDATE_AUTH_MODAL":
       return {
         ...state,
-        loginModalShow: action.payload,
-      };
-    case "UPDATE_LOGOUT_MODAL":
-      return {
-        ...state,
-        logoutModalShow: action.payload,
+        isVisibleAuthModal: action.payload,
       };
     default:
       return state;

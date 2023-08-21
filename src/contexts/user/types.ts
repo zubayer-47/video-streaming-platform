@@ -40,7 +40,8 @@ type REM_AUTH = {
 };
 type UPDATE_USER = {
   type: "UPDATE_USER";
-  payload: Partial<UserPartial>;
+  payload: User;
+  // payload: Partial<UserPartial>;
 };
 
 export type UserActionType = AUTH_LOADING | SET_AUTH | REM_AUTH | UPDATE_USER;

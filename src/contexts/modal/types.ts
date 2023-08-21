@@ -1,17 +1,11 @@
 export interface ModalStateType {
-  loginModalShow: boolean;
-  logoutModalShow: boolean;
+  isVisibleAuthModal: boolean;
 }
 
 // #-------------REDUCER TYPES--------------
-type UPDATE_LOGIN_MODAL = {
-  type: "UPDATE_LOGIN_MODAL";
+type UPDATE_AUTH_MODAL = {
+  type: "UPDATE_AUTH_MODAL";
   payload: boolean;
 };
 
-type UPDATE_LOGOUT_MODAL = {
-  type: "UPDATE_LOGOUT_MODAL";
-  payload: boolean;
-};
-
-export type ModalActionType = UPDATE_LOGIN_MODAL | UPDATE_LOGOUT_MODAL;
+export type ModalActionType = UPDATE_AUTH_MODAL;
