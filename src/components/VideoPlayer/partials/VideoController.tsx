@@ -141,7 +141,7 @@ const VideoController = ({
 			</div>
 
 			{/* settings popup window gose here  */}
-			<div className={`absolute py-1 right-4 bg-black/75 rounded-xl overflow-hidden -top-32 ${isQualityVisible && "-top-72"} ${isPlaybackSpeedVisible && "-top-64"}`}>
+			<div className={`absolute py-1 right-4 bg-black/75 rounded-xl overflow-hidden -top-32 ${isQualityVisible && "-top-80"} ${isPlaybackSpeedVisible && "-top-64"}`}>
 				{!isSettings ? null : (
 					<ul>
 						<li>
@@ -172,7 +172,7 @@ const VideoController = ({
 									<span className='text-md text-gray-300'>Quality</span>
 								</span>
 								<span className='flex items-center text-xs'>
-									<span className='underline text-gray-300'>{quality}</span>
+									<span className='underline text-gray-300'>{quality || "auto"}</span>
 									<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
 								</span>
 							</button>
@@ -192,7 +192,7 @@ const VideoController = ({
 				{!isQualityVisible ? null : (
 					<SettingsModal
 						header='Quality'
-						values={['144p', '240p', '360p', '480p', '720p', '1080p']}
+						values={["1080p", "720p", "480p", "360p", "240p", "144p", "auto"]}
 						goBack={toggleQualityVisible}
 						selectMode={selectSettingsMode}
 					/>
