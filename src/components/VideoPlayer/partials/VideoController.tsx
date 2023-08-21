@@ -1,5 +1,4 @@
 import {
-	FiChevronLeft,
 	FiChevronRight,
 	FiMaximize,
 	FiMinimize,
@@ -13,6 +12,7 @@ import {
 import '../../../index.css';
 import { formateTime } from '../../../libs/helper';
 import { ButtonClickHandler, InputType } from '../../../types/custom';
+import SettingsModal from './SettingsModal';
 
 type Props = {
 	isPlay: boolean;
@@ -24,6 +24,8 @@ type Props = {
 	isSettings: boolean;
 	isPlaybackSpeedVisible: boolean;
 	playbackSpeed: string;
+	isQualityVisible: boolean;
+	quality: string;
 	togglePlay: () => void;
 	toggleMute: () => void;
 	updateSeekBar: (e: InputType) => void;
@@ -31,7 +33,8 @@ type Props = {
 	toggleFullScreen: () => void;
 	toggleSettings: () => void;
 	togglePlaybackSpeedVisible: () => void;
-	selectPlaybackSpeed: ButtonClickHandler
+	toggleQualityVisible: () => void;
+	selectSettingsMode: ButtonClickHandler
 };
 
 const VideoController = ({
@@ -44,6 +47,8 @@ const VideoController = ({
 	isSettings,
 	isPlaybackSpeedVisible,
 	playbackSpeed,
+	isQualityVisible,
+	quality,
 	togglePlay,
 	toggleMute,
 	updateSeekBar,
@@ -51,7 +56,8 @@ const VideoController = ({
 	toggleFullScreen,
 	toggleSettings,
 	togglePlaybackSpeedVisible,
-	selectPlaybackSpeed
+	selectSettingsMode,
+	toggleQualityVisible,
 }: Props) => {
 
 	return (
@@ -135,7 +141,7 @@ const VideoController = ({
 			</div>
 
 			{/* settings popup window gose here  */}
-			<div className={`absolute py-1 right-4 bg-black/75 rounded-xl overflow-hidden ${!isPlaybackSpeedVisible ? "-top-32" : "-top-64"}`}>
+			<div className={`absolute py-1 right-4 bg-black/75 rounded-xl overflow-hidden -top-32 ${isQualityVisible && "-top-72"} ${isPlaybackSpeedVisible && "-top-64"}`}>
 				{!isSettings ? null : (
 					<ul>
 						<li>
@@ -161,65 +167,37 @@ const VideoController = ({
 							</button>
 						</li>
 						<li>
-							<button type='button' className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50'>
+							<button type='button' className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50' onClick={toggleQualityVisible}>
 								<span className='flex items-center gap-2'>
 									<span className='text-md text-gray-300'>Quality</span>
 								</span>
 								<span className='flex items-center text-xs'>
-									<span className='underline text-gray-300'>Auto</span>
+									<span className='underline text-gray-300'>{quality}</span>
 									<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
 								</span>
 							</button>
 						</li>
 					</ul>
 				)}
+
 				{!isPlaybackSpeedVisible ? null : (
-					<ul className='w-60'>
-						<li className='border-b border-gray-300/30'>
-							<button type='button' className='text-white px-3 py-2 w-full flex gap-8 items-center justify-between hover:bg-black/50' onClick={togglePlaybackSpeedVisible}>
-								<span className='flex items-center'>
-									<FiChevronLeft className='w-5 h-5 text-gray-300' />
-									<span className='text-md text-gray-300'>Playback Speed</span>
-								</span>
-							</button>
-						</li>
-						<li>
-							<button type='button' onClick={selectPlaybackSpeed} className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50' name='0.25'>
-								<span className='flex items-center gap-2'>
-									<span className='text-md text-gray-300'>0.25</span>
-								</span>
-							</button>
-						</li>
-						<li>
-							<button type='button' onClick={selectPlaybackSpeed} className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50' name='0.5'>
-								<span className='flex items-center gap-2'>
-									<span className='text-md text-gray-300'>0.5</span>
-								</span>
-							</button>
-						</li>
-						<li>
-							<button type='button' onClick={selectPlaybackSpeed} className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50' name='Normal'>
-								<span className='flex items-center gap-2'>
-									<span className='text-md text-gray-300'>Normal</span>
-								</span>
-							</button>
-						</li>
-						<li>
-							<button type='button' onClick={selectPlaybackSpeed} className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50' name='1.25'>
-								<span className='flex items-center gap-2'>
-									<span className='text-md text-gray-300'>1.25</span>
-								</span>
-							</button>
-						</li>
-						<li>
-							<button type='button' onClick={selectPlaybackSpeed} className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50' name='2'>
-								<span className='flex items-center gap-2'>
-									<span className='text-md text-gray-300'>2</span>
-								</span>
-							</button>
-						</li>
-					</ul>
+					<SettingsModal
+						header='Playback Speed'
+						values={['0.25', '0.5', 'Normal', '1.25', '2']}
+						goBack={togglePlaybackSpeedVisible}
+						selectMode={selectSettingsMode}
+					/>
 				)}
+
+				{!isQualityVisible ? null : (
+					<SettingsModal
+						header='Quality'
+						values={['144p', '240p', '360p', '480p', '720p', '1080p']}
+						goBack={toggleQualityVisible}
+						selectMode={selectSettingsMode}
+					/>
+				)}
+
 			</div>
 		</div>
 	);
