@@ -10,6 +10,18 @@ type Props = {
 	thumbnail?: string;
 };
 
+type SettingsState = {
+	isSettingsVisible: boolean;
+	playback: {
+		isVisible: boolean;
+		speed: string;
+	}
+	quality: {
+		isVisible: boolean;
+		quality: string;
+	}
+}
+
 const VideoPlayer = ({ source, thumbnail }: Props) => {
 	const parentRef = useRef<HTMLDivElement>(null);
 	const vidRef = useRef<HTMLVideoElement>(null);
@@ -19,11 +31,17 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 	const [duration, setDuration] = useState(0);
 	const [timeElapsed, setTimeElapsed] = useState(0);
 	const [volume, setVolume] = useState(0);
-	const [isSettings, setIsSettings] = useState(false);
-	const [isPlaybackSpeedVisible, setIsPlaybackSpeedVisible] = useState(false);
-	const [playbackSpeed, setPlaybackSpeed] = useState('');
-	const [isVideoQualityVisible, setIsVideoQualityVisible] = useState(false);
-	const [videoQuality, setVideoQuality] = useState('');
+	const [settingsState, setSettingsState] = useState<SettingsState>({
+		isSettingsVisible: false,
+		playback: {
+			isVisible: false,
+			speed: ''
+		},
+		quality: {
+			isVisible: false,
+			quality: ''
+		}
+	})
 	const [isFullScreen, setIsFullScreen] = useState(false);
 
 	useEffect(() => {
@@ -63,8 +81,11 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 
 	const togglePlay = () => {
 		setPlay((prev) => !prev);
-		if (isSettings) {
-			setIsSettings(false);
+		if (settingsState.isSettingsVisible) {
+			setSettingsState(prev => ({
+				...prev,
+				isSettingsVisible: false,
+			}))
 		}
 		const video = vidRef?.current;
 		// console.log(video?.paused || video?.ended)
@@ -114,29 +135,64 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 	}, []);
 
 	const toggleSettings = () => {
-		setIsSettings((prev) => !prev);
+		setSettingsState(prev => ({
+			...prev,
+			isSettingsVisible: !prev.isSettingsVisible,
+		}))
 	};
 
 	const togglePlaybackSpeedVisible = useCallback(() => {
-		setIsPlaybackSpeedVisible((prev) => !prev);
-		setIsSettings((prev) => !prev);
+		setSettingsState(prev => ({
+			...prev,
+			playback: {
+				...prev.playback,
+				isVisible: !prev.playback.isVisible
+			},
+		}))
+		setSettingsState(prev => ({
+			...prev,
+			isSettingsVisible: !prev.isSettingsVisible,
+		}))
 	}, []);
 
 	const toggleVideoQualityVisible = useCallback(() => {
-		setIsVideoQualityVisible((prev) => !prev);
-		setIsSettings((prev) => !prev);
+		setSettingsState(prev => ({
+			...prev,
+			quality: {
+				...prev.quality,
+				isVisible: !prev.quality.isVisible,
+			}
+		}))
+		setSettingsState(prev => ({
+			...prev,
+			isSettingsVisible: !prev.isSettingsVisible,
+		}))
 	}, []);
 
 	const selectSettingsMode: ButtonClickHandler = useCallback(
 		(e) => {
+			const value = e.currentTarget.name;
+			console.log(e.currentTarget.id, e.currentTarget.name)
 			switch (e.currentTarget.id) {
 				case "playback": {
-					setPlaybackSpeed(e.currentTarget.name);
+					setSettingsState(prev => ({
+						...prev,
+						playback: {
+							...prev.playback,
+							speed: value
+						}
+					}))
 					togglePlaybackSpeedVisible();
 					break;
 				}
 				case "quality": {
-					setVideoQuality(e.currentTarget.name);
+					setSettingsState(prev => ({
+						...prev,
+						quality: {
+							...prev.quality,
+							quality: value
+						}
+					}))
 					toggleVideoQualityVisible();
 				}
 			}
@@ -176,11 +232,11 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				timeElapsed={timeElapsed}
 				volume={volume}
 				isFullScreen={isFullScreen}
-				isSettings={isSettings}
-				isPlaybackSpeedVisible={isPlaybackSpeedVisible}
-				playbackSpeed={playbackSpeed}
-				isQualityVisible={isVideoQualityVisible}
-				quality={videoQuality}
+				isSettings={settingsState.isSettingsVisible}
+				isPlaybackSpeedVisible={settingsState.playback.isVisible}
+				playbackSpeed={settingsState.playback.speed}
+				isQualityVisible={settingsState.quality.isVisible}
+				quality={settingsState.quality.quality}
 				togglePlaybackSpeedVisible={togglePlaybackSpeedVisible}
 				togglePlay={togglePlay}
 				toggleMute={toggleMute}
