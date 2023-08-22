@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.search-bar:focus ~ .pre-search {
+.search-bar:focus~.pre-search {
   display: block !important;
 }
 
@@ -99,4 +99,16 @@
   z-index: -1;
   width: 100%;
   pointer-events: none;
+}
+
+.video-thumb {
+  background-color: #000;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
 }

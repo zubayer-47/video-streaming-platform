@@ -6,13 +6,16 @@ import {
 	FiPlay,
 	// FiPlayCircle,
 	FiSettings,
+	FiVolume1,
 	FiVolume2,
-	FiVolumeX
+	FiVolumeX,
 } from 'react-icons/fi';
 import '../../../index.css';
 import { formateTime } from '../../../libs/helper';
 import { ButtonClickHandler, InputType } from '../../../types/custom';
-import SettingsModal from './SettingsModal';
+import { PlayerSettingsType } from '../hooks/usePlayer';
+import PlaybackSpeed from './widgets/PlaybackSpeed';
+import Subtitle from './widgets/Subtitle';
 
 type Props = {
 	isPlay: boolean;
@@ -21,20 +24,14 @@ type Props = {
 	timeElapsed: number;
 	volume: number;
 	isFullScreen: boolean;
-	isSettings: boolean;
-	isPlaybackSpeedVisible: boolean;
-	playbackSpeed: string;
-	isQualityVisible: boolean;
-	quality: string;
+	settings: PlayerSettingsType;
+	handleSettings: React.Dispatch<React.SetStateAction<PlayerSettingsType>>;
+	handlePlaybackSeed: ButtonClickHandler;
 	togglePlay: () => void;
 	toggleMute: () => void;
 	updateSeekBar: (e: InputType) => void;
 	updateVolumeBar: (e: InputType) => void;
 	toggleFullScreen: () => void;
-	toggleSettings: () => void;
-	togglePlaybackSpeedVisible: () => void;
-	toggleQualityVisible: () => void;
-	selectSettingsMode: ButtonClickHandler
 };
 
 const VideoController = ({
@@ -44,29 +41,119 @@ const VideoController = ({
 	timeElapsed,
 	volume,
 	isFullScreen,
-	isSettings,
-	isPlaybackSpeedVisible,
-	playbackSpeed,
-	isQualityVisible,
-	quality,
+	settings,
 	togglePlay,
 	toggleMute,
 	updateSeekBar,
 	updateVolumeBar,
 	toggleFullScreen,
-	toggleSettings,
-	togglePlaybackSpeedVisible,
-	selectSettingsMode,
-	toggleQualityVisible,
+	handleSettings,
+	handlePlaybackSeed,
 }: Props) => {
+	const volIcon = () => {
+		if (!isMuted) {
+			return volume < 0.5 ? (
+				<FiVolume1 className='w-5 h-5 text-white stroke-2' />
+			) : (
+				<FiVolume2 className='w-5 h-5 text-white stroke-2' />
+			);
+		}
+		return <FiVolumeX className='w-5 h-5 text-red-500 fill-white stroke-1' />;
+	};
 
 	return (
-		<div className={`video-controls-container absolute bottom-0 left-0 right-0 px-1 py-2 z-20 opacity-0 group-hover/video-player-item:opacity-100 transition-opacity duration-300 ${!isPlay ? "opacity-100" : "opacity-0"}`}>
+		<div
+			className={`video-controls-container absolute bottom-0 left-0 right-0 px-1 py-2 z-20 opacity-0 group-hover/video-player-item:opacity-100 transition-opacity duration-300`}
+		>
+			{/* settings popup window gose here  */}
+			<div
+				className={`absolute py-1 right-3 bg-black/75 rounded-xl overflow-hidden bottom-14`}
+			>
+				{settings.visibleWindow === 'settings' && (
+					<ul>
+						<li>
+							<button
+								className='text-white px-3 py-2 w-full flex gap-8 items-center justify-between hover:bg-black/50'
+								onClick={() =>
+									handleSettings((prev) => ({
+										...prev,
+										visibleWindow: 'playback',
+									}))
+								}
+							>
+								<span className='flex items-center gap-2'>
+									<span className='text-md text-gray-300'>Playback Speed</span>
+								</span>
+								<span className='flex items-center text-xs'>
+									<span className='underline text-gray-300'>
+										{settings?.playback === 1 ? 'Normal' : settings?.playback}
+									</span>
+									<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
+								</span>
+							</button>
+						</li>
+						<li>
+							<button
+								type='button'
+								className='text-white px-3 py-2 w-full flex gap-8 items-center justify-between hover:bg-black/50'
+								onClick={() =>
+									handleSettings((prev) => ({
+										...prev,
+										visibleWindow: 'subtitle',
+									}))
+								}
+							>
+								<span className='flex items-center gap-2'>
+									<span className='text-md text-gray-300'>Subtitle</span>
+								</span>
+								<span className='flex items-center text-xs'>
+									<span className='underline text-gray-300'>
+										{settings?.subtitle || 'Off'}
+									</span>
+									<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
+								</span>
+							</button>
+						</li>
+						<li>
+							<button
+								type='button'
+								className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50'
+								onClick={() =>
+									handleSettings((prev) => ({
+										...prev,
+										visibleWindow: 'quality',
+									}))
+								}
+							>
+								<span className='flex items-center gap-2'>
+									<span className='text-md text-gray-300'>Quality</span>
+								</span>
+								<span className='flex items-center text-xs'>
+									<span className='underline text-gray-300'>
+										{settings?.quality || 'Auto'}
+									</span>
+									<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
+								</span>
+							</button>
+						</li>
+					</ul>
+				)}
+				{settings.visibleWindow === 'playback' && (
+					<PlaybackSpeed
+						settings={settings}
+						handleSettings={handleSettings}
+						handlePlaybackSeed={handlePlaybackSeed}
+					/>
+				)}
+				{settings.visibleWindow === 'subtitle' && (
+					<Subtitle settings={settings} handleSettings={handleSettings} />
+				)}
+			</div>
 			{/* Video SeekBar */}
 			<div className='flex items-center'>
 				<input
 					type='range'
-					className='w-full h-1 hover:h-2 video-range bg-white/20'
+					className='w-full h-1 hover:h-2 video-range bg-slate-400/20'
 					step={0.1}
 					max={duration}
 					value={timeElapsed}
@@ -75,6 +162,7 @@ const VideoController = ({
 			</div>
 			{/* Video Controller Information */}
 			<div className='mt-1 flex items-center justify-between gap-1.5'>
+				{/* Left side settings */}
 				<div className='flex items-center gap-1.5'>
 					{/* Video Play/Pause */}
 					<button
@@ -101,11 +189,7 @@ const VideoController = ({
 							className='p-1 bg-transparent outline-none'
 							onClick={toggleMute}
 						>
-							{!isMuted ? (
-								<FiVolume2 className='w-5 h-5 text-white stroke-2' />
-							) : (
-								<FiVolumeX className='w-5 h-5 fill-white stroke-1' />
-							)}
+							{volIcon()}
 						</button>
 						<input
 							type='range'
@@ -118,13 +202,26 @@ const VideoController = ({
 						/>
 					</div>
 				</div>
+				{/* Right side settings */}
 				<div className='flex items-center gap-1.5'>
 					<button
 						type='button'
 						className='p-1 bg-transparent outline-none'
-						onClick={toggleSettings}
+						onClick={() =>
+							handleSettings((prev) => ({
+								...prev,
+								visibleWindow:
+									prev.visibleWindow === 'settings' ? 'none' : 'settings',
+							}))
+						}
 					>
-						<FiSettings className={`w-5 h-5 text-white stroke-2 ${!isSettings ? "-rotate-[20deg] transition-transform" : "rotate-[20deg] transition-transform"}`} />
+						<FiSettings
+							className={`w-5 h-5 text-white stroke-2 ${
+								settings.visibleWindow === 'none'
+									? '-rotate-[20deg]'
+									: 'rotate-[20deg]'
+							} transition-transform`}
+						/>
 					</button>
 					<button
 						type='button'
@@ -138,66 +235,6 @@ const VideoController = ({
 						)}
 					</button>
 				</div>
-			</div>
-
-			{/* settings popup window gose here  */}
-			<div className={`absolute py-1 right-4 bg-black/75 rounded-xl overflow-hidden -top-32 ${isQualityVisible && "-top-80"} ${isPlaybackSpeedVisible && "-top-64"}`}>
-				{!isSettings ? null : (
-					<ul>
-						<li>
-							<button className='text-white px-3 py-2 w-full flex gap-8 items-center justify-between hover:bg-black/50' onClick={togglePlaybackSpeedVisible}>
-								<span className='flex items-center gap-2'>
-									<span className='text-md text-gray-300'>Playback Speed</span>
-								</span>
-								<span className='flex items-center text-xs'>
-									<span className='underline text-gray-300'>{playbackSpeed || "Normal"}</span>
-									<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
-								</span>
-							</button>
-						</li>
-						<li>
-							<button type='button' className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50'>
-								<span className='flex items-center gap-2'>
-									<span className='text-md text-gray-300'>Subtitle</span>
-								</span>
-								<span className='flex items-center text-xs'>
-									<span className='underline text-gray-300'>Off</span>
-									<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
-								</span>
-							</button>
-						</li>
-						<li>
-							<button type='button' className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50' onClick={toggleQualityVisible}>
-								<span className='flex items-center gap-2'>
-									<span className='text-md text-gray-300'>Quality</span>
-								</span>
-								<span className='flex items-center text-xs'>
-									<span className='underline text-gray-300'>{quality || "auto"}</span>
-									<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
-								</span>
-							</button>
-						</li>
-					</ul>
-				)}
-
-				{!isPlaybackSpeedVisible ? null : (
-					<SettingsModal
-						header='Playback Speed'
-						values={['0.25', '0.5', 'Normal', '1.25', '2']}
-						goBack={togglePlaybackSpeedVisible}
-						selectMode={selectSettingsMode}
-					/>
-				)}
-
-				{!isQualityVisible ? null : (
-					<SettingsModal
-						header='Quality'
-						values={["1080p", "720p", "480p", "360p", "240p", "144p", "auto"]}
-						goBack={toggleQualityVisible}
-						selectMode={selectSettingsMode}
-					/>
-				)}
-
 			</div>
 		</div>
 	);

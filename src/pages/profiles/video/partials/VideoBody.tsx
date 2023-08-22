@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { FaCircleUser } from 'react-icons/fa6';
 import { FiThumbsDown, FiThumbsUp } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import VideoFile from '../../../../assets/array.mp4';
 import FollowButton from '../../../../components/Buttons/FollowButton';
 import VideoPlayer from '../../../../components/VideoPlayer/VideoPlayer';
 import { trunc } from '../../../../libs/helper';
-import { Link } from 'react-router-dom';
 // import CommentSection from './CommentSection';
 
 export default function VideoBody() {
@@ -21,7 +22,7 @@ export default function VideoBody() {
 				/>>
 			</button> */}
 
-			<VideoPlayer source='sdufysdf' />
+			<VideoPlayer source={VideoFile} />
 
 			<p className='mt-2.5 text-lg font-bold'>
 				How to Build Your Perfect Resume: Learn from a FAANG Employee Example!

@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { FiPlay } from 'react-icons/fi';
 import defaultThumbnail from '../../assets/demo.jpg';
 // import { BASE_URL } from '../../libs/axios';
-import { ButtonClickHandler, InputType } from '../../types/custom';
+import usePlayer from './hooks/usePlayer';
 import VideoController from './partials/VideoController';
 
 type Props = {
@@ -10,216 +9,178 @@ type Props = {
 	thumbnail?: string;
 };
 
-type SettingsState = {
-	isSettingsVisible: boolean;
-	playback: {
-		isVisible: boolean;
-		speed: string;
-	}
-	quality: {
-		isVisible: boolean;
-		quality: string;
-	}
-}
-
 const VideoPlayer = ({ source, thumbnail }: Props) => {
-	const parentRef = useRef<HTMLDivElement>(null);
-	const vidRef = useRef<HTMLVideoElement>(null);
+	const {
+		parentRef,
+		vidRef,
+		removeThumbnail,
+		isPlay,
+		isMuted,
+		duration,
+		timeElapsed,
+		volume,
+		isFullScreen,
+		settings,
+		setSettings,
+		togglePlay,
+		updateSeekBar,
+		updateVolumeBar,
+		toggleMute,
+		toggleFullScreen,
+		handlePlaybackSeed,
+	} = usePlayer();
 
-	const [isPlay, setPlay] = useState(false);
-	const [isMuted, setMuted] = useState(false);
-	const [duration, setDuration] = useState(0);
-	const [timeElapsed, setTimeElapsed] = useState(0);
-	const [volume, setVolume] = useState(0);
-	const [settingsState, setSettingsState] = useState<SettingsState>({
-		isSettingsVisible: false,
-		playback: {
-			isVisible: false,
-			speed: ''
-		},
-		quality: {
-			isVisible: false,
-			quality: ''
-		}
-	})
-	const [isFullScreen, setIsFullScreen] = useState(false);
+	// const parentRef = useRef<HTMLDivElement>(null);
+	// const vidRef = useRef<HTMLVideoElement>(null);
 
-	useEffect(() => {
-		const vid = vidRef?.current;
+	// const [isPlay, setPlay] = useState(false);
+	// const [isMuted, setMuted] = useState(false);
+	// const [duration, setDuration] = useState(0);
+	// const [timeElapsed, setTimeElapsed] = useState(0);
+	// const [volume, setVolume] = useState(0);
+	// const [isSettings, setIsSettings] = useState(false);
+	// const [isPlaybackSpeedVisible, setIsPlaybackSpeedVisible] = useState(false);
+	// const [playbackSpeed, setPlaybackSpeed] = useState('');
+	// const [isFullScreen, setIsFullScreen] = useState(false);
 
-		const play = async () => {
-			try {
-				await vid!.play();
-				setPlay(true);
-			} catch (error) {
-				console.log('error :', error);
-			}
-		};
+	// useEffect(() => {
+	// 	const vid = vidRef?.current;
+	// 	function onFullscreenChange() {
+	// 		setIsFullScreen(!!document.fullscreenElement);
+	// 	}
 
-		if (vid) {
-			// Events
-			vid.addEventListener('loadedmetadata', () => {
-				setVolume(vid.volume);
-				setDuration(+vid?.duration || 0);
-				// console.log(vid.duration)
-				// AutoPlay
-				play();
-			});
+	// 	const play = async () => {
+	// 		try {
+	// 			await vid!.play();
+	// 			setPlay(true);
+	// 		} catch (error) {
+	// 			console.log('error :', error);
+	// 		}
+	// 	};
 
-			vid.addEventListener('timeupdate', () => {
-				setTimeElapsed(vid?.currentTime || 0);
-			});
-		}
+	// 	if (vid) {
+	// 		// Events
+	// 		vid.addEventListener('loadedmetadata', () => {
+	// 			setVolume(vid.volume);
+	// 			setDuration(+vid?.duration || 0);
+	// 			// console.log(vid.duration)
+	// 			// AutoPlay
+	// 			play();
+	// 		});
 
-		return () => {
-			if (vid) {
-				vid.removeEventListener('loadedmetadata', () => undefined);
-				vid.removeEventListener('timeupdate', () => undefined);
-			}
-		};
-	}, []);
+	// 		vid.addEventListener('timeupdate', () => {
+	// 			setTimeElapsed(vid?.currentTime || 0);
+	// 		});
+	// 	}
 
-	const togglePlay = () => {
-		setPlay((prev) => !prev);
-		if (settingsState.isSettingsVisible) {
-			setSettingsState(prev => ({
-				...prev,
-				isSettingsVisible: false,
-			}))
-		}
-		const video = vidRef?.current;
-		// console.log(video?.paused || video?.ended)
-		if (video?.paused || video?.ended) {
-			video.play();
-		} else {
-			video?.pause();
-		}
-	};
+	// 	document.addEventListener('fullscreenchange', onFullscreenChange);
 
-	const updateSeekBar = (e: InputType) => {
-		const video = vidRef?.current;
+	// 	return () => {
+	// 		if (vid) {
+	// 			vid.removeEventListener('loadedmetadata', () => undefined);
+	// 			vid.removeEventListener('timeupdate', () => undefined);
+	// 		}
+	// 		document.removeEventListener('fullscreenchange', onFullscreenChange);
+	// 	};
+	// }, []);
 
-		if (video) {
-			const selectDuration = e.target.value;
-			setTimeElapsed(parseFloat(selectDuration) || 0);
-			video.currentTime = +selectDuration;
-		}
-	};
+	// const togglePlay = () => {
+	// 	setPlay((prev) => !prev);
+	// 	if (isSettings) {
+	// 		setIsSettings(false);
+	// 	}
+	// 	const video = vidRef?.current;
+	// 	// console.log(video?.paused || video?.ended)
+	// 	if (video?.paused || video?.ended) {
+	// 		video.play();
+	// 	} else {
+	// 		video?.pause();
+	// 	}
+	// };
 
-	const updateVolumeBar = (e: InputType) => {
-		const video = vidRef?.current;
+	// const updateSeekBar = (e: InputType) => {
+	// 	const video = vidRef?.current;
 
-		if (video) {
-			const selectDuration = e.target.value;
-			setVolume(parseFloat(selectDuration) || 0);
-			video.volume = +selectDuration;
-		}
-	};
+	// 	if (video) {
+	// 		const selectDuration = e.target.value;
+	// 		setTimeElapsed(parseFloat(selectDuration) || 0);
+	// 		video.currentTime = +selectDuration;
+	// 	}
+	// };
 
-	const toggleMute = () => {
-		if (vidRef?.current) {
-			vidRef.current.muted = !vidRef.current.muted;
-			setMuted((prev) => !prev);
-		}
-	};
+	// const updateVolumeBar = (e: InputType) => {
+	// 	const video = vidRef?.current;
 
-	const toggleFullScreen = useCallback(async () => {
-		const parent = parentRef?.current;
-		if (parent) {
-			if (!document.fullscreenElement) {
-				await parent.requestFullscreen();
-			} else {
-				await document.exitFullscreen();
-			}
-		}
-	}, []);
+	// 	if (video) {
+	// 		const selectDuration = e.target.value;
+	// 		setVolume(parseFloat(selectDuration) || 0);
+	// 		video.volume = +selectDuration;
+	// 	}
+	// };
 
-	const toggleSettings = () => {
-		setSettingsState(prev => ({
-			...prev,
-			isSettingsVisible: !prev.isSettingsVisible,
-		}))
-	};
+	// const toggleMute = () => {
+	// 	if (vidRef?.current) {
+	// 		vidRef.current.muted = !vidRef.current.muted;
+	// 		setMuted((prev) => !prev);
+	// 	}
+	// };
 
-	const togglePlaybackSpeedVisible = useCallback(() => {
-		setSettingsState(prev => ({
-			...prev,
-			playback: {
-				...prev.playback,
-				isVisible: !prev.playback.isVisible
-			},
-		}))
-		setSettingsState(prev => ({
-			...prev,
-			isSettingsVisible: !prev.isSettingsVisible,
-		}))
-	}, []);
+	// const toggleFullScreen = useCallback(async () => {
+	// 	const parent = parentRef?.current;
+	// 	if (parent) {
+	// 		if (!document.fullscreenElement) {
+	// 			await parent.requestFullscreen();
+	// 		} else {
+	// 			await document.exitFullscreen();
+	// 		}
+	// 	}
+	// }, []);
 
-	const toggleVideoQualityVisible = useCallback(() => {
-		setSettingsState(prev => ({
-			...prev,
-			quality: {
-				...prev.quality,
-				isVisible: !prev.quality.isVisible,
-			}
-		}))
-		setSettingsState(prev => ({
-			...prev,
-			isSettingsVisible: !prev.isSettingsVisible,
-		}))
-	}, []);
+	// const toggleSettings = () => {
+	// 	setIsSettings((prev) => !prev);
+	// };
 
-	const selectSettingsMode: ButtonClickHandler = useCallback(
-		(e) => {
-			const value = e.currentTarget.name;
-			console.log(e.currentTarget.id, e.currentTarget.name)
-			switch (e.currentTarget.id) {
-				case "playback": {
-					setSettingsState(prev => ({
-						...prev,
-						playback: {
-							...prev.playback,
-							speed: value
-						}
-					}))
-					togglePlaybackSpeedVisible();
-					break;
-				}
-				case "quality": {
-					setSettingsState(prev => ({
-						...prev,
-						quality: {
-							...prev.quality,
-							quality: value
-						}
-					}))
-					toggleVideoQualityVisible();
-				}
-			}
-		},
-		[togglePlaybackSpeedVisible, toggleVideoQualityVisible]
-	);
+	// const togglePlaybackSpeedVisible = useCallback(() => {
+	// 	setIsPlaybackSpeedVisible((prev) => !prev);
+	// 	setIsSettings((prev) => !prev);
+	// }, []);
 
-	useEffect(() => {
-		function onFullscreenChange() {
-			setIsFullScreen(!!document.fullscreenElement);
-		}
-		document.addEventListener('fullscreenchange', onFullscreenChange);
+	// const selectPlaybackSpeed: ButtonClickHandler = useCallback(
+	// 	(e) => {
+	// 		setPlaybackSpeed(e.currentTarget.name);
+	// 		togglePlaybackSpeedVisible();
+	// 	},
+	// 	[togglePlaybackSpeedVisible]
+	// );
 
-		return () =>
-			document.removeEventListener('fullscreenchange', onFullscreenChange);
-	}, []);
+	// useEffect(() => {
+	// 	function onFullscreenChange() {
+	// 		setIsFullScreen(!!document.fullscreenElement);
+	// 	}
+	// 	document.addEventListener('fullscreenchange', onFullscreenChange);
+
+	// 	return () =>
+	// 		document.removeEventListener('fullscreenchange', onFullscreenChange);
+	// }, []);
 
 	return (
 		<div className='w-full relative group/video-player-item' ref={parentRef}>
+			{!removeThumbnail && (
+				<div
+					className='video-thumb object-fill'
+					style={{ backgroundImage: `url(${thumbnail || defaultThumbnail})` }}
+				/>
+			)}
+
 			<button
 				type='button'
 				className='absolute inset-0 bg-transparent outline-none grid place-content-center z-10 cursor-default'
 				onClick={togglePlay}
 			>
 				<div
-					className={`px-10 py-5 rounded-2xl grid place-content-center bg-indigo-600/50 hover:bg-indigo-600/70 cursor-pointer ${!isPlay ? 'block' : 'hidden'
-						}`}
+					className={`px-10 py-5 rounded-2xl grid place-content-center bg-indigo-600/50 hover:bg-indigo-600/70 cursor-pointer ${
+						!isPlay ? 'block' : 'hidden'
+					}`}
 				>
 					<FiPlay className='w-7 h-7 text-white' />
 				</div>
@@ -232,33 +193,45 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				timeElapsed={timeElapsed}
 				volume={volume}
 				isFullScreen={isFullScreen}
-				isSettings={settingsState.isSettingsVisible}
-				isPlaybackSpeedVisible={settingsState.playback.isVisible}
-				playbackSpeed={settingsState.playback.speed}
-				isQualityVisible={settingsState.quality.isVisible}
-				quality={settingsState.quality.quality}
-				togglePlaybackSpeedVisible={togglePlaybackSpeedVisible}
+				settings={settings}
+				handleSettings={setSettings}
+				handlePlaybackSeed={handlePlaybackSeed}
 				togglePlay={togglePlay}
 				toggleMute={toggleMute}
 				updateSeekBar={updateSeekBar}
 				updateVolumeBar={updateVolumeBar}
 				toggleFullScreen={toggleFullScreen}
-				toggleSettings={toggleSettings}
-				toggleQualityVisible={toggleVideoQualityVisible}
-				selectSettingsMode={selectSettingsMode}
 			/>
 
 			<video
 				ref={vidRef}
 				width={'100%'}
 				height={'auto'}
-				poster={thumbnail || defaultThumbnail}
 				crossOrigin='anonymous'
 				preload='auto'
 				className='w-full h-full'
 			>
 				{/* <source src={`${BASE_URL}/videos/${source}`} type='video/mp4' /> */}
 				<source src={source} type='video/mp4' />
+				<track
+					label='English'
+					kind='subtitles'
+					srcLang='en'
+					src='captions/vtt/sintel-en.vtt'
+					default
+				/>
+				<track
+					label='Deutsch'
+					kind='subtitles'
+					srcLang='de'
+					src='captions/vtt/sintel-de.vtt'
+				/>
+				<track
+					label='Español'
+					kind='subtitles'
+					srcLang='es'
+					src='captions/vtt/sintel-es.vtt'
+				/>
 			</video>
 		</div>
 	);
