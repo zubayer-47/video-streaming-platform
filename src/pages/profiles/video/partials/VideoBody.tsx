@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FaCircleUser } from 'react-icons/fa6';
 import { FiThumbsDown, FiThumbsUp } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import VideoFile from '../../../../assets/array.mp4';
+// import VideoFile from '../../../../assets/array.mp4';
 import FollowButton from '../../../../components/Buttons/FollowButton';
 import VideoPlayer from '../../../../components/VideoPlayer/VideoPlayer';
 import { trunc } from '../../../../libs/helper';
@@ -11,18 +11,10 @@ import { trunc } from '../../../../libs/helper';
 export default function VideoBody() {
 	const [descStatus, setDescStatus] = useState(false);
 
-	// console.log(descStatus);
-
 	return (
 		<div className='flex-1 flex flex-col w-full'>
-			{/* <button className='w-full  bg-red-400 '>
-				<<img
-					src={videoImage}
-					className='w-full max-h-96 sm:max-h-104 md:max-h-106 lg:max-h-110 object-cover'
-				/>>
-			</button> */}
-
-			<VideoPlayer source={VideoFile} />
+			{/* <VideoPlayer source={VideoFile} /> */}
+			<VideoPlayer source={'asdasd'} />
 
 			<p className='mt-2.5 text-lg font-bold'>
 				How to Build Your Perfect Resume: Learn from a FAANG Employee Example!

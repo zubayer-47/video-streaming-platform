@@ -25,10 +25,7 @@ const usePlayer = () => {
 	const [duration, setDuration] = useState(0);
 	const [timeElapsed, setTimeElapsed] = useState(0);
 	const [volume, setVolume] = useState(0);
-	const [isSettings, setIsSettings] = useState(false);
 	const [isFullScreen, setIsFullScreen] = useState(false);
-
-	// const [visibleWindow, setVisibleWindow] = useState<VisibleWindow>('none');
 
 	const [settings, setSettings] = useState<PlayerSettingsType>({
 		visibleWindow: 'none',
@@ -38,6 +35,7 @@ const usePlayer = () => {
 	});
 
 	useEffect(() => {
+		let reachDuration = 5;
 		const vid = vidRef?.current;
 		function onFullscreenChange() {
 			setIsFullScreen(!!document.fullscreenElement);
@@ -53,6 +51,11 @@ const usePlayer = () => {
 			}
 		};
 
+		const watchedDuration = (sec: number) => {
+			reachDuration = sec + 5;
+			console.log('Watched:', sec);
+		};
+
 		if (vid) {
 			// Events
 			vid.addEventListener('loadedmetadata', () => {
@@ -65,6 +68,17 @@ const usePlayer = () => {
 
 			vid.addEventListener('timeupdate', () => {
 				setTimeElapsed(vid?.currentTime || 0);
+				if (!vid.seeking) {
+					const sec = Math.floor(vid?.currentTime);
+					if (sec >= reachDuration) watchedDuration(sec);
+				}
+			});
+
+			vid.addEventListener('ended', async () => {
+				setPlay(false);
+				const parent = parentRef?.current;
+				if (parent && document.fullscreenElement)
+					await document.exitFullscreen();
 			});
 		}
 
@@ -74,21 +88,19 @@ const usePlayer = () => {
 			if (vid) {
 				vid.removeEventListener('loadedmetadata', () => undefined);
 				vid.removeEventListener('timeupdate', () => undefined);
+				vid.removeEventListener('ended', () => undefined);
 			}
 			document.removeEventListener('fullscreenchange', onFullscreenChange);
 		};
 	}, []);
 
-	const togglePlay = () => {
+	const togglePlay = async () => {
 		if (!removeThumbnail) setRemoveThumbnail(true);
 		setPlay((prev) => !prev);
-		if (isSettings) {
-			setIsSettings(false);
-		}
 		const video = vidRef?.current;
 		// console.log(video?.paused || video?.ended)
 		if (video?.paused || video?.ended) {
-			video.play();
+			await video.play();
 		} else {
 			video?.pause();
 		}

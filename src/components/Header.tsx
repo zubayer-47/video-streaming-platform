@@ -16,11 +16,12 @@ const Header = () => {
 	const modalContext = useModal();
 
 	const handleUserModal = () => setShowUserModal((prev) => !prev);
-	const handleNotificationModal = () => setShowNotificationModal((prev) => !prev);
+	const handleNotificationModal = () =>
+		setShowNotificationModal((prev) => !prev);
 
 	return (
 		<div className='z-40 bg-indigo-50 flex flex-col justify-center px-2 md:px-10'>
-			<div className='flex items-center justify-between gap-2 py-2.5'>
+			<div className='flex items-center justify-between gap-5 py-2.5'>
 				<Link to={'/'}>
 					<h1 className='font-bold text-2xl tracking-wide'>
 						<span className='text-indigo-600'>Vid</span>
@@ -32,7 +33,7 @@ const Header = () => {
 				</div>
 				<div className='flex justify-end gap-3 md:gap-8'>
 					{/* <FiUser className="w-8 h-8" /> */}
-					{!userContext.state.isLoggedIn ? (
+					{userContext.state.isLoggedIn ? (
 						<FollowButton
 							title='Log In'
 							handler={() =>
@@ -46,13 +47,19 @@ const Header = () => {
 						/>
 					) : (
 						<>
-							<Link to='/upload' type="button">
+							<Link to='/upload' type='button'>
 								<FiUpload className='w-6 h-6' />
 							</Link>
-							<button type="button" onClick={handleNotificationModal} className='relative'>
+							<button
+								type='button'
+								onClick={handleNotificationModal}
+								className='relative'
+							>
 								<FiBell className='w-6 h-6' />
 
-								<span className='absolute -top-1 left-2.5 bg-red-600 rounded-full px-1 py-0.5 text-xs text-gray-50'>9+</span>
+								<span className='absolute -top-1 left-2.5 bg-red-600 rounded-full px-1 py-0.5 text-xs text-gray-50'>
+									9+
+								</span>
 							</button>
 
 							<button type='button' onClick={handleUserModal}>
@@ -75,9 +82,6 @@ const Header = () => {
 
 export default Header;
 
-
-
-
 /**
  * video
  * title
@@ -88,5 +92,5 @@ export default Header;
  * description
  * comments count
  * comments
- * 
+ *
  */

@@ -1,6 +1,6 @@
 import { FiPlay } from 'react-icons/fi';
 import defaultThumbnail from '../../assets/demo.jpg';
-// import { BASE_URL } from '../../libs/axios';
+import { BASE_URL } from '../../libs/axios';
 import usePlayer from './hooks/usePlayer';
 import VideoController from './partials/VideoController';
 
@@ -78,8 +78,8 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				preload='auto'
 				className='w-full h-full'
 			>
-				{/* <source src={`${BASE_URL}/videos/${source}`} type='video/mp4' /> */}
-				<source src={source} type='video/mp4' />
+				<source src={`${BASE_URL}/videos/${source}`} type='video/mp4' />
+				{/* <source src={source} type='video/mp4' /> */}
 				<track
 					label='English'
 					kind='subtitles'

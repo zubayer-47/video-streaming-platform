@@ -153,7 +153,7 @@ const VideoController = ({
 			<div className='flex items-center'>
 				<input
 					type='range'
-					className='w-full h-1 hover:h-2 video-range bg-slate-400/20'
+					className='w-full h-1 hover:h-2 video-range bg-white/40'
 					step={0.1}
 					max={duration}
 					value={timeElapsed}
