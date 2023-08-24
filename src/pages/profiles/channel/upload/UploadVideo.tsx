@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, useState } from 'react';
 import { FiArrowUp } from 'react-icons/fi';
+import Button from '../../../../components/Buttons/Button';
 import MaterialInput, {
 	MaterialTagInput,
 	MaterialTextArea,
 } from '../../../../components/Inputs/MaterialInput';
 import { InputType } from '../../../../types/custom';
-import Button from '../../../../components/Buttons/Button';
 
 interface UploadVideoProps {}
 
@@ -36,7 +36,7 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 
 	if (!uploadContent) {
 		return (
-			<div className='flex-1 flex items-center justify-center bg-indigo-100 overflow-y-scroll'>
+			<div className='flex-1 flex items-center justify-center overflow-y-scroll'>
 				<div className='w-full mx-5 md:mx-0 md:w-3/5 bg-white rounded-lg p-5 shadow-lg'>
 					<h1 className='mb-3 text-2xl text-center font-semibold uppercase tracking-wide text-slate-600'>
 						you can upload a video
@@ -45,9 +45,9 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 						Click on the button & select a video file to upload
 					</p>
 
-					<div className='mt-5 mb-6 grid place-content-center'>
+					<div className='my-7 grid place-content-center'>
 						<label htmlFor='uploadVid'>
-							<div className='inline-flex items-center bg-indigo-400 rounded-lg shadow-lg shadow-indigo-300  cursor-pointer'>
+							<div className='inline-flex items-center bg-indigo-400 rounded-lg shadow-lg shadow-indigo-300 cursor-pointer'>
 								<FiArrowUp className='w-5 h-5 text-white stroke-white m-2' />
 								<span className='text-white font-medium tracking-wide uppercase p-2 border-l border-indigo-300'>
 									upload
@@ -59,6 +59,7 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 								id='uploadVid'
 								className='hidden'
 								onChange={handleFile}
+								accept='video/mp4,video/x-m4v,video/*'
 							/>
 						</label>
 					</div>
@@ -68,7 +69,7 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 	}
 
 	return (
-		<div className='flex-1 bg-indigo-100 overflow-y-scroll p-3 md:p-10'>
+		<div className='flex-1 overflow-y-scroll p-3 md:p-10'>
 			<div className='w-full bg-white rounded-lg'>
 				<div className='flex items-stretch gap-3 p-5 border-b border-slate-300'>
 					<div className='w-32 h-32 border border-indigo-300 rounded-lg'></div>

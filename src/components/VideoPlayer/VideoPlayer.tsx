@@ -31,7 +31,10 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 	} = usePlayer();
 
 	return (
-		<div className='w-full relative group/video-player-item' ref={parentRef}>
+		<div
+			className='w-full relative group/video-player-item rounded overflow-hidden'
+			ref={parentRef}
+		>
 			{!removeThumbnail && (
 				<div
 					className='video-thumb object-fill'

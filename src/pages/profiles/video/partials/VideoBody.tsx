@@ -16,7 +16,7 @@ export default function VideoBody() {
 			{/* <VideoPlayer source={VideoFile} /> */}
 			<VideoPlayer source={'asdasd'} />
 
-			<p className='mt-2.5 text-lg font-bold'>
+			<p className='mt-2.5 text-lg font-semibold text-slate-800'>
 				How to Build Your Perfect Resume: Learn from a FAANG Employee Example!
 			</p>
 

@@ -171,13 +171,13 @@ const VideoController = ({
 						onClick={togglePlay}
 					>
 						{!isPlay ? (
-							<FiPlay className='w-5 h-5 fill-white stroke-1' />
+							<FiPlay className='w-5 h-5 fill-white text-transparent' />
 						) : (
-							<FiPause className='w-5 h-5 fill-white stroke-1' />
+							<FiPause className='w-5 h-5 fill-white text-transparent' />
 						)}
 					</button>
 					{/* Video timestamps */}
-					<div className='flex items-center gap-1 text-white'>
+					<div className='flex items-center gap-1 text-white text-sm'>
 						<span>{formateTime(timeElapsed)}</span>
 						<span>/</span>
 						<span>{formateTime(duration)}</span>

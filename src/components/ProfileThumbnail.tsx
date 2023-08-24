@@ -13,7 +13,7 @@ type Props = {
 	chnLink: string;
 	isProfileIconVisible?: boolean;
 	isList?: boolean;
-	classes?: string
+	classes?: string;
 };
 
 const ProfileThumbnail = ({
@@ -27,7 +27,7 @@ const ProfileThumbnail = ({
 	chnLink,
 	isProfileIconVisible,
 	isList = false,
-	classes
+	classes,
 }: Props) => {
 	const channelLen = !isList ? 15 : 10;
 	//max-h-56 md:max-h-52 h-2/5
@@ -38,8 +38,11 @@ const ProfileThumbnail = ({
 		>
 			<Link
 				to={vidLink}
-				className={`relative rounded-md overflow-hidden ${!isList ? 'w-full max-h-52 md:max-h-38' : 'w-40 max-h-24'
-					} ${classes}`}
+				className={`relative rounded-md overflow-hidden ${
+					!isList
+						? 'w-full max-h-52 sm:max-h-[11.5rem] md:max-h-[10rem] lg:max-h-[9.5rem]'
+						: 'w-40 max-h-24'
+				} ${classes}`}
 			>
 				<img
 					className='w-full h-full object-cover'
@@ -58,18 +61,26 @@ const ProfileThumbnail = ({
 			</Link>
 
 			<div className='flex-1 flex gap-2'>
-				{!isList && <FaCircleUser className={`h-9 w-9 ${!isProfileIconVisible ? "block" : "hidden"}`} />}
+				{!isList && (
+					<FaCircleUser
+						className={`h-9 w-9 ${!isProfileIconVisible ? 'block' : 'hidden'}`}
+					/>
+				)}
 				<div className='flex-1 flex flex-col gap-1.5'>
 					<Link
 						to={vidLink}
-						className={`text-sm tracking-wide text-gray-800 ${!isList ? 'font-semibold line-clamp-2' : 'font-medium line-clamp-3'
-							}`}
+						className={`text-sm tracking-wide text-slate-800 ${
+							!isList
+								? 'font-semibold line-clamp-2'
+								: 'font-medium line-clamp-3'
+						}`}
 					>
 						{title}
 					</Link>
 					<div
-						className={`flex items-center text-xs tracking-wide ${!isList ? 'gap-3' : 'gap-1.5'
-							}`}
+						className={`flex items-center text-xs tracking-wide ${
+							!isList ? 'gap-3' : 'gap-1.5'
+						}`}
 					>
 						<Link
 							to={chnLink}
