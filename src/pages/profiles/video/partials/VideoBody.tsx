@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaCircleUser } from 'react-icons/fa6';
 import { FiThumbsDown, FiThumbsUp } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 // import VideoFile from '../../../../assets/array.mp4';
 import FollowButton from '../../../../components/Buttons/FollowButton';
 import VideoPlayer from '../../../../components/VideoPlayer/VideoPlayer';
@@ -9,12 +9,13 @@ import { trunc } from '../../../../libs/helper';
 // import CommentSection from './CommentSection';
 
 export default function VideoBody() {
+	const { videoID } = useParams();
 	const [descStatus, setDescStatus] = useState(false);
 
 	return (
 		<div className='flex-1 flex flex-col w-full'>
 			{/* <VideoPlayer source={VideoFile} /> */}
-			<VideoPlayer source={'asdasd'} />
+			<VideoPlayer source={videoID!} />
 
 			<p className='mt-2.5 text-lg font-semibold text-slate-800'>
 				How to Build Your Perfect Resume: Learn from a FAANG Employee Example!

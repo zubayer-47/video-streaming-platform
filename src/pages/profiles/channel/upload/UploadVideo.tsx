@@ -1,26 +1,47 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, useState } from 'react';
-import { FiArrowUp } from 'react-icons/fi';
+import { FiArrowUp, FiRefreshCw } from 'react-icons/fi';
 import Button from '../../../../components/Buttons/Button';
 import MaterialInput, {
 	MaterialTagInput,
 	MaterialTextArea,
+	MaterialThumbnail,
 } from '../../../../components/Inputs/MaterialInput';
-import { InputType } from '../../../../types/custom';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
+import {
+	InputType,
+	SelectType,
+	TextAreaHandler,
+} from '../../../../types/custom';
+import AudienceSetting from './partials/AudienceSetting';
+import PlaylistSetting from './partials/PlaylistSetting';
 
 interface UploadVideoProps {}
 
 const UploadVideo: FC<UploadVideoProps> = () => {
+	const axiosPrivate = useAxiosPrivate();
 	const [uploadContent, setUploadContent] = useState<File | null>(null);
-	const [uploadPercentage, setUploadPercentage] = useState(10);
+	const [thumbnail, setThumbnail] = useState<{
+		file: File | null;
+		preview: string;
+	}>({
+		file: null,
+		preview: '',
+	});
+	const [uploadPercentage, setUploadPercentage] = useState(0);
 
 	const [uploadMetadata, setUploadMetadata] = useState({
+		videoId: '',
 		title: '',
 		description: '',
 		tags: '',
+		status: 'PUBLIC',
+		playlist: '',
 	});
 
-	const handleFile = (e: InputType) => {
+	const [errors, setErrors] = useState<Record<string, string>>({});
+
+	const handleFile = async (e: InputType) => {
 		if (e.target?.files) {
 			const content = e.target?.files[0];
 			const defaultTitle = content.name.replace('.mp4', '');
@@ -30,8 +51,97 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 				title: defaultTitle,
 				description: defaultTitle,
 			}));
-			console.log('content :', content);
+
+			const formData = new FormData();
+			formData.append('content', content);
+			//Math.round((100 * event.loaded) / event.total)
+			const res = await axiosPrivate.post(`/videos/upload`, formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+				onUploadProgress(evt) {
+					const total = evt?.total || 0;
+					setUploadPercentage(Math.round((100 * evt.loaded) / total));
+				},
+			});
+			setUploadMetadata((prev) => ({ ...prev, videoId: res.data?.videoId }));
 		}
+	};
+
+	const handleThumbnail = (e: InputType) => {
+		if (e.target?.files) {
+			const thum = e.target?.files[0];
+			setThumbnail({
+				file: thum,
+				preview: URL.createObjectURL(thum),
+			});
+		}
+	};
+
+	const handleInput = (e: InputType) => {
+		const { name, value } = e.target;
+		setUploadMetadata((prev) => ({
+			...prev,
+			[name]: value,
+		}));
+	};
+
+	const handleSelect = (e: SelectType) => {
+		const { name, value } = e.target;
+		setUploadMetadata((prev) => ({ ...prev, [name]: value?.toUpperCase() }));
+	};
+
+	const handleDescription: TextAreaHandler = (e) => {
+		const { value } = e.target;
+		setUploadMetadata((prev) => ({
+			...prev,
+			description: value,
+		}));
+	};
+
+	const handleValidate = () => {
+		const err: Record<string, string> = {};
+		const { videoId, title, description, tags, status } = uploadMetadata;
+		const { file } = thumbnail;
+
+		if (!file) {
+			err.thumbnail = 'Thumbnail is mission!';
+		}
+
+		if (!videoId) err.videoId = 'Your content file missing!';
+		if (!title) err.title = 'Title is required!';
+		if (!status) err.status = 'Status is required!';
+		if (!description) err.description = 'Description is required!';
+		if (!tags) err.tags = 'Tags is required!';
+
+		if (!err?.title && title.length < 10)
+			err.title = 'Title should be minimum 10 character!';
+		if (!err?.description && description.length < 20)
+			err.description = 'Description should be minimum 20 character!';
+		// if (!err?.tags && tags?.split(',')) err.tags = 'Tags is required!'
+
+		setErrors(err);
+		return !Object.keys(err).length;
+	};
+
+	const handlePublish = async () => {
+		if (!handleValidate()) return;
+		const { videoId, title, description, tags, status, playlist } =
+			uploadMetadata;
+		const form = new FormData();
+		if (thumbnail.file) form.append('thumbnail', thumbnail.file);
+		if (playlist) form.append('playlist', playlist);
+		form.append('videoId', videoId);
+		form.append('title', title);
+		form.append('description', description);
+		form.append('tags', tags);
+		form.append('status', status);
+		const res = await axiosPrivate.post(`/videos/publish`, form, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		});
+		console.log('res :', res);
 	};
 
 	if (!uploadContent) {
@@ -71,20 +181,42 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 	return (
 		<div className='flex-1 overflow-y-scroll p-3 md:p-10'>
 			<div className='w-full bg-white rounded-lg'>
+				{/* meta data */}
 				<div className='flex items-stretch gap-3 p-5 border-b border-slate-300'>
 					<div className='w-32 h-32 border border-indigo-300 rounded-lg'></div>
-					<div className='flex-1'>
+					<div className='flex-1 flex flex-col gap-5'>
 						<div className='flex justify-end'>
-							<Button title='Publish' type='button' isLoading={false} />
+							<Button
+								title='Publish'
+								type='button'
+								handler={handlePublish}
+								isLoading={!uploadMetadata?.videoId}
+							/>
 						</div>
-						<div className='mt-2'>
-							<p className='mb-2 font-light text-sm tracking-wide text-slate-400'>
-								Your video is{' '}
-								<span className='text-indigo-300 font-medium'>
-									uploading...
-								</span>
-							</p>
-							<div className='w-full h-1 bg-indigo-200 rounded-full'>
+						<div>
+							<div className='flex items-center justify-between'>
+								{uploadPercentage === 100 ? (
+									<div className='text-xs tracking-wide text-slate-700'>
+										<span className='text-indigo-500 font-semibold'>
+											Complete!
+										</span>{' '}
+										Now you can PUBLISH your content if you fill the
+										requirements
+									</div>
+								) : (
+									<div className='flex items-center gap-2'>
+										<p className='font-light text-sm tracking-wide text-slate-500'>
+											Your video is uploading...
+										</p>
+										<FiRefreshCw className='w-4 h-4 animate-spin text-indigo-500' />
+									</div>
+								)}
+								<p className='font-semibold text-slate-400 text-xs'>
+									{uploadPercentage}%
+								</p>
+							</div>
+
+							<div className='w-full mt-3 h-1 bg-indigo-200 rounded-full'>
 								<div
 									className='h-full bg-indigo-500 rounded-full transition-transform'
 									style={{ width: `${uploadPercentage}%` }}
@@ -93,49 +225,60 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 						</div>
 					</div>
 				</div>
-				<div className='flex items-start gap-3'>
+				<div className='flex items-stretch gap-3'>
 					{/* video metadata form */}
 					<div className='flex-1 flex flex-col gap-3 px-5 py-3'>
+						<h2 className='font-bold text-base tracking-wide text-slate-500'>
+							Title & Informations
+						</h2>
 						<MaterialInput
 							title='Title'
 							name='title'
-							handler={(e) => {}}
+							handler={handleInput}
 							value={uploadMetadata.title}
 							hint='Video title...'
 							isLoading={false}
-							error={''}
+							error={errors?.title}
 							isRequired
 						/>
 						<MaterialTextArea
 							title='Description'
 							name='description'
-							handler={(e) => {}}
+							handler={handleDescription}
 							value={uploadMetadata.description}
 							hint='Video description...'
 							isLoading={false}
-							error={''}
+							error={errors?.description}
 							isRequired
+						/>
+						<MaterialThumbnail
+							preview={thumbnail.preview}
+							handler={handleThumbnail}
+							error={errors?.thumbnail}
 						/>
 						<MaterialTagInput
 							title='Tags'
 							name='tags'
-							handler={(e) => {}}
+							handler={handleInput}
 							value={''}
 							hint='Video tags... E.g. hello, world'
 							isLoading={false}
-							error={''}
+							error={errors?.tags}
 						/>
 					</div>
 					{/* video metadata aside */}
-					<div className='w-48 md:w-52 lg:w-64 p-3 sm:border-l sm:border-slate-300'>
-						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minus
-						reiciendis excepturi ea qui sapiente mollitia repellendus eos
-						veritatis vitae explicabo quis dicta aliquam distinctio, id
-						similique? Minima, magnam numquam. Nihil, odio? Fuga labore deserunt
-						reprehenderit quis voluptatem quisquam velit suscipit vero dolorum
-						excepturi sint porro pariatur sequi, similique dolores neque dicta!
-						Reiciendis nemo facilis voluptates amet dolore qui reprehenderit
-						tempore corrupti? Ut a earum sint
+					<div className='w-48 md:w-52 lg:w-64 p-3 sm:border-l sm:border-slate-300 flex flex-col gap-1'>
+						<h2 className='font-bold text-base tracking-wide text-slate-500 mb-5'>
+							More Settings
+						</h2>
+						<AudienceSetting
+							status={uploadMetadata.status}
+							handle={handleSelect}
+						/>
+						<PlaylistSetting
+							status={uploadMetadata.playlist}
+							handle={handleSelect}
+						/>
 					</div>
 				</div>
 			</div>

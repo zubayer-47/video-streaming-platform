@@ -1,4 +1,5 @@
-import { InputType, TextAreaHandler } from '../../types/custom';
+import { FiPlus } from 'react-icons/fi';
+import { InputType, SelectType, TextAreaHandler } from '../../types/custom';
 
 type InputProp = {
 	name: string;
@@ -163,5 +164,93 @@ export const MaterialTagInput = ({
 				<p className='ml-2 text-sm text-red-400 tracking-wide'>{error}</p>
 			)}
 		</div>
+	);
+};
+
+type ThumbType = {
+	preview: string;
+	handler: (e: InputType) => void;
+	error?: string;
+};
+
+export const MaterialThumbnail = ({ preview, handler, error }: ThumbType) => {
+	return (
+		<div className='flex-col gap-2'>
+			<p className='uppercase ml-1 mb-1 font-bold tracking-wide text-xs text-slate-500'>
+				Thumbnail
+			</p>
+			<label
+				htmlFor='thumbnail'
+				className='w-36 h-24 relative grid place-content-center border border-dashed border-indigo-300 rounded-lg cursor-pointer overflow-hidden'
+			>
+				<FiPlus className='w-6 h-6 stroke-1 text-indigo-600' />
+				<input
+					type='file'
+					name='thumbnail'
+					id='thumbnail'
+					onChange={handler}
+					className='hidden'
+					accept='image/*'
+				/>
+				{preview && (
+					<img
+						src={preview}
+						alt='thumbnail image'
+						className='absolute inset-0 object-fill'
+					/>
+				)}
+			</label>
+			{!error ? null : (
+				<p className='ml-2 text-sm text-red-400 tracking-wide'>{error}</p>
+			)}
+		</div>
+	);
+};
+
+type OptionsType = {
+	id: string;
+	name: string;
+};
+
+type SelectProp = {
+	name: string;
+	value?: string | null;
+	defValue: string;
+	options: OptionsType[];
+	handler: (e: SelectType) => void;
+	defDisable?: boolean;
+	isLoading?: boolean;
+	isRequired?: boolean;
+	error?: string | null;
+};
+export const InlineSelectInput = ({
+	name,
+	value,
+	defValue,
+	options,
+	handler,
+	defDisable = false,
+	isLoading = false,
+	isRequired = false,
+}: SelectProp) => {
+	return (
+		<select
+			name={name}
+			id={name}
+			className='inline-block outline-none bg-transparent py-2 text-right font-bold text-slate-500'
+			onChange={handler}
+			value={value || ''}
+			disabled={isLoading}
+			required={isRequired}
+		>
+			<option value={defValue} disabled={defDisable}>
+				{defValue}
+			</option>
+			{options.map((op) => (
+				<option key={op.id} value={op.id}>
+					{op.name}
+				</option>
+			))}
+		</select>
 	);
 };

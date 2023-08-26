@@ -33,7 +33,7 @@ const Header = () => {
 					<SearchBar />
 				</div>
 				<div className='flex items-center gap-3 md:gap-4'>
-					{state.isLoggedIn ? (
+					{!state.isLoggedIn ? (
 						<FollowButton
 							title='Log In'
 							handler={() =>

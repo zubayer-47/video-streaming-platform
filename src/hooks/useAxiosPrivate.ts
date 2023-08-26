@@ -3,9 +3,10 @@ import { useEffect } from 'react';
 import axios, { axiosPrivate } from '../libs/axios';
 
 const useAxiosPrivate = () => {
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const refresh = async () => {
 		try {
-			const res = await axios.get(`/ur/refresh`, {
+			const res = await axios.get(`/auth/refresh`, {
 				withCredentials: true,
 			});
 			localStorage.setItem('access_token', res?.data?.token);
@@ -22,11 +23,12 @@ const useAxiosPrivate = () => {
 	useEffect(() => {
 		const conf = (config: InternalAxiosRequestConfig) => {
 			if (!config.headers?.Authorization && config.headers)
-				config.headers.Authorization = `Bearer ${localStorage.getItem(
+				config.headers.Authorization = `${localStorage.getItem(
 					'access_token'
 				)}`;
 			return config;
 		};
+
 		const reqErr = (error: unknown) => Promise.reject(error);
 
 		const resErr = async (error: any) => {
@@ -36,7 +38,7 @@ const useAxiosPrivate = () => {
 				if (status === 403 && !prevRequest?.sent) {
 					prevRequest.sent = true;
 					const newAccessToken = await refresh();
-					prevRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+					prevRequest.headers.Authorization = `${newAccessToken}`;
 					return axiosPrivate(prevRequest);
 				}
 				if (!error?.response) {
@@ -50,6 +52,7 @@ const useAxiosPrivate = () => {
 
 			return null;
 		};
+
 		const reqIntercept = axiosPrivate.interceptors.request.use(conf, reqErr);
 		const resIntercept = axiosPrivate.interceptors.response.use(
 			(res) => res,
