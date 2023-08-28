@@ -10,9 +10,6 @@ export default function VideoContent() {
 	const axiosPrivate = useAxiosPrivate();
 	const [metadatas, setMetadatas] = useState<VideoMetaData[]>([]);
 
-	// const channelName = 'Standford Graduate School of Business';
-	// const createdAt = dayjs('2023-08-04').toNow(true);
-
 	useEffect(() => {
 		const controller = new AbortController();
 
@@ -31,14 +28,20 @@ export default function VideoContent() {
 		return () => {
 			controller.abort();
 		};
-	}, []);
+	}, [axiosPrivate]);
 
 	return (
 		<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:pr-3 pb-10'>
 			{metadatas.map((md) => (
 				<ProfileThumbnail
 					key={md.videoId}
-					thumbnail={demoImg}
+					thumbnail={
+						(md?.thumbnail &&
+							`${import.meta.env.VITE_API_URI}/static/thumbnails/${
+								md.thumbnail
+							}`) ||
+						demoImg
+					}
 					views='7.6M'
 					timetamp={formateTime(md.duration)}
 					title={md.title}

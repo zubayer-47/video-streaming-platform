@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { FiArrowUp } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../../components/Buttons/Button';
@@ -17,22 +16,23 @@ import {
 import AudienceSetting from './partials/AudienceSetting';
 import PlaylistSetting from './partials/PlaylistSetting';
 
-interface UploadVideoProps {}
-
 type uploadType = {
 	content: File | null;
 	contentPreview: string;
+	duration: number;
 	thumbnail: File | null;
 	thumbPreview: string;
 	contentUploadPercent: number;
 };
 
-const UploadVideo: FC<UploadVideoProps> = () => {
+const UploadVideo = () => {
 	const navigate = useNavigate();
 	const axiosPrivate = useAxiosPrivate();
+
 	const [uploadedContent, setUploadedContent] = useState<uploadType>({
 		content: null,
 		contentPreview: '',
+		duration: 0,
 		thumbnail: null,
 		thumbPreview: '',
 		contentUploadPercent: 0,
@@ -46,14 +46,17 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 		playlist: '',
 		publishing: false,
 	});
-
 	const [errors, setErrors] = useState<Record<string, string>>({});
 
 	const handleFile = async (e: InputType) => {
 		if (e.target?.files) {
 			const content = e.target?.files[0];
 			const defaultTitle = content.name.replace('.mp4', '');
-			setUploadedContent((prev) => ({ ...prev, content }));
+			setUploadedContent((prev) => ({
+				...prev,
+				content,
+				contentPreview: URL.createObjectURL(content),
+			}));
 			setMetadata((prev) => ({
 				...prev,
 				title: defaultTitle,
@@ -138,16 +141,19 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 
 	const handlePublish = async () => {
 		if (!handleValidate()) return;
+
 		const { videoId, title, description, tags, status, playlist } = metadata;
 		const { thumbnail } = uploadedContent;
+
 		const form = new FormData();
-		if (thumbnail) form.append('thumbnail', thumbnail);
-		if (playlist) form.append('playlist', playlist);
 		form.append('videoId', videoId);
 		form.append('title', title);
 		form.append('description', description);
 		form.append('tags', tags);
 		form.append('status', status);
+		if (thumbnail) form.append('thumbnail', thumbnail);
+		if (playlist) form.append('playlist', playlist);
+
 		try {
 			setMetadata((prev) => ({ ...prev, publishing: true }));
 			const res = await axiosPrivate.post(`/videos/publish`, form, {
@@ -202,7 +208,18 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 			<div className='w-full bg-white rounded-lg'>
 				{/* upload process info */}
 				<div className='flex items-stretch gap-3 p-5 border-b border-slate-300'>
-					<div className='w-32 h-32 border border-indigo-300 rounded-lg'></div>
+					<div className='w-32 h-32 border border-indigo-300 rounded-lg'>
+						<video
+							width={'100%'}
+							height={'100%'}
+							crossOrigin='anonymous'
+							preload='auto'
+							className='w-full h-full'
+							controls={true}
+						>
+							<source src={uploadedContent?.contentPreview} type='video/mp4' />
+						</video>
+					</div>
 					<div className='flex-1 flex flex-col gap-5'>
 						<div className='flex justify-end'>
 							<Button

@@ -1,16 +1,66 @@
-import { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useEffect, useState } from 'react';
 import { FaCircleUser } from 'react-icons/fa6';
 import { FiThumbsDown, FiThumbsUp } from 'react-icons/fi';
 import { Link, useParams } from 'react-router-dom';
 // import VideoFile from '../../../../assets/array.mp4';
+import dayjs from 'dayjs';
 import FollowButton from '../../../../components/Buttons/FollowButton';
 import VideoPlayer from '../../../../components/VideoPlayer/VideoPlayer';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 import { trunc } from '../../../../libs/helper';
 // import CommentSection from './CommentSection';
 
+type MetaDataType = {
+	channelId: '';
+	thumbnail: '';
+	title: string;
+	description: string;
+	createdAt: string;
+	channel: {
+		name: string;
+		user: { avater: string };
+	};
+	followers: number;
+};
+
 export default function VideoBody() {
 	const { videoID } = useParams();
+	const axiosPrivate = useAxiosPrivate();
 	const [descStatus, setDescStatus] = useState(false);
+	const [metaData, setMetaData] = useState<MetaDataType>({
+		channelId: '',
+		thumbnail: '',
+		title: '',
+		description: '',
+		createdAt: '',
+		channel: {
+			name: '',
+			user: { avater: '' },
+		},
+		followers: 0,
+	});
+
+	useEffect(() => {
+		const controller = new AbortController();
+
+		(async () => {
+			try {
+				const res = await axiosPrivate.get(`/videos/${videoID}/metadata`, {
+					signal: controller.signal,
+				});
+				const resData = res?.data || [];
+				// console.log('resData :', resData);
+				setMetaData(resData);
+			} catch (error) {
+				console.log('error :', error);
+			}
+		})();
+
+		return () => {
+			controller.abort();
+		};
+	}, [axiosPrivate, videoID]);
 
 	return (
 		<div className='flex-1 flex flex-col w-full'>
@@ -18,7 +68,8 @@ export default function VideoBody() {
 			<VideoPlayer source={videoID!} />
 
 			<p className='mt-2.5 text-lg font-semibold text-slate-800'>
-				How to Build Your Perfect Resume: Learn from a FAANG Employee Example!
+				{/* How to Build Your Perfect Resume: Learn from a FAANG Employee Example! */}
+				{metaData.title}
 			</p>
 
 			<div className='flex justify-between gap-3 my-5'>
@@ -28,9 +79,12 @@ export default function VideoBody() {
 					</Link>
 					<p className='flex flex-col justify-center'>
 						<Link to='/@stacklearner' className='font-bold'>
-							Stack Learner
+							{/* Stack Learner */}
+							{metaData?.channel?.name}
 						</Link>
-						<span className='text-sm text-gray-800'>94.3k followers</span>
+						<span className='text-sm text-gray-800'>
+							{metaData.followers} followers
+						</span>
 					</p>
 
 					<FollowButton classes='ml-5 py-3' title='Follow' />
@@ -64,13 +118,10 @@ export default function VideoBody() {
 			>
 				<p className='font-medium space-x-2'>
 					<span>6k views</span>
-					<span>2days ago</span>
+					<span>{dayjs(metaData.createdAt).toNow(true)}</span>
 				</p>
 				<p className='font-normal text-gray-700'>
-					{trunc(
-						"How to Build Your Perfect Resume: Learn from a FAANG Employee Example! Are you ready to take your career to new heights and secure your dream job at a top tech company? Join us on this exclusive journey inside the mind of a FAANG employee as we unveil the secrets of their perfect resume! In this eye-opening video, you'll discover the exact strategies and tips used by the industry's finest to stand out from the crowd and impress recruiters. Music from #InAudio: https://inaudio.org/ Reality How to Build Your Perfect Resume: Learn from a FAANG Employee Example! Are you ready to take your career to new heights and secure your dream job at a top tech company? Join us on this exclusive journey inside the mind of a FAANG employee as we unveil the secrets of their perfect resume! In this eye-opening video, you'll discover the exact strategies and tips used by the industry's finest to stand out from the crowd and impress recruiters. Music from #InAudio: https://inaudio.org/ Reality How to Build Your Perfect Resume: Learn from a FAANG Employee Example! Are you ready to take your career to new heights and secure your dream job at a top tech company? Join us on this exclusive journey inside the mind of a FAANG employee as we unveil the secrets of their perfect resume! In this eye-opening video, you'll discover the exact strategies and tips used by the industry's finest to stand out from the crowd and impress recruiters.Music from #InAudio: https://inaudio.org/Reality",
-						!descStatus ? 500 : undefined
-					)}
+					{trunc(metaData?.description || '', !descStatus ? 500 : undefined)}
 					<button
 						onClick={() => {
 							setDescStatus(false);

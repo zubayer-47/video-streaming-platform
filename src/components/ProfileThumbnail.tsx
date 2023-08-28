@@ -48,6 +48,7 @@ const ProfileThumbnail = ({
 					className='w-full h-full object-cover'
 					src={thumbnail}
 					alt='thumbnail'
+					crossOrigin='anonymous'
 				/>
 
 				<div className='absolute bottom-1 right-1 flex gap-1'>

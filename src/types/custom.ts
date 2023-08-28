@@ -12,6 +12,7 @@ export type TextAreaHandler = React.ChangeEventHandler<HTMLTextAreaElement>;
 
 export interface VideoMetaData {
 	videoId: string;
+	thumbnail: string;
 	title: string;
 	duration: number;
 	createdAt: Date;
