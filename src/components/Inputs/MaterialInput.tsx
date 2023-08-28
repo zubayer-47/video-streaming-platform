@@ -107,11 +107,10 @@ export const MaterialTextArea = ({
 
 type InputTagProp = {
 	name: string;
-	handler: (e: InputType) => void;
+	handler: TextAreaHandler;
 	title?: string;
 	hint?: string;
 	value?: string | null;
-	values?: string[];
 	isLoading?: boolean;
 	isRequired?: boolean;
 	error?: string | null;
@@ -123,7 +122,6 @@ export const MaterialTagInput = ({
 	title = '',
 	hint = '',
 	value,
-	values = [],
 	isLoading = false,
 	isRequired = false,
 	error = '',
@@ -138,28 +136,32 @@ export const MaterialTagInput = ({
 					{title}
 				</label>
 			)}
-			<div className='w-full px-3 py-2 rounded-md bg-transparent outline-none tracking-wider border border-indigo-200'>
-				{values.map((tag) => (
-					<span
-						key={tag}
-						className='flex-shrink-0 m-0.5 font-medium text-xs tracking-wide bg-indigo-500/50 text-white px-1 py-0.5 rounded-md'
-					>
-						{tag}
-					</span>
-				))}
-				<input
-					type={'text'}
+
+			{isLoading ? (
+				<div className='w-full px-3 py-2 rounded-md bg-transparent outline-none tracking-wider border border-indigo-200'>
+					{value?.split(',').map((tag) => (
+						<span
+							key={tag}
+							className='flex-shrink-0 m-0.5 font-medium text-xs tracking-wide text-slate-700 bg-indigo-500/20 px-1 py-0.5 rounded-sm'
+						>
+							{tag.trim()}
+						</span>
+					))}
+				</div>
+			) : (
+				<textarea
 					name={name}
 					id={name}
-					className='w-full bg-transparent outline-none tracking-wider'
+					className='w-full px-3 py-2 rounded-md bg-transparent outline-none tracking-wider border border-indigo-200'
 					placeholder={hint}
 					value={value || ''}
 					onChange={handler}
 					autoComplete='off'
+					rows={2}
 					disabled={isLoading}
 					required={isRequired}
 				/>
-			</div>
+			)}
 			{!error ? null : (
 				<p className='ml-2 text-sm text-red-400 tracking-wide'>{error}</p>
 			)}
@@ -170,10 +172,16 @@ export const MaterialTagInput = ({
 type ThumbType = {
 	preview: string;
 	handler: (e: InputType) => void;
+	isLoading?: boolean;
 	error?: string;
 };
 
-export const MaterialThumbnail = ({ preview, handler, error }: ThumbType) => {
+export const MaterialThumbnail = ({
+	preview,
+	handler,
+	isLoading,
+	error,
+}: ThumbType) => {
 	return (
 		<div className='flex-col gap-2'>
 			<p className='uppercase ml-1 mb-1 font-bold tracking-wide text-xs text-slate-500'>
@@ -191,12 +199,13 @@ export const MaterialThumbnail = ({ preview, handler, error }: ThumbType) => {
 					onChange={handler}
 					className='hidden'
 					accept='image/*'
+					disabled={isLoading}
 				/>
 				{preview && (
 					<img
 						src={preview}
 						alt='thumbnail image'
-						className='absolute inset-0 object-fill'
+						className='absolute inset-0 w-full h-full object-cover'
 					/>
 				)}
 			</label>
@@ -223,6 +232,7 @@ type SelectProp = {
 	isRequired?: boolean;
 	error?: string | null;
 };
+
 export const InlineSelectInput = ({
 	name,
 	value,

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, useState } from 'react';
-import { FiArrowUp, FiRefreshCw } from 'react-icons/fi';
+import { FiArrowUp } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../../../components/Buttons/Button';
 import MaterialInput, {
 	MaterialTagInput,
@@ -18,25 +19,32 @@ import PlaylistSetting from './partials/PlaylistSetting';
 
 interface UploadVideoProps {}
 
-const UploadVideo: FC<UploadVideoProps> = () => {
-	const axiosPrivate = useAxiosPrivate();
-	const [uploadContent, setUploadContent] = useState<File | null>(null);
-	const [thumbnail, setThumbnail] = useState<{
-		file: File | null;
-		preview: string;
-	}>({
-		file: null,
-		preview: '',
-	});
-	const [uploadPercentage, setUploadPercentage] = useState(0);
+type uploadType = {
+	content: File | null;
+	contentPreview: string;
+	thumbnail: File | null;
+	thumbPreview: string;
+	contentUploadPercent: number;
+};
 
-	const [uploadMetadata, setUploadMetadata] = useState({
+const UploadVideo: FC<UploadVideoProps> = () => {
+	const navigate = useNavigate();
+	const axiosPrivate = useAxiosPrivate();
+	const [uploadedContent, setUploadedContent] = useState<uploadType>({
+		content: null,
+		contentPreview: '',
+		thumbnail: null,
+		thumbPreview: '',
+		contentUploadPercent: 0,
+	});
+	const [metadata, setMetadata] = useState({
 		videoId: '',
 		title: '',
 		description: '',
-		tags: '',
+		tags: 'how to become a nodejs developer, how to, tutorial, online course',
 		status: 'PUBLIC',
 		playlist: '',
+		publishing: false,
 	});
 
 	const [errors, setErrors] = useState<Record<string, string>>({});
@@ -45,8 +53,8 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 		if (e.target?.files) {
 			const content = e.target?.files[0];
 			const defaultTitle = content.name.replace('.mp4', '');
-			setUploadContent(content);
-			setUploadMetadata((prev) => ({
+			setUploadedContent((prev) => ({ ...prev, content }));
+			setMetadata((prev) => ({
 				...prev,
 				title: defaultTitle,
 				description: defaultTitle,
@@ -61,26 +69,30 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 				},
 				onUploadProgress(evt) {
 					const total = evt?.total || 0;
-					setUploadPercentage(Math.round((100 * evt.loaded) / total));
+					setUploadedContent((prev) => ({
+						...prev,
+						contentUploadPercent: Math.round((100 * evt.loaded) / total),
+					}));
 				},
 			});
-			setUploadMetadata((prev) => ({ ...prev, videoId: res.data?.videoId }));
+			setMetadata((prev) => ({ ...prev, videoId: res.data?.videoId }));
 		}
 	};
 
 	const handleThumbnail = (e: InputType) => {
 		if (e.target?.files) {
 			const thum = e.target?.files[0];
-			setThumbnail({
-				file: thum,
-				preview: URL.createObjectURL(thum),
-			});
+			setUploadedContent((prev) => ({
+				...prev,
+				thumbnail: thum,
+				thumbPreview: URL.createObjectURL(thum),
+			}));
 		}
 	};
 
 	const handleInput = (e: InputType) => {
 		const { name, value } = e.target;
-		setUploadMetadata((prev) => ({
+		setMetadata((prev) => ({
 			...prev,
 			[name]: value,
 		}));
@@ -88,23 +100,23 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 
 	const handleSelect = (e: SelectType) => {
 		const { name, value } = e.target;
-		setUploadMetadata((prev) => ({ ...prev, [name]: value?.toUpperCase() }));
+		setMetadata((prev) => ({ ...prev, [name]: value?.toUpperCase() }));
 	};
 
-	const handleDescription: TextAreaHandler = (e) => {
-		const { value } = e.target;
-		setUploadMetadata((prev) => ({
+	const handleTextArea: TextAreaHandler = (e) => {
+		const { name, value } = e.target;
+		setMetadata((prev) => ({
 			...prev,
-			description: value,
+			[name]: value,
 		}));
 	};
 
 	const handleValidate = () => {
 		const err: Record<string, string> = {};
-		const { videoId, title, description, tags, status } = uploadMetadata;
-		const { file } = thumbnail;
+		const { videoId, title, description, tags, status } = metadata;
+		const { thumbnail } = uploadedContent;
 
-		if (!file) {
+		if (!thumbnail) {
 			err.thumbnail = 'Thumbnail is mission!';
 		}
 
@@ -126,25 +138,32 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 
 	const handlePublish = async () => {
 		if (!handleValidate()) return;
-		const { videoId, title, description, tags, status, playlist } =
-			uploadMetadata;
+		const { videoId, title, description, tags, status, playlist } = metadata;
+		const { thumbnail } = uploadedContent;
 		const form = new FormData();
-		if (thumbnail.file) form.append('thumbnail', thumbnail.file);
+		if (thumbnail) form.append('thumbnail', thumbnail);
 		if (playlist) form.append('playlist', playlist);
 		form.append('videoId', videoId);
 		form.append('title', title);
 		form.append('description', description);
 		form.append('tags', tags);
 		form.append('status', status);
-		const res = await axiosPrivate.post(`/videos/publish`, form, {
-			headers: {
-				'Content-Type': 'multipart/form-data',
-			},
-		});
-		console.log('res :', res);
+		try {
+			setMetadata((prev) => ({ ...prev, publishing: true }));
+			const res = await axiosPrivate.post(`/videos/publish`, form, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+			const resData = res?.data;
+			console.log('resData :', resData);
+			navigate('/');
+		} catch (error) {
+			console.log('error :', error);
+		}
 	};
 
-	if (!uploadContent) {
+	if (!uploadedContent.content) {
 		return (
 			<div className='flex-1 flex items-center justify-center overflow-y-scroll'>
 				<div className='w-full mx-5 md:mx-0 md:w-3/5 bg-white rounded-lg p-5 shadow-lg'>
@@ -181,7 +200,7 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 	return (
 		<div className='flex-1 overflow-y-scroll p-3 md:p-10'>
 			<div className='w-full bg-white rounded-lg'>
-				{/* meta data */}
+				{/* upload process info */}
 				<div className='flex items-stretch gap-3 p-5 border-b border-slate-300'>
 					<div className='w-32 h-32 border border-indigo-300 rounded-lg'></div>
 					<div className='flex-1 flex flex-col gap-5'>
@@ -190,12 +209,12 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 								title='Publish'
 								type='button'
 								handler={handlePublish}
-								isLoading={!uploadMetadata?.videoId}
+								isLoading={!metadata?.videoId || metadata.publishing}
 							/>
 						</div>
 						<div>
 							<div className='flex items-center justify-between'>
-								{uploadPercentage === 100 ? (
+								{uploadedContent.contentUploadPercent === 100 ? (
 									<div className='text-xs tracking-wide text-slate-700'>
 										<span className='text-indigo-500 font-semibold'>
 											Complete!
@@ -204,27 +223,25 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 										requirements
 									</div>
 								) : (
-									<div className='flex items-center gap-2'>
-										<p className='font-light text-sm tracking-wide text-slate-500'>
-											Your video is uploading...
-										</p>
-										<FiRefreshCw className='w-4 h-4 animate-spin text-indigo-500' />
-									</div>
+									<p className='font-light text-sm tracking-wide text-slate-500'>
+										Your video is uploading...
+									</p>
 								)}
 								<p className='font-semibold text-slate-400 text-xs'>
-									{uploadPercentage}%
+									{uploadedContent.contentUploadPercent}%
 								</p>
 							</div>
 
 							<div className='w-full mt-3 h-1 bg-indigo-200 rounded-full'>
 								<div
 									className='h-full bg-indigo-500 rounded-full transition-transform'
-									style={{ width: `${uploadPercentage}%` }}
+									style={{ width: `${uploadedContent.contentUploadPercent}%` }}
 								></div>
 							</div>
 						</div>
 					</div>
 				</div>
+				{/* upload metadata info */}
 				<div className='flex items-stretch gap-3'>
 					{/* video metadata form */}
 					<div className='flex-1 flex flex-col gap-3 px-5 py-3'>
@@ -235,34 +252,35 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 							title='Title'
 							name='title'
 							handler={handleInput}
-							value={uploadMetadata.title}
+							value={metadata.title}
 							hint='Video title...'
-							isLoading={false}
+							isLoading={metadata.publishing}
 							error={errors?.title}
 							isRequired
 						/>
 						<MaterialTextArea
 							title='Description'
 							name='description'
-							handler={handleDescription}
-							value={uploadMetadata.description}
+							handler={handleTextArea}
+							value={metadata.description}
 							hint='Video description...'
-							isLoading={false}
+							isLoading={metadata.publishing}
 							error={errors?.description}
 							isRequired
 						/>
 						<MaterialThumbnail
-							preview={thumbnail.preview}
+							preview={uploadedContent?.thumbPreview}
 							handler={handleThumbnail}
+							isLoading={metadata.publishing}
 							error={errors?.thumbnail}
 						/>
 						<MaterialTagInput
 							title='Tags'
 							name='tags'
-							handler={handleInput}
-							value={''}
+							handler={handleTextArea}
+							value={metadata.tags}
 							hint='Video tags... E.g. hello, world'
-							isLoading={false}
+							isLoading={metadata.publishing}
 							error={errors?.tags}
 						/>
 					</div>
@@ -271,14 +289,8 @@ const UploadVideo: FC<UploadVideoProps> = () => {
 						<h2 className='font-bold text-base tracking-wide text-slate-500 mb-5'>
 							More Settings
 						</h2>
-						<AudienceSetting
-							status={uploadMetadata.status}
-							handle={handleSelect}
-						/>
-						<PlaylistSetting
-							status={uploadMetadata.playlist}
-							handle={handleSelect}
-						/>
+						<AudienceSetting status={metadata.status} handle={handleSelect} />
+						<PlaylistSetting status={metadata.playlist} handle={handleSelect} />
 					</div>
 				</div>
 			</div>
