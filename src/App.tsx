@@ -3,7 +3,7 @@ import Header from './components/Header';
 import PageLayout from './components/Layouts/PageLayout';
 import useAuth from './hooks/useAuth';
 import useModal from './hooks/useModal';
-import Register from './pages/auth/Register';
+import Auth from './pages/auth/Auth';
 import AuthModal from './pages/auth/authModals/AuthModal';
 import NotFound from './pages/notfound/NotFound';
 import ChannelProfile from './pages/profiles/channel/ChannelProfile';
@@ -25,7 +25,7 @@ function App() {
 			<Routes>
 				<Route path='/' element={<Outlet />}>
 					<Route index element={<VideoDashboard />} />
-					<Route path='register' element={<Register />} />
+					<Route path='auth' element={<Auth />} />
 					<Route path='watch/:videoID' element={<VideoProfile />} />
 					<Route
 						path=':channelName'
