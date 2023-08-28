@@ -132,7 +132,7 @@ const LoginModal: FC<LoginModalProps> = ({ setIsForgetPass }) => {
 					type='button'
 					onClick={() => {
 						modalContext.updateModal(false);
-						navigation('/register');
+						navigation('/auth');
 					}}
 					className='font-bold'
 				>
