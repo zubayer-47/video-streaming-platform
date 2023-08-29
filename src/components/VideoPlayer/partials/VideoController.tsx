@@ -18,6 +18,8 @@ import PlaybackSpeed from './widgets/PlaybackSpeed';
 import Subtitle from './widgets/Subtitle';
 
 type Props = {
+	progressRef: React.RefObject<HTMLDivElement>;
+	bufferRef: React.RefObject<HTMLDivElement>;
 	isPlay: boolean;
 	isMuted: boolean;
 	duration: number;
@@ -29,12 +31,14 @@ type Props = {
 	handlePlaybackSeed: ButtonClickHandler;
 	togglePlay: () => void;
 	toggleMute: () => void;
-	updateSeekBar: (e: InputType) => void;
+	handleSeekPosition: (pos: number) => void;
 	updateVolumeBar: (e: InputType) => void;
 	toggleFullScreen: () => void;
 };
 
 const VideoController = ({
+	progressRef,
+	bufferRef,
 	isPlay,
 	isMuted,
 	duration,
@@ -44,7 +48,7 @@ const VideoController = ({
 	settings,
 	togglePlay,
 	toggleMute,
-	updateSeekBar,
+	handleSeekPosition,
 	updateVolumeBar,
 	toggleFullScreen,
 	handleSettings,
@@ -59,6 +63,12 @@ const VideoController = ({
 			);
 		}
 		return <FiVolumeX className='w-5 h-5 text-red-500 fill-white stroke-1' />;
+	};
+
+	const handleSeekBar = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		const { left, width } = e.currentTarget.getBoundingClientRect();
+		const clickedPos = (e.clientX - left) / width;
+		handleSeekPosition(clickedPos);
 	};
 
 	return (
@@ -150,15 +160,14 @@ const VideoController = ({
 				)}
 			</div>
 			{/* Video SeekBar */}
-			<div className='flex items-center'>
-				<input
-					type='range'
-					className='w-full h-1 hover:h-2 video-range bg-white/40'
-					step={0.1}
-					max={duration}
-					value={timeElapsed}
-					onChange={updateSeekBar}
-				/>
+			<div
+				className='flex items-center w-full h-1 bg-white/40 cursor-pointer hover:h-2 transition-all delay-75'
+				onClick={handleSeekBar}
+			>
+				{/* Progress Bar */}
+				<div className='h-full bg-indigo-500 z-[1]' ref={progressRef} />
+				{/* Buffer Bar */}
+				<div className='h-full bg-black' ref={bufferRef} />
 			</div>
 			{/* Video Controller Information */}
 			<div className='mt-1 flex items-center justify-between gap-1.5'>

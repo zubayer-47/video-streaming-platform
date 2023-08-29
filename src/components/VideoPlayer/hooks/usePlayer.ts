@@ -18,7 +18,10 @@ export type PlayerSettingsType = {
 const usePlayer = () => {
 	const parentRef = useRef<HTMLDivElement>(null);
 	const vidRef = useRef<HTMLVideoElement>(null);
+	const progressRef = useRef<HTMLDivElement>(null);
+	const bufferRef = useRef<HTMLDivElement>(null);
 
+	const [isWaiting, setWaiting] = useState(false);
 	const [removeThumbnail, setRemoveThumbnail] = useState(false);
 	const [isPlay, setPlay] = useState(false);
 	const [isMuted, setMuted] = useState(false);
@@ -35,20 +38,20 @@ const usePlayer = () => {
 	});
 
 	useEffect(() => {
+		if (!vidRef?.current) return;
 		let reachDuration = 5;
-		const vid = vidRef?.current;
-		function onFullscreenChange() {
-			setIsFullScreen(!!document.fullscreenElement);
-		}
+		const vidEl = vidRef?.current;
 
-		const play = async () => {
-			try {
-				await vid!.play();
-				setPlay(true);
-				setRemoveThumbnail(true);
-			} catch (error) {
-				console.log('error :', error);
-			}
+		const onFullscreenChange = () => {
+			setIsFullScreen(!!document.fullscreenElement);
+		};
+
+		const loadedMetadata = () => {
+			setVolume(vidEl.volume);
+			// setDuration(+vidEl?.duration || 0);
+			// console.log(vidEl.duration)
+			// AutoPlay
+			// play();
 		};
 
 		const watchedDuration = (sec: number) => {
@@ -56,64 +59,99 @@ const usePlayer = () => {
 			console.log('Watched:', sec);
 		};
 
-		if (vid) {
-			// Events
-			vid.addEventListener('loadedmetadata', () => {
-				setVolume(vid.volume);
-				setDuration(+vid?.duration || 0);
-				// console.log(vid.duration)
-				// AutoPlay
-				play();
-			});
-
-			vid.addEventListener('timeupdate', () => {
-				setTimeElapsed(vid?.currentTime || 0);
-				if (!vid.seeking) {
-					const sec = Math.floor(vid?.currentTime);
-					if (sec >= reachDuration) watchedDuration(sec);
-				}
-			});
-
-			vid.addEventListener('ended', async () => {
-				setPlay(false);
-				const parent = parentRef?.current;
-				if (parent && document.fullscreenElement)
-					await document.exitFullscreen();
-			});
-		}
-
-		document.addEventListener('fullscreenchange', onFullscreenChange);
-
-		return () => {
-			if (vid) {
-				vid.removeEventListener('loadedmetadata', () => undefined);
-				vid.removeEventListener('timeupdate', () => undefined);
-				vid.removeEventListener('ended', () => undefined);
+		const onProgress = () => {
+			if (!vidEl.buffered || !bufferRef.current) return;
+			if (!vidEl.buffered.length) return;
+			const bufferedEnd = vidEl.buffered.end(vidEl.buffered.length - 1);
+			const duration = vidEl.duration;
+			if (bufferRef && duration > 0) {
+				const bufPercent = (bufferedEnd / duration) * 100 + '%';
+				bufferRef.current.style.width = bufPercent;
 			}
+		};
+
+		const onTimeUpdate = () => {
+			setWaiting(false);
+			if (!vidEl.buffered || !progressRef.current) return;
+			const duration = vidEl.duration;
+			setDuration(duration);
+			setTimeElapsed(vidEl.currentTime);
+			if (progressRef && duration > 0) {
+				const progressPercent = (vidEl.currentTime / duration) * 100 + '%';
+				progressRef.current.style.width = progressPercent;
+				const sec = Math.floor(vidEl?.currentTime);
+				if (sec >= reachDuration) watchedDuration(sec);
+			}
+		};
+
+		const onWaiting = () => {
+			if (isPlay) setPlay(false);
+			setWaiting(true);
+		};
+
+		const onPlay = () => {
+			if (isWaiting) setWaiting(false);
+			setPlay(true);
+			// vidEl.play();
+		};
+
+		const onPause = () => {
+			setPlay(false);
+			setWaiting(false);
+			// vidEl.pause();
+		};
+
+		const onEnd = () => {
+			setPlay(false);
+			const parent = parentRef?.current;
+			if (parent && document.fullscreenElement) document.exitFullscreen();
+		};
+
+		// Events
+		vidEl.addEventListener('loadedmetadata', loadedMetadata);
+		vidEl.addEventListener('timeupdate', onTimeUpdate);
+		vidEl.addEventListener('waiting', onWaiting);
+		vidEl.addEventListener('play', onPlay);
+		vidEl.addEventListener('playing', onPlay);
+		vidEl.addEventListener('pause', onPause);
+		vidEl.addEventListener('ended', onEnd);
+		document.addEventListener('fullscreenchange', onFullscreenChange);
+		//Clean up
+		return () => {
+			vidEl.removeEventListener('loadedmetadata', loadedMetadata);
+			vidEl.removeEventListener('waiting', onWaiting);
+			vidEl.removeEventListener('play', onPlay);
+			vidEl.removeEventListener('playing', onPlay);
+			vidEl.removeEventListener('pause', onPause);
+			vidEl.removeEventListener('progress', onProgress);
+			vidEl.removeEventListener('timeupdate', onTimeUpdate);
+			vidEl.removeEventListener('ended', onEnd);
 			document.removeEventListener('fullscreenchange', onFullscreenChange);
 		};
-	}, []);
+	}, [isPlay, isWaiting]);
 
-	const togglePlay = async () => {
+	const handlePlayPause = () => {
+		if (!vidRef?.current) return;
 		if (!removeThumbnail) setRemoveThumbnail(true);
 		setPlay((prev) => !prev);
 		const video = vidRef?.current;
 		// console.log(video?.paused || video?.ended)
 		if (video?.paused || video?.ended) {
-			await video.play();
+			video.play();
 		} else {
 			video?.pause();
 		}
 	};
 
-	const updateSeekBar = (e: InputType) => {
-		const video = vidRef?.current;
+	const handleSeekPosition = (pos: number) => {
+		if (!vidRef.current) return;
+		if (pos < 0 || pos > 1) return;
 
-		if (video) {
-			const selectDuration = +e.target.value || 0;
-			setTimeElapsed(selectDuration);
-			video.currentTime = +selectDuration;
-		}
+		const durationMs = vidRef.current.duration * 1000 || 0;
+
+		const newElapsedMs = durationMs * pos;
+		const newTimeSec = newElapsedMs / 1000;
+		vidRef.current.currentTime = newTimeSec;
 	};
 
 	const updateVolumeBar = (e: InputType) => {
@@ -167,7 +205,10 @@ const usePlayer = () => {
 		//Refs
 		parentRef,
 		vidRef,
+		progressRef,
+		bufferRef,
 		// States
+		isWaiting,
 		removeThumbnail,
 		isPlay,
 		isMuted,
@@ -177,8 +218,8 @@ const usePlayer = () => {
 		isFullScreen,
 		settings,
 		// Handlers
-		togglePlay,
-		updateSeekBar,
+		handlePlayPause,
+		handleSeekPosition,
 		updateVolumeBar,
 		toggleMute,
 		toggleFullScreen,

@@ -3,6 +3,7 @@ import defaultThumbnail from '../../assets/demo.jpg';
 import { BASE_URL } from '../../libs/axios';
 import usePlayer from './hooks/usePlayer';
 import VideoController from './partials/VideoController';
+import VideoLoading from './partials/VideoLoading';
 
 type Props = {
 	source: string;
@@ -13,6 +14,9 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 	const {
 		parentRef,
 		vidRef,
+		progressRef,
+		bufferRef,
+		isWaiting,
 		removeThumbnail,
 		isPlay,
 		isMuted,
@@ -22,8 +26,8 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 		isFullScreen,
 		settings,
 		setSettings,
-		togglePlay,
-		updateSeekBar,
+		handlePlayPause,
+		handleSeekPosition,
 		updateVolumeBar,
 		toggleMute,
 		toggleFullScreen,
@@ -35,6 +39,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 			className='w-full relative group/video-player-item rounded overflow-hidden'
 			ref={parentRef}
 		>
+			{isWaiting && <VideoLoading />}
 			{!removeThumbnail && (
 				<div
 					className='video-thumb object-fill'
@@ -45,7 +50,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 			<button
 				type='button'
 				className='absolute inset-0 bg-transparent outline-none grid place-content-center z-10 cursor-default'
-				onClick={togglePlay}
+				onClick={handlePlayPause}
 			>
 				<div
 					className={`px-10 py-5 rounded-2xl grid place-content-center bg-indigo-600/50 hover:bg-indigo-600/70 cursor-pointer ${
@@ -57,6 +62,8 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 			</button>
 
 			<VideoController
+				progressRef={progressRef}
+				bufferRef={bufferRef}
 				isPlay={isPlay}
 				isMuted={isMuted}
 				duration={duration}
@@ -66,9 +73,9 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				settings={settings}
 				handleSettings={setSettings}
 				handlePlaybackSeed={handlePlaybackSeed}
-				togglePlay={togglePlay}
+				togglePlay={handlePlayPause}
 				toggleMute={toggleMute}
-				updateSeekBar={updateSeekBar}
+				handleSeekPosition={handleSeekPosition}
 				updateVolumeBar={updateVolumeBar}
 				toggleFullScreen={toggleFullScreen}
 			/>
