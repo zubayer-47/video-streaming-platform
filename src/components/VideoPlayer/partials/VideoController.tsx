@@ -4,7 +4,6 @@ import {
 	FiMinimize,
 	FiPause,
 	FiPlay,
-	// FiPlayCircle,
 	FiSettings,
 	FiVolume1,
 	FiVolume2,
