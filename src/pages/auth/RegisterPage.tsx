@@ -1,24 +1,26 @@
-import { isAxiosError } from "axios";
 import { FC, useState } from "react";
 import Button from "../../components/Buttons/Button";
 import Input, { PasswordInput } from "../../components/Inputs/Input";
-import useModal from "../../hooks/useModal";
+import useAuth from "../../hooks/useAuth";
 import { BooleanSetStateType, FormHandler } from "../../types/custom";
 
-type RegisterCredentials = {
-    username: string | null;
-    password: string | null;
-    email: string | null;
-    confirmPassword: string | null;
-    error: string | null;
-    loading: boolean;
+type FormStateType = {
+    credentials: {
+        fullname: string | null;
+        username: string | null;
+        password: string | null;
+        email: string | null;
+        confirmPassword: string | null;
+        error: string | null;
+    },
+    errors: RegisterErrors;
 }
 
 type RegisterErrors = {
+    fullname: string | null;
     username: string | null;
     password: string | null;
     email: string | null;
-    confirmPassword: string | null;
     commonError: string | null;
 }
 
@@ -27,62 +29,48 @@ type Props = {
 }
 
 const RegisterPage: FC<Props> = ({ setIsLogin }) => {
-    const modalContext = useModal();
-    const [registerCredentials, setRegisterCredentials] = useState<RegisterCredentials>({
-        username: null,
-        password: null,
-        confirmPassword: null,
-        email: null,
-        error: null,
-        loading: false
-    });
-    const [registerErrors, setRegisterErrors] = useState<RegisterErrors>({
-        username: null,
-        password: null,
-        confirmPassword: null,
-        email: null,
-        commonError: null,
+    const { state, register } = useAuth();
+    const [form, setForm] = useState<FormStateType>({
+        credentials: {
+            fullname: null,
+            username: null,
+            password: null,
+            confirmPassword: null,
+            email: null,
+            error: null,
+        },
+        errors: {
+            fullname: null,
+            username: null,
+            password: null,
+            email: null,
+            commonError: null,
+        }
     });
 
     const onSubmit: FormHandler = async (e) => {
         e.preventDefault();
+        const { email, fullname, password, username, confirmPassword } = form.credentials;
 
-        setRegisterCredentials(prev => ({
-            ...prev,
-            loading: true
-        }))
+        if (confirmPassword !== password) {
 
-        try {
-            setTimeout(() => {
-                setRegisterCredentials(prev => ({
-                    ...prev,
-                    error: null,
-                    loading: false,
-                    username: "Zubayer",
-                    password: "zubayer"
-                }))
-            }, 2000);
-        } catch (error) {
-            console.error(error)
-            if (isAxiosError(error)) {
-                const message = error.response?.data
-
-                console.log(message, error.response);
-
-                setRegisterErrors(prev => ({
-                    ...prev,
-                    commonError: message
-                }))
-            }
-
-            setRegisterCredentials(prev => ({
+            setForm(prev => ({
                 ...prev,
-                loading: false,
-                error: "Something Went Wrong!"
-            }))
+                errors: {
+                    ...prev.errors,
+                    password: "Password Not Matched"
+                }
+            }));
+
+            return;
+        }
+
+        if (email && fullname && password && username) {
+            register({ email, fullname, password, username })
         }
 
     }
+    const { email, fullname, password, username, confirmPassword } = form.credentials;
 
     return (
         <div className="h-fit max-w-102 mx-2 my-auto md:m-auto shadow-xl bg-white p-7 rounded-xl">
@@ -92,70 +80,100 @@ const RegisterPage: FC<Props> = ({ setIsLogin }) => {
                     <p className="text-sm text-gray-500">Hey, Enter Your Details to Register Account</p>
                 </div>
 
-                {!registerErrors.commonError ? null : (
-                    <p className='ml-2 text-center text-sm text-red-400 tracking-wide'>{registerErrors.commonError}</p>
+                {!state.authError ? null : (
+                    <p className='ml-2 text-center text-sm text-red-400 tracking-wide'>{state.authError?.message}</p>
                 )}
                 <form onSubmit={onSubmit} className="mt-5 space-y-2">
                     <Input
-                        name="username"
-                        handler={(e) => setRegisterCredentials(prev => ({
+                        name="fullname"
+                        handler={(e) => setForm(prev => ({
                             ...prev,
-                            username: e.target.value
+                            credentials: {
+                                ...prev.credentials,
+                                fullname: e.target.value
+                            }
                         }))}
-                        value={registerCredentials.username}
+                        value={fullname}
+                        hint="Full Name"
+                        showLabel
+                        isLoading={state.authLoading}
+                        error={form.errors.fullname}
+                        isRequired
+                    />
+                    <Input
+                        name="username"
+                        handler={(e) => setForm(prev => ({
+                            ...prev,
+                            credentials: {
+                                ...prev.credentials,
+                                username: e.target.value
+                            }
+                        }))}
+                        value={username}
                         hint="Username"
                         showLabel
-                        isLoading={registerCredentials.loading}
-                        error={registerErrors.username}
+                        isLoading={state.authLoading}
+                        error={form.errors.username}
                         isRequired
                     />
                     <Input
                         type="email"
                         name="email"
-                        handler={(e) => setRegisterCredentials(prev => ({
+                        handler={(e) => setForm(prev => ({
                             ...prev,
-                            email: e.target.value
+                            credentials: {
+                                ...prev.credentials,
+                                email: e.target.value
+                            }
                         }))}
-                        value={registerCredentials.email}
+                        value={email}
                         hint="Email"
                         showLabel
-                        isLoading={registerCredentials.loading}
-                        error={registerErrors.email}
+                        isLoading={state.authLoading}
+                        error={form.errors.email}
                         isRequired
                     />
 
                     <PasswordInput
                         name="password"
-                        handler={(e) => setRegisterCredentials(prev => ({
+                        handler={(e) => setForm(prev => ({
                             ...prev,
-                            password: e.target.value
+                            credentials: {
+                                ...prev.credentials,
+                                password: e.target.value
+                            }
                         }))}
-                        value={registerCredentials.password}
+                        value={password}
                         hint="Password"
                         showLabel
-                        isLoading={registerCredentials.loading}
-                        error={registerErrors.password}
+                        isLoading={state.authLoading}
+                        error={form.errors.password}
                         isRequired
+                        notMatched={!!confirmPassword && password !== confirmPassword}
                     />
                     <PasswordInput
                         name="confirmPassword"
-                        handler={(e) => setRegisterCredentials(prev => ({
+                        handler={(e) => setForm(prev => ({
                             ...prev,
-                            confirmPassword: e.target.value
+                            credentials: {
+                                ...prev.credentials,
+                                confirmPassword: e.target.value
+                            }
                         }))}
-                        value={registerCredentials.confirmPassword}
+                        value={confirmPassword}
                         hint="Confirm Password"
                         showLabel
-                        isLoading={registerCredentials.loading}
-                        error={registerErrors.confirmPassword}
+                        isLoading={state.authLoading}
+                        error={form.errors.password}
                         isRequired
+                        notMatched={!!confirmPassword && password !== confirmPassword}
                     />
 
                     <br />
                     <Button
                         title="Register"
                         type="submit"
-                        isLoading={registerCredentials.loading}
+                        isLoading={state.authLoading}
                     />
                 </form>
 
