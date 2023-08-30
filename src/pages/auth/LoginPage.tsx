@@ -1,16 +1,20 @@
 import { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Buttons/Button';
 import Input, { PasswordInput } from '../../components/Inputs/Input';
 import useAuth from '../../hooks/useAuth';
+import useModal from '../../hooks/useModal';
 import { BooleanSetStateType, FormHandler, InputType } from '../../types/custom';
 
 interface Props {
     setIsForgetPass: BooleanSetStateType;
-    setIsLogin: BooleanSetStateType;
+    setIsLogin?: BooleanSetStateType;
 }
 
 const LoginPage: FC<Props> = ({ setIsForgetPass, setIsLogin }) => {
     const { state, login } = useAuth();
+    const modalContext = useModal();
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         username: '',
         password: '',
@@ -79,7 +83,15 @@ const LoginPage: FC<Props> = ({ setIsForgetPass, setIsLogin }) => {
                 <span className='text-gray-600 font-light'>Don't Have an Account?</span>{' '}
                 <button
                     type='button'
-                    onClick={() => setIsLogin(false)}
+                    onClick={() => {
+                        if (typeof setIsLogin !== 'function') {
+                            modalContext.updateModal(false);
+                            navigate('/auth');
+                            return;
+                        }
+
+                        setIsLogin(false);
+                    }}
                     className='font-bold'
                 >
                     Register Now
