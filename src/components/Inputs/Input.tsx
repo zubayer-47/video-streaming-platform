@@ -12,6 +12,7 @@ type InputProp = {
 	isRequired?: boolean;
 	showLabel?: boolean;
 	error?: string | null;
+	notMatched?: boolean;
 };
 
 const Input = ({
@@ -64,6 +65,7 @@ export const PasswordInput = ({
 	showLabel = false,
 	isRequired,
 	error = '',
+	notMatched,
 }: InputProp) => {
 	const [show, setShow] = useState(false);
 
@@ -79,11 +81,11 @@ export const PasswordInput = ({
 					{hint}
 				</label>
 			)}
-			<div className='flex items-stretch border border-indigo-200 rounded-lg'>
+			<div className={`flex items-stretch border rounded-lg ${!notMatched ? "border-indigo-200" : "border-red-500"}`}>
 				<input
 					type={show ? 'text' : 'password'}
 					name={name}
-					className='flex-1 p-3 bg-transparent outline-none tracking-wider'
+					className={`flex-1 p-3 bg-transparent outline-none tracking-wider`}
 					placeholder={hint}
 					value={value || ''}
 					onChange={handler}
