@@ -1,4 +1,4 @@
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import PageLayout from './components/Layouts/PageLayout';
 import CreateChannelModal from './components/Modals/CreateChannelModal/CreateChannelModal';
@@ -29,7 +29,7 @@ function App() {
 				<Route path='/' element={<Outlet />}>
 					<Route index element={<VideoDashboard />} />
 					<Route path='auth' element={<Auth />} />
-					<Route path='watch/:videoID' element={<VideoProfile />} />
+					<Route path='watch/*' element={<VideoProfile />} />
 					<Route
 						path=':channelName'
 						element={<ChannelProfile />}
@@ -47,7 +47,8 @@ function App() {
           <Route path='register' element={<RegisterPage />} />
         </Route> */}
 
-					<Route path='*' element={<NotFound />} />
+					<Route path='404' element={<NotFound />} />
+					<Route path='*' element={<Navigate to='404' />} />
 				</Route>
 			</Routes>
 		</PageLayout>
