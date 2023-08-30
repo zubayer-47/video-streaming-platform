@@ -1,6 +1,7 @@
 import { Outlet, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import PageLayout from './components/Layouts/PageLayout';
+import CreateChannelModal from './components/Modals/CreateChannelModal/CreateChannelModal';
 import useAuth from './hooks/useAuth';
 import useModal from './hooks/useModal';
 import Auth from './pages/auth/Auth';
@@ -22,6 +23,8 @@ function App() {
 		<PageLayout>
 			<Header />
 			{!userContext.state.isLoggedIn && modalContext.state.isVisibleAuthModal ? <AuthModal /> : null}
+			{!modalContext.state.channel.createChannelModal ? null : <CreateChannelModal />}
+
 			<Routes>
 				<Route path='/' element={<Outlet />}>
 					<Route index element={<VideoDashboard />} />
