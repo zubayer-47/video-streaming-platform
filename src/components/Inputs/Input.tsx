@@ -31,11 +31,11 @@ const Input = ({
 			{showLabel && (
 				<label
 					htmlFor={name}
-					className='capitalize font-semibold text-sm  text-slate-600'
-				>
+					className={`capitalize font-semibold text-sm  text-slate-600 ${!isRequired ? "" : "after:content-['*'] after:text-red-500"}`}>
 					{hint}
 				</label>
-			)}
+			)
+			}
 			<input
 				type={type}
 				name={name}
@@ -47,10 +47,12 @@ const Input = ({
 				disabled={isLoading}
 				required={isRequired}
 			/>
-			{!error ? null : (
-				<p className='ml-2 text-sm text-red-400 tracking-wide'>{error}</p>
-			)}
-		</div>
+			{
+				!error ? null : (
+					<p className='ml-2 text-sm text-red-400 tracking-wide'>{error}</p>
+				)
+			}
+		</div >
 	);
 };
 
@@ -76,7 +78,7 @@ export const PasswordInput = ({
 			{showLabel && (
 				<label
 					htmlFor={name}
-					className='capitalize font-semibold text-sm  text-slate-600'
+					className={`capitalize font-semibold text-sm  text-slate-600 ${!isRequired ? "" : "after:content-['*'] after:text-red-500"}`}
 				>
 					{hint}
 				</label>
@@ -102,9 +104,11 @@ export const PasswordInput = ({
 					</button>
 				)}
 			</div>
-			{!error ? null : (
-				<p className='ml-2 text-sm text-red-400 tracking-wide'>{error}</p>
-			)}
-		</div>
+			{
+				!error ? null : (
+					<p className='ml-2 text-sm text-red-400 tracking-wide'>{error}</p>
+				)
+			}
+		</div >
 	);
 };
