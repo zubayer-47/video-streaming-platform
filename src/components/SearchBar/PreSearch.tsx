@@ -5,6 +5,7 @@ type SP = {
 	search: string;
 	isHistory?: boolean;
 };
+
 const SearchPreview = ({ search, isHistory }: SP) => {
 	return (
 		<li className='flex items-stretch hover:bg-indigo-200/50'>
