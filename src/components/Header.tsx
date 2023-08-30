@@ -10,7 +10,6 @@ import UserModal from './Modals/UserModal';
 import SearchBar from './SearchBar/SearchBar';
 
 const Header = () => {
-	const [showUserModal, setShowUserModal] = useState(false);
 	const [openedModal, setOpenedModal] = useState('');
 	const { state } = useAuth();
 	const { dispatch } = useModal();
@@ -19,6 +18,8 @@ const Header = () => {
 		setOpenedModal((prev) => (prev === 'user' ? '' : 'user'));
 	const handleNotificationModal = () =>
 		setOpenedModal((prev) => (prev === 'notification' ? '' : 'notification'));
+
+	console.log(openedModal === 'user')
 
 	return (
 		<div className='z-40 bg-indigo-50 flex flex-col justify-center px-2 md:px-10'>
@@ -74,7 +75,7 @@ const Header = () => {
 								<NotificationModal setOpen={handleNotificationModal} />
 							)}
 							{openedModal === 'user' && (
-								<UserModal isOpen={showUserModal} setOpen={setShowUserModal} />
+								<UserModal setOpenedModal={setOpenedModal} />
 							)}
 						</>
 					)}
