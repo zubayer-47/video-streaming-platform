@@ -1,14 +1,15 @@
-import React from 'react';
+import { ButtonHTMLAttributes } from 'react';
 import { FiRefreshCw } from 'react-icons/fi';
-type BtnProp = {
+
+type BtnProp = ButtonHTMLAttributes<HTMLButtonElement> & {
 	title: string;
 	handler?: () => void;
 	type?: 'button' | 'submit';
-	children?: React.ReactNode;
 	transparent?: boolean;
 	isDisabled?: boolean;
 	isLoading?: boolean;
 };
+
 const Button = ({
 	title,
 	handler,
@@ -16,19 +17,19 @@ const Button = ({
 	transparent,
 	isDisabled,
 	isLoading,
+	...props
 }: BtnProp) => {
 	return (
 		<button
 			type={type}
-			className={`px-4 p-2 rounded-lg outline-none tracking-wide ${
-				(isLoading || isDisabled) && 'opacity-60'
-			} ${
-				transparent
+			className={`px-4 p-2 rounded-lg outline-none tracking-wide ${(isLoading || isDisabled) && 'opacity-60'
+				} ${transparent
 					? 'bg-transparent text-indigo-500 hover:underline'
 					: 'bg-indigo-500 text-white'
-			}`}
+				}`}
 			onClick={handler}
 			disabled={isLoading || isDisabled}
+			{...props}
 		>
 			<span className='flex items-center'>
 				<span>{title}</span>
