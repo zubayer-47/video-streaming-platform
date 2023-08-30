@@ -9,7 +9,6 @@ interface ChannelProfileProps { }
 
 const ChannelProfile: FC<ChannelProfileProps> = () => {
     const params = useParams();
-    console.log(params)
 
     return (
         <div className='overflow-auto pb-5 h-full'>
