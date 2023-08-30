@@ -1,9 +1,7 @@
-import { isAxiosError } from 'axios';
 import { FC, useState } from 'react';
 import Button from '../../components/Buttons/Button';
 import Input, { PasswordInput } from '../../components/Inputs/Input';
 import useAuth from '../../hooks/useAuth';
-import axios from '../../libs/axios';
 import { BooleanSetStateType, FormHandler, InputType } from '../../types/custom';
 
 interface Props {
@@ -12,13 +10,10 @@ interface Props {
 }
 
 const LoginPage: FC<Props> = ({ setIsForgetPass, setIsLogin }) => {
-    const { dispatch } = useAuth();
-
+    const { state, login } = useAuth();
     const [form, setForm] = useState({
         username: '',
         password: '',
-        error: '',
-        loading: false,
     });
 
     const handleInput = (e: InputType) => {
@@ -31,46 +26,7 @@ const LoginPage: FC<Props> = ({ setIsForgetPass, setIsLogin }) => {
     const onSubmit: FormHandler = async (e) => {
         e.preventDefault();
 
-        setForm((prev) => ({
-            ...prev,
-            loading: true,
-        }));
-
-        try {
-            const res = await axios.post(
-                `/auth/signin`,
-                { username: form.username, password: form.password },
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true,
-                }
-            );
-
-            const resData = res?.data;
-
-            localStorage.setItem('access_token', resData?.token);
-            dispatch({
-                type: 'SET_AUTH',
-                payload: resData,
-            });
-        } catch (error) {
-            console.error(error);
-            if (isAxiosError(error)) {
-                const message = error.response?.data;
-
-                setForm((prev) => ({
-                    ...prev,
-                    loading: false,
-                    error: message,
-                }));
-            }
-
-            setForm((prev) => ({
-                ...prev,
-                loading: false,
-                error: 'Something Went Wrong!',
-            }));
-        }
+        login(form.username, form.password);
     };
 
     return (
@@ -82,9 +38,9 @@ const LoginPage: FC<Props> = ({ setIsForgetPass, setIsLogin }) => {
                 </p>
             </div>
 
-            {!form.error ? null : (
+            {!state.authError ? null : (
                 <p className='text-center text-sm text-red-400 tracking-wide'>
-                    {form.error}
+                    {state.authError?.message}
                 </p>
             )}
             <form onSubmit={onSubmit} className='mt-5 space-y-2'>
@@ -94,7 +50,7 @@ const LoginPage: FC<Props> = ({ setIsForgetPass, setIsLogin }) => {
                     value={form.username}
                     hint='Username'
                     showLabel
-                    isLoading={form.loading}
+                    isLoading={state.authLoading}
                     isRequired
                 />
 
@@ -104,7 +60,7 @@ const LoginPage: FC<Props> = ({ setIsForgetPass, setIsLogin }) => {
                     value={form.password}
                     hint='Password'
                     showLabel
-                    isLoading={form.loading}
+                    isLoading={state.authLoading}
                     isRequired
                 />
                 <button
@@ -116,7 +72,7 @@ const LoginPage: FC<Props> = ({ setIsForgetPass, setIsLogin }) => {
                 </button>
 
                 <br />
-                <Button title='Login Account' type='submit' isLoading={form.loading} />
+                <Button title='Login Account' type='submit' isLoading={state.authLoading} />
             </form>
 
             <p className='text-center mt-5'>
