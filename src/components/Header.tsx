@@ -19,8 +19,6 @@ const Header = () => {
 	const handleNotificationModal = () =>
 		setOpenedModal((prev) => (prev === 'notification' ? '' : 'notification'));
 
-	console.log(openedModal === 'user')
-
 	return (
 		<div className='z-40 bg-indigo-50 flex flex-col justify-center px-2 md:px-10'>
 			<div className='flex items-center justify-between gap-5 py-2.5'>
