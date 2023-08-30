@@ -214,7 +214,7 @@ const UploadVideo = () => {
 							height={'100%'}
 							crossOrigin='anonymous'
 							preload='auto'
-							className='w-full h-full'
+							className='w-full h-full object-cover'
 							controls={true}
 						>
 							<source src={uploadedContent?.contentPreview} type='video/mp4' />
