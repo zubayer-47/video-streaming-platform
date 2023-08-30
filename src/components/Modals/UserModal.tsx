@@ -2,18 +2,23 @@ import { FC } from "react";
 import { FaCircleUser } from "react-icons/fa6";
 import { FiLogOut, FiSettings, FiUser } from "react-icons/fi";
 import useAuth from "../../hooks/useAuth";
-import { BooleanSetStateType } from "../../types/custom";
+import useModal from "../../hooks/useModal";
 
 type UserModalProps = {
-    isOpen: boolean;
-    setOpen: BooleanSetStateType
+    setOpenedModal: React.Dispatch<React.SetStateAction<string>>
 }
 
-const UserModal: FC<UserModalProps> = ({ setOpen }) => {
+const UserModal: FC<UserModalProps> = ({ setOpenedModal }) => {
     const userContext = useAuth();
+    const modalContext = useModal();
+
     const onSignOut = () => {
         userContext.logout();
-        setOpen(false)
+        setOpenedModal('')
+    }
+
+    const onChannelCreateModal = () => {
+        modalContext.dispatch({ type: "UPDATE_CHANNEL_CREATE_MODAL", payload: true });
     }
 
     return (
@@ -27,7 +32,7 @@ const UserModal: FC<UserModalProps> = ({ setOpen }) => {
             </div>
 
             <div className="border-b border-gray-300 p-4 space-y-5">
-                <button type="button" className="flex  items-center gap-4"> <FiUser className="w-6 h-6" /> <span>Your Channel</span></button>
+                <button onClick={onChannelCreateModal} type="button" className="flex  items-center gap-4"> <FiUser className="w-6 h-6" /> <span>Create Channel</span></button>
                 <button onClick={onSignOut} type="button" className="flex  items-center gap-4"> <FiLogOut className="w-6 h-6" /> <span>Sign out</span></button>
             </div>
             <div className="border-b border-gray-300 p-4 space-y-5">

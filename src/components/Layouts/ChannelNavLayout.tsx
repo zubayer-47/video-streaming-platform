@@ -9,4 +9,5 @@ const ChannelNavLayout: FC<ChannelNavLayoutProps> = ({ children }) => {
         {children}
     </div>
 }
-export default ChannelNavLayout
+
+export default ChannelNavLayout;

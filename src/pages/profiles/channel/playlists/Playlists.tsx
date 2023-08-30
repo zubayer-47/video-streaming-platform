@@ -1,11 +1,9 @@
-import { FC } from 'react';
 import { MdSort } from 'react-icons/md';
+import { v4 as uuidv4 } from 'uuid';
 import ChannelNavLayout from '../../../../components/Layouts/ChannelNavLayout';
 import PlaylistThumbnail from './partials/PlaylistThumbnail';
 
-interface PlaylistsProps { }
-
-const Playlists: FC<PlaylistsProps> = () => {
+const Playlists = () => {
     return <ChannelNavLayout>
         <div className="flex justify-between items-center mb-5">
             <h1 className='font-medium text-gray-800'>Created Playlists</h1>
@@ -16,7 +14,7 @@ const Playlists: FC<PlaylistsProps> = () => {
         </div>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2'>
             {new Array(20).fill(false).map(() => (
-                <PlaylistThumbnail />
+                <PlaylistThumbnail key={uuidv4()} />
             ))}
         </div>
     </ChannelNavLayout>

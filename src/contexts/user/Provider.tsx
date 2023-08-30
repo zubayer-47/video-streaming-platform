@@ -22,7 +22,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 		if (token && !state.user) {
 			(async () => {
 				try {
-					const user = await axiosPrivate.get('/ur');
+					const user = await axiosPrivate.get('/users');
 					const resData = user?.data;
 					dispatch({
 						type: 'SET_AUTH',

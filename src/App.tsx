@@ -1,9 +1,10 @@
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import PageLayout from './components/Layouts/PageLayout';
+import CreateChannelModal from './components/Modals/CreateChannelModal/CreateChannelModal';
 import useAuth from './hooks/useAuth';
 import useModal from './hooks/useModal';
-import Register from './pages/auth/Register';
+import Auth from './pages/auth/Auth';
 import AuthModal from './pages/auth/authModals/AuthModal';
 import NotFound from './pages/notfound/NotFound';
 import ChannelProfile from './pages/profiles/channel/ChannelProfile';
@@ -22,11 +23,13 @@ function App() {
 		<PageLayout>
 			<Header />
 			{!userContext.state.isLoggedIn && modalContext.state.isVisibleAuthModal ? <AuthModal /> : null}
+			{!modalContext.state.channel.createChannelModal ? null : <CreateChannelModal />}
+
 			<Routes>
 				<Route path='/' element={<Outlet />}>
 					<Route index element={<VideoDashboard />} />
-					<Route path='register' element={<Register />} />
-					<Route path='watch/:videoID' element={<VideoProfile />} />
+					<Route path='auth' element={<Auth />} />
+					<Route path='watch/*' element={<VideoProfile />} />
 					<Route
 						path=':channelName'
 						element={<ChannelProfile />}
@@ -44,7 +47,8 @@ function App() {
           <Route path='register' element={<RegisterPage />} />
         </Route> */}
 
-					<Route path='*' element={<NotFound />} />
+					<Route path='404' element={<NotFound />} />
+					<Route path='*' element={<Navigate to='404' />} />
 				</Route>
 			</Routes>
 		</PageLayout>

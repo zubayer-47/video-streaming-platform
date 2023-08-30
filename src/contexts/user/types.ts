@@ -5,22 +5,32 @@ export enum UserRight {
 }
 
 interface User {
-  id: number;
-  fullname: string;
+  id: string;
   username: string;
-  rights: UserRight;
-  active?: boolean;
-  unable?: boolean;
+  fullname: string;
+  email: string;
+  token: string;
+  avater: string | null;
 }
 
-type UserPartial = {
+// type UserPartial = {
+//   fullname?: string;
+//   rights?: UserRight;
+//   active?: boolean;
+//   unable?: boolean;
+// };
+
+type AuthErrorType = {
+  message?: string;
+
   fullname?: string;
-  rights?: UserRight;
-  active?: boolean;
-  unable?: boolean;
+  username?: string;
+  email?: string;
+  password?: string;
 };
 
 export interface UserStateType {
+  authError: AuthErrorType | null;
   authLoading: boolean;
   isLoggedIn: boolean;
   user: User | null;
@@ -30,6 +40,10 @@ export interface UserStateType {
 type AUTH_LOADING = {
   type: "AUTH_LOADING";
   payload?: boolean;
+};
+type AUTH_ERROR = {
+  type: "AUTH_ERROR";
+  payload: AuthErrorType | null;
 };
 type SET_AUTH = {
   type: "SET_AUTH";
@@ -44,4 +58,9 @@ type UPDATE_USER = {
   // payload: Partial<UserPartial>;
 };
 
-export type UserActionType = AUTH_LOADING | SET_AUTH | REM_AUTH | UPDATE_USER;
+export type UserActionType =
+  | AUTH_ERROR
+  | AUTH_LOADING
+  | SET_AUTH
+  | REM_AUTH
+  | UPDATE_USER;

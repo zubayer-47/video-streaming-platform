@@ -1,10 +1,9 @@
 import { isAxiosError } from "axios";
 import { FC, useState } from "react";
 import { FiCheck, FiChevronLeft } from "react-icons/fi";
-import Button from "../../../components/Buttons/Button";
-import Input from "../../../components/Inputs/Input";
-import useModal from "../../../hooks/useModal";
-import { BooleanSetStateType, FormHandler } from "../../../types/custom";
+import Button from "../../components/Buttons/Button";
+import Input from "../../components/Inputs/Input";
+import { BooleanSetStateType, FormHandler } from "../../types/custom";
 
 type ForgetStateType = {
     email: string | null;
@@ -13,13 +12,12 @@ type ForgetStateType = {
     loading: boolean;
 }
 
-interface ForgetPassModalProps {
+interface Props {
     setIsForgetPass: BooleanSetStateType
 }
 
-const ForgetPassModal: FC<ForgetPassModalProps> = ({ setIsForgetPass }) => {
+const ForgetPassPage: FC<Props> = ({ setIsForgetPass }) => {
     const [forgetState, setForgetState] = useState<ForgetStateType>({ email: "", loading: false, error: "", isSuccess: false });
-    const modalContext = useModal();
 
     const onSubmit: FormHandler = async (e) => {
         e.preventDefault();
@@ -61,7 +59,7 @@ const ForgetPassModal: FC<ForgetPassModalProps> = ({ setIsForgetPass }) => {
     }
 
     return (
-        <div className="max-w-96">
+        <div className="h-fit max-w-96 mx-2 my-auto md:m-auto shadow-xl bg-white p-7 rounded-xl">
             <button onClick={() => setIsForgetPass(false)} type="button" className="-ml-2 flex items-center text-indigo-600 hover:text-indigo-600/60">
                 <FiChevronLeft className="w-7 h-7" />
                 <span className="text-lg font-bold">Login</span>
@@ -110,4 +108,4 @@ const ForgetPassModal: FC<ForgetPassModalProps> = ({ setIsForgetPass }) => {
         </div>
     )
 }
-export default ForgetPassModal
+export default ForgetPassPage

@@ -14,7 +14,6 @@ export type ActionResult<R, I = undefined> = {
 }
 
 export default function useAsyncAction<R, I = undefined>(config: ActionProps<R, I>): ActionResult<R, I> {
-
     const [isExecuting, setIsExecuting] = useState<boolean>(false)
     const [error, setError] = useState<any>();
     const [result, setResult] = useState<R>();

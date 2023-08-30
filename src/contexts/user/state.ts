@@ -1,7 +1,8 @@
-import { UserStateType } from './types';
+import { UserStateType } from "./types";
 
 export const initUserState: UserStateType = {
-	authLoading: false,
-	isLoggedIn: false,
-	user: null,
+  authError: null,
+  authLoading: false,
+  isLoggedIn: false,
+  user: null,
 };

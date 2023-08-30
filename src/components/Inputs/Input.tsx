@@ -12,6 +12,7 @@ type InputProp = {
 	isRequired?: boolean;
 	showLabel?: boolean;
 	error?: string | null;
+	notMatched?: boolean;
 };
 
 const Input = ({
@@ -30,11 +31,11 @@ const Input = ({
 			{showLabel && (
 				<label
 					htmlFor={name}
-					className='capitalize font-semibold text-sm  text-slate-600'
-				>
+					className={`capitalize font-semibold text-sm  text-slate-600 ${!isRequired ? "" : "after:content-['*'] after:text-red-500"}`}>
 					{hint}
 				</label>
-			)}
+			)
+			}
 			<input
 				type={type}
 				name={name}
@@ -46,10 +47,12 @@ const Input = ({
 				disabled={isLoading}
 				required={isRequired}
 			/>
-			{!error ? null : (
-				<p className='ml-2 text-sm text-red-400 tracking-wide'>{error}</p>
-			)}
-		</div>
+			{
+				!error ? null : (
+					<p className='ml-2 text-sm text-red-400 tracking-wide'>{error}</p>
+				)
+			}
+		</div >
 	);
 };
 
@@ -64,6 +67,7 @@ export const PasswordInput = ({
 	showLabel = false,
 	isRequired,
 	error = '',
+	notMatched,
 }: InputProp) => {
 	const [show, setShow] = useState(false);
 
@@ -74,16 +78,16 @@ export const PasswordInput = ({
 			{showLabel && (
 				<label
 					htmlFor={name}
-					className='capitalize font-semibold text-sm  text-slate-600'
+					className={`capitalize font-semibold text-sm  text-slate-600 ${!isRequired ? "" : "after:content-['*'] after:text-red-500"}`}
 				>
 					{hint}
 				</label>
 			)}
-			<div className='flex items-stretch border border-indigo-200 rounded-lg'>
+			<div className={`flex items-stretch border rounded-lg ${!notMatched ? "border-indigo-200" : "border-red-500"}`}>
 				<input
 					type={show ? 'text' : 'password'}
 					name={name}
-					className='flex-1 p-3 bg-transparent outline-none tracking-wider'
+					className={`flex-1 p-3 bg-transparent outline-none tracking-wider`}
 					placeholder={hint}
 					value={value || ''}
 					onChange={handler}
@@ -100,9 +104,11 @@ export const PasswordInput = ({
 					</button>
 				)}
 			</div>
-			{!error ? null : (
-				<p className='ml-2 text-sm text-red-400 tracking-wide'>{error}</p>
-			)}
-		</div>
+			{
+				!error ? null : (
+					<p className='ml-2 text-sm text-red-400 tracking-wide'>{error}</p>
+				)
+			}
+		</div >
 	);
 };
