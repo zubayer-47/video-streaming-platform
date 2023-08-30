@@ -1,11 +1,9 @@
-import { isAxiosError } from 'axios';
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../components/Buttons/Button';
 import Input, { PasswordInput } from '../../../components/Inputs/Input';
 import useAuth from '../../../hooks/useAuth';
 import useModal from '../../../hooks/useModal';
-import axios from '../../../libs/axios';
 import {
 	BooleanSetStateType,
 	FormHandler,
@@ -18,7 +16,7 @@ interface LoginModalProps {
 
 const LoginModal: FC<LoginModalProps> = ({ setIsForgetPass }) => {
 	const navigation = useNavigate();
-	const { dispatch } = useAuth();
+	const { state, login } = useAuth();
 	const modalContext = useModal();
 
 	const [form, setForm] = useState({
@@ -38,46 +36,7 @@ const LoginModal: FC<LoginModalProps> = ({ setIsForgetPass }) => {
 	const onSubmit: FormHandler = async (e) => {
 		e.preventDefault();
 
-		setForm((prev) => ({
-			...prev,
-			loading: true,
-		}));
-
-		try {
-			const res = await axios.post(
-				`/auth/signin`,
-				{ username: form.username, password: form.password },
-				{
-					headers: { 'Content-Type': 'application/json' },
-					withCredentials: true,
-				}
-			);
-
-			const resData = res?.data;
-
-			localStorage.setItem('access_token', resData?.token);
-			dispatch({
-				type: 'SET_AUTH',
-				payload: resData,
-			});
-		} catch (error) {
-			console.error(error);
-			if (isAxiosError(error)) {
-				const message = error.response?.data;
-
-				setForm((prev) => ({
-					...prev,
-					loading: false,
-					error: message,
-				}));
-			}
-
-			setForm((prev) => ({
-				...prev,
-				loading: false,
-				error: 'Something Went Wrong!',
-			}));
-		}
+		login(form.username, form.password);
 	};
 
 	return (
@@ -89,9 +48,9 @@ const LoginModal: FC<LoginModalProps> = ({ setIsForgetPass }) => {
 				</p>
 			</div>
 
-			{!form.error ? null : (
+			{!state.authError ? null : (
 				<p className='text-center text-sm text-red-400 tracking-wide'>
-					{form.error}
+					{state.authError.message}
 				</p>
 			)}
 			<form onSubmit={onSubmit} className='mt-5 space-y-2'>
@@ -101,7 +60,7 @@ const LoginModal: FC<LoginModalProps> = ({ setIsForgetPass }) => {
 					value={form.username}
 					hint='Username'
 					showLabel
-					isLoading={form.loading}
+					isLoading={state.authLoading}
 					isRequired
 				/>
 
@@ -111,7 +70,7 @@ const LoginModal: FC<LoginModalProps> = ({ setIsForgetPass }) => {
 					value={form.password}
 					hint='Password'
 					showLabel
-					isLoading={form.loading}
+					isLoading={state.authLoading}
 					isRequired
 				/>
 				<button
@@ -123,7 +82,7 @@ const LoginModal: FC<LoginModalProps> = ({ setIsForgetPass }) => {
 				</button>
 
 				<br />
-				<Button title='Login Account' type='submit' isLoading={form.loading} />
+				<Button title='Login Account' type='submit' isLoading={state.authLoading} />
 			</form>
 
 			<p className='text-center mt-5'>
