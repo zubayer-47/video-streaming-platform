@@ -2,18 +2,17 @@ import { FC } from "react";
 import { FaCircleUser } from "react-icons/fa6";
 import { FiLogOut, FiSettings, FiUser } from "react-icons/fi";
 import useAuth from "../../hooks/useAuth";
-import { BooleanSetStateType } from "../../types/custom";
 
 type UserModalProps = {
-    isOpen: boolean;
-    setOpen: BooleanSetStateType
+    setOpenedModal: React.Dispatch<React.SetStateAction<string>>
 }
 
-const UserModal: FC<UserModalProps> = ({ setOpen }) => {
+const UserModal: FC<UserModalProps> = ({ setOpenedModal }) => {
     const userContext = useAuth();
+
     const onSignOut = () => {
         userContext.logout();
-        setOpen(false)
+        setOpenedModal('')
     }
 
     return (
