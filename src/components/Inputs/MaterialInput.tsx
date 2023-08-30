@@ -81,7 +81,7 @@ export const MaterialTextArea = ({
 			{title && (
 				<label
 					htmlFor={name}
-					className='inline-block uppercase ml-1 mb-1 font-bold text-xs text-slate-500'
+					className={`inline-block uppercase ml-1 mb-1 font-bold text-xs text-slate-600 ${!isRequired ? "" : "after:content-['*'] after:text-red-500"}`}
 				>
 					{title}
 				</label>
