@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import ModalBox from '../../../components/ModalViews/ModalBox';
 import useModal from '../../../hooks/useModal';
-import ForgetPassModal from './ForgetPassModal';
-import LoginModal from './LoginModal';
+import ForgetPassPage from '../ForgetPassPage';
+import LoginPage from '../LoginPage';
 
 const AuthModal = () => {
     const [isForgetPass, setIsForgetPass] = useState(false);
@@ -13,13 +13,11 @@ const AuthModal = () => {
             classes="h-fit max-w-96 m-auto"
             overlyBg="bg-black/20"
         >
-            <div className="bg-white p-7 w-full rounded-xl">
-                {!isForgetPass ? (
-                    <LoginModal setIsForgetPass={setIsForgetPass} />
-                ) : (
-                    <ForgetPassModal setIsForgetPass={setIsForgetPass} />
-                )}
-            </div>
+            {!isForgetPass ? (
+                <LoginPage setIsForgetPass={setIsForgetPass} />
+            ) : (
+                <ForgetPassPage setIsForgetPass={setIsForgetPass} />
+            )}
         </ModalBox>
     )
 }
