@@ -10,6 +10,22 @@ const modalReducer = (
         ...state,
         isVisibleAuthModal: action.payload,
       };
+    case "UPDATE_CHANNEL_CREATE_MODAL":
+      return {
+        ...state,
+        channel: {
+          ...state.channel,
+          createChannelModal: action.payload,
+        },
+      };
+    case "ADD_CHANNEL_DATA":
+      return {
+        ...state,
+        channel: {
+          ...state.channel,
+          name: action.payload,
+        },
+      };
     default:
       return state;
   }
