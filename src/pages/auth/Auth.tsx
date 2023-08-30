@@ -14,7 +14,6 @@ const Auth: FC<AuthProps> = () => {
 
     return (
         <>
-
             {isLoggedIn && <Navigate to='/' />}
 
             {!isLogin ? (
