@@ -15,7 +15,7 @@ export default function RelatedContent() {
                     key={uuidv4()}
                     thumbnail={demoImg}
                     views='7.6M'
-                    timetamp='05:44'
+                    timeStamp='05:44'
                     title='LEADERSHIP LAB: The Craft of Writing Effectively UChicago Social Sciences The Craft of Writing Effectivel'
                     channelName={'Standford Graduate School of Business'}
                     chnLink='/channel123'

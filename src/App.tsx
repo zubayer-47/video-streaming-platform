@@ -29,9 +29,9 @@ function App() {
 				<Route path='/' element={<Outlet />}>
 					<Route index element={<VideoDashboard />} />
 					<Route path='auth' element={<Auth />} />
-					<Route path='watch/*' element={<VideoProfile />} />
+					<Route path='watch/:videoID' element={<VideoProfile />} />
 					<Route
-						path=':channelName'
+						path='ch/:channelName'
 						element={<ChannelProfile />}
 					>
 						<Route index element={<Featured />} />

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { FiChevronRight, FiPlay } from 'react-icons/fi';
 import defaultThumbnail from '../../assets/demo.jpg';
 import { BASE_URL } from '../../libs/axios';
@@ -12,11 +11,13 @@ type Props = {
 };
 
 const VideoPlayer = ({ source, thumbnail }: Props) => {
+	// const [show, setShow] = useState(false);
 	const {
 		parentRef,
 		vidRef,
 		progressRef,
 		bufferRef,
+		contextRef,
 		isWaiting,
 		removeThumbnail,
 		isPlay,
@@ -27,6 +28,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 		isFullScreen,
 		settings,
 		setSettings,
+		handleContextMenu,
 		handlePlayPause,
 		handleSeekPosition,
 		updateVolumeBar,
@@ -34,40 +36,13 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 		toggleFullScreen,
 		handlePlaybackSeed,
 	} = usePlayer();
-	const [show, setShow] = useState(false);
-	const [points, setPoints] = useState({ x: 0, y: 0 });
-
-	useEffect(() => {
-		const handleShow = () => {
-			console.log('handleshow called')
-			setShow(false);
-		}
-
-		window.addEventListener('click', handleShow);
-
-		return () => {
-			window.removeEventListener('click', handleShow)
-		}
-	}, []);
-
-	console.log(points)
-
-
 
 	return (
 		<>
 			<div
 				className='w-full relative group/video-player-item rounded overflow-hidden'
 				ref={parentRef}
-				onContextMenu={e => {
-					e.preventDefault();
-
-					setPoints(({
-						x: e.pageX,
-						y: e.pageY
-					}))
-					setShow(prev => !prev);
-				}}
+				onContextMenu={handleContextMenu}
 			>
 				{isWaiting && <VideoLoading />}
 				{!removeThumbnail && (
@@ -140,78 +115,77 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 					/>
 				</video>
 			</div>
-			{show && (
-				<ul className={`absolute py-1 bg-black/75 rounded-xl top-[${points.y}px] z-50 left-[${points.x}px]`}>
-					<li>
-						<button
-							className='text-white px-3 py-2 w-full flex gap-8 items-center justify-between hover:bg-black/50'
-							onClick={() =>
-								// handleSettings((prev) => ({
-								// 	...prev,
-								// 	visibleWindow: 'playback',
-								// }))
-								console.log('')
-							}
-						>
-							<span className='flex items-center gap-2'>
-								<span className='text-md text-gray-300'>Playback Speed</span>
+
+			<ul ref={contextRef} className={`hidden py-1 bg-black/75 rounded-xl z-50`}>
+				<li>
+					<button
+						className='text-white px-3 py-2 w-full flex gap-8 items-center justify-between hover:bg-black/50'
+						onClick={() =>
+							// handleSettings((prev) => ({
+							// 	...prev,
+							// 	visibleWindow: 'playback',
+							// }))
+							console.log('')
+						}
+					>
+						<span className='flex items-center gap-2'>
+							<span className='text-md text-gray-300'>Playback Speed</span>
+						</span>
+						<span className='flex items-center text-xs'>
+							<span className='underline text-gray-300'>
+								{settings?.playback === 1 ? 'Normal' : settings?.playback}
 							</span>
-							<span className='flex items-center text-xs'>
-								<span className='underline text-gray-300'>
-									{settings?.playback === 1 ? 'Normal' : settings?.playback}
-								</span>
-								<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
+							<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
+						</span>
+					</button>
+				</li>
+				<li>
+					<button
+						type='button'
+						className='text-white px-3 py-2 w-full flex gap-8 items-center justify-between hover:bg-black/50'
+						onClick={() =>
+							// handleSettings((prev) => ({
+							// 	...prev,
+							// 	visibleWindow: 'subtitle',
+							// }))
+							console.log('')
+						}
+					>
+						<span className='flex items-center gap-2'>
+							<span className='text-md text-gray-300'>Subtitle</span>
+						</span>
+						<span className='flex items-center text-xs'>
+							<span className='underline text-gray-300'>
+								{settings?.subtitle || 'Off'}
 							</span>
-						</button>
-					</li>
-					<li>
-						<button
-							type='button'
-							className='text-white px-3 py-2 w-full flex gap-8 items-center justify-between hover:bg-black/50'
-							onClick={() =>
-								// handleSettings((prev) => ({
-								// 	...prev,
-								// 	visibleWindow: 'subtitle',
-								// }))
-								console.log('')
-							}
-						>
-							<span className='flex items-center gap-2'>
-								<span className='text-md text-gray-300'>Subtitle</span>
+							<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
+						</span>
+					</button>
+				</li>
+				<li>
+					<button
+						type='button'
+						className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50'
+						onClick={() =>
+							// handleSettings((prev) => ({
+							// 	...prev,
+							// 	visibleWindow: 'quality',
+							// }))
+							console.log('')
+						}
+					>
+						<span className='flex items-center gap-2'>
+							<span className='text-md text-gray-300'>Quality</span>
+						</span>
+						<span className='flex items-center text-xs'>
+							<span className='underline text-gray-300'>
+								{settings?.quality || 'Auto'}
 							</span>
-							<span className='flex items-center text-xs'>
-								<span className='underline text-gray-300'>
-									{settings?.subtitle || 'Off'}
-								</span>
-								<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
-							</span>
-						</button>
-					</li>
-					<li>
-						<button
-							type='button'
-							className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50'
-							onClick={() =>
-								// handleSettings((prev) => ({
-								// 	...prev,
-								// 	visibleWindow: 'quality',
-								// }))
-								console.log('')
-							}
-						>
-							<span className='flex items-center gap-2'>
-								<span className='text-md text-gray-300'>Quality</span>
-							</span>
-							<span className='flex items-center text-xs'>
-								<span className='underline text-gray-300'>
-									{settings?.quality || 'Auto'}
-								</span>
-								<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
-							</span>
-						</button>
-					</li>
-				</ul>
-			)}
+							<FiChevronRight className='w-5 h-5 stroke-1 text-gray-300' />
+						</span>
+					</button>
+				</li>
+			</ul>
 
 		</>
 	);

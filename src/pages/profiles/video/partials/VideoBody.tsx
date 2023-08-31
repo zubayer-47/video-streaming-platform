@@ -74,11 +74,11 @@ export default function VideoBody() {
 
 			<div className='flex justify-between gap-3 my-5'>
 				<div className='flex gap-2 items-center'>
-					<Link to={`/@${metaData.channelId}`} type='button'>
+					<Link to={`/ch/${metaData.channelId}`} type='button'>
 						<FaCircleUser className='h-10 w-10' />
 					</Link>
 					<p className='flex flex-col justify-center'>
-						<Link to={`/@${metaData.channelId}`} className='font-bold'>
+						<Link to={`/ch/${metaData.channelId}`} className='font-bold'>
 							{/* Stack Learner */}
 							{metaData?.channel?.name}
 						</Link>
@@ -87,7 +87,7 @@ export default function VideoBody() {
 						</span>
 					</p>
 
-					<FollowButton classes='ml-5 py-2.5' title='Follow' />
+					<FollowButton />
 				</div>
 
 				<div className='flex gap-2 items-center'>
@@ -96,7 +96,7 @@ export default function VideoBody() {
 							type='button'
 							className='flex items-center gap-1.5 px-3 border-black hover:bg-indigo-200/50 py-2 h-full w-full'
 						>
-							<FiThumbsUp className='h-6 w-6' />
+							<FiThumbsUp className='h-6 w-6 text-indigo-700' />
 							<span>630</span>
 						</button>
 						<span className='w-1 h-6 bg-gray-800'></span>

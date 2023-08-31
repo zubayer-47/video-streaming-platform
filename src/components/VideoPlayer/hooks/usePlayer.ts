@@ -20,6 +20,7 @@ const usePlayer = () => {
   const vidRef = useRef<HTMLVideoElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const bufferRef = useRef<HTMLDivElement>(null);
+  const contextRef = useRef<HTMLUListElement>(null);
 
   const [isWaiting, setWaiting] = useState(false);
   const [removeThumbnail, setRemoveThumbnail] = useState(false);
@@ -98,6 +99,9 @@ const usePlayer = () => {
     const onPause = () => {
       setPlay(false);
       setWaiting(false);
+
+      // contextRef.current.
+
       // vidEl.pause();
     };
 
@@ -105,12 +109,6 @@ const usePlayer = () => {
       setPlay(false);
       const parent = parentRef?.current;
       if (parent && document.fullscreenElement) document.exitFullscreen();
-    };
-
-    const onContextMenu = (e: MouseEvent) => {
-      //   e.preventDefault();
-
-      console.log(e);
     };
 
     // Events
@@ -121,7 +119,6 @@ const usePlayer = () => {
     vidEl.addEventListener("playing", onPlay);
     vidEl.addEventListener("pause", onPause);
     vidEl.addEventListener("ended", onEnd);
-    // vidEl.addEventListener("contextmenu", onContextMenu);
     document.addEventListener("fullscreenchange", onFullscreenChange);
     //Clean up
     return () => {
@@ -137,11 +134,35 @@ const usePlayer = () => {
     };
   }, [isPlay, isWaiting]);
 
+  const handleContextMenu: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    e.preventDefault();
+    const ulElem = contextRef.current;
+
+    console.log("rendred");
+
+    if (!ulElem) return;
+    ulElem.classList.remove("hidden");
+    ulElem.classList.add("block");
+    ulElem.style.position = "absolute";
+    ulElem.style.top = `${e.pageY}px`;
+    ulElem.style.left = `${e.pageX}px`;
+  };
+
+  const removeContext = () => {
+    const ulEl = contextRef?.current;
+    if (!ulEl) return;
+
+    ulEl.classList.add("hidden");
+    ulEl.classList.remove("block");
+  };
+
   const handlePlayPause = () => {
     if (!vidRef?.current) return;
     if (!removeThumbnail) setRemoveThumbnail(true);
     setPlay((prev) => !prev);
     const video = vidRef?.current;
+
+    removeContext();
     // console.log(video?.paused || video?.ended)
     if (video?.paused || video?.ended) {
       video.play();
@@ -154,6 +175,7 @@ const usePlayer = () => {
     if (!vidRef.current) return;
     if (pos < 0 || pos > 1) return;
 
+    removeContext();
     const durationMs = vidRef.current.duration * 1000 || 0;
 
     const newElapsedMs = durationMs * pos;
@@ -164,6 +186,7 @@ const usePlayer = () => {
   const updateVolumeBar = (e: InputType) => {
     const video = vidRef?.current;
 
+    removeContext();
     if (video) {
       const selectVol = +e.target.value;
       video.volume = selectVol;
@@ -176,6 +199,7 @@ const usePlayer = () => {
   const toggleMute = () => {
     if (vidRef?.current) {
       setMuted((prev) => !prev);
+      removeContext();
       vidRef.current.muted = !vidRef.current.muted;
       if (volume === 0 && isMuted) {
         setVolume(0.4);
@@ -186,6 +210,8 @@ const usePlayer = () => {
 
   const toggleFullScreen = useCallback(async () => {
     const parent = parentRef?.current;
+
+    removeContext();
     if (parent) {
       if (!document.fullscreenElement) {
         await parent.requestFullscreen();
@@ -198,6 +224,8 @@ const usePlayer = () => {
   const handlePlaybackSeed: ButtonClickHandler = useCallback((e) => {
     const rate = +e.currentTarget.name || 1;
     const vid = vidRef?.current;
+
+    removeContext();
     if (vid) {
       setSettings((prev) => ({
         ...prev,
@@ -214,6 +242,7 @@ const usePlayer = () => {
     vidRef,
     progressRef,
     bufferRef,
+    contextRef,
     // States
     isWaiting,
     removeThumbnail,
@@ -225,6 +254,7 @@ const usePlayer = () => {
     isFullScreen,
     settings,
     // Handlers
+    handleContextMenu,
     handlePlayPause,
     handleSeekPosition,
     updateVolumeBar,

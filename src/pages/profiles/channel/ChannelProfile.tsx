@@ -1,102 +1,10 @@
-import { isAxiosError } from 'axios';
-import { FC, useState } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
-import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import demoImg from '../../../assets/demo.jpg';
 import FollowButton from '../../../components/Buttons/FollowButton';
-import { axiosPrivate } from '../../../libs/axios';
-import debounce from '../../../libs/debounce';
 import ChannelNav from './partials/ChannelNav';
 
-interface ChannelProfileProps { }
-
-type ChannelStateType = {
-    error: string | null;
-    isFollowed: boolean;
-    loading: boolean;
-}
-
-const ChannelProfile: FC<ChannelProfileProps> = () => {
-    const [channelState, setChannelState] = useState<ChannelStateType>({ isFollowed: false, loading: false, error: null })
-    const location = useLocation();
-
-    if (!location.pathname.includes('@')) {
-        return <Navigate to='/404' />
-    }
-
-    // useEffect(() => {
-    // 	const controller = new AbortController();
-
-    // 	(async () => {
-    // 		setState(prev => ({
-    // 			...prev,
-    // 			loading: true
-    // 		}));
-
-    // 		try {
-    // 			const res = await axiosPrivate.get('/videos', {
-    // 				signal: controller.signal,
-    // 			});
-    // 			const resData = res?.data || [];
-    // 			setState(prev => ({
-    // 				...prev,
-    // 				metadatas: resData
-    // 			}));
-    // 		} catch (error) {
-    // 			if (isAxiosError(error)) {
-    // 				const message = error.response?.data?.message
-
-    // 				setState(prev => ({
-    // 					...prev,
-    // 					error: message
-    // 				}));
-    // 			}
-    // 		} finally {
-    // 			setState(prev => ({
-    // 				...prev,
-    // 				loading: false
-    // 			}));
-    // 		}
-    // 	})();
-
-    // 	return () => {
-    // 		controller.abort();
-    // 	};
-    // }, [axiosPrivate]);
-
-    const handleFollow = debounce(async () => {
-        setChannelState(prev => ({
-            ...prev,
-            loading: true
-        }));
-
-        try {
-            const res = await axiosPrivate.post('/channels/follow', {
-                channel_id: "c5e93570-8cfd-4b90-8ee0-5bb607a38cc1"
-            });
-            const title = res?.data?.message;
-
-            setChannelState(prev => ({
-                ...prev,
-                isFollowed: title === 'followed'
-            }));
-        } catch (error) {
-            if (isAxiosError(error)) {
-                const message = error.response?.data?.message
-
-                setChannelState(prev => ({
-                    ...prev,
-                    error: message
-                }));
-            }
-        } finally {
-            setChannelState(prev => ({
-                ...prev,
-                loading: false
-            }));
-        }
-    }, 200);
-
+const ChannelProfile = () => {
     return (
         <div className='overflow-auto pb-5 h-full'>
             <div>
@@ -123,7 +31,7 @@ const ChannelProfile: FC<ChannelProfileProps> = () => {
                             </div>
                         </div>
 
-                        <FollowButton handler={handleFollow} title={channelState.isFollowed ? "Following" : "Follow"} bg={!channelState.isFollowed ? "" : "bg-gray-300 text-gray-800"} classes='py-2.5 px-5 text-lg ml-auto capitalize' />
+                        <FollowButton />
                     </div>
                 </div>
             </div>

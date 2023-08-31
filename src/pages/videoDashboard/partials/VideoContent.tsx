@@ -64,7 +64,7 @@ export default function VideoContent() {
 
 	return (
 		<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:pr-3 pb-10'>
-			{state.loading ? (
+			{!state.loading ? (
 				<>
 					{state.metadatas.map((md) => (
 						<ProfileThumbnail
@@ -76,11 +76,11 @@ export default function VideoContent() {
 								demoImg
 							}
 							views='7.6M'
-							timetamp={formateTime(md.duration)}
+							timeStamp={formateTime(md.duration)}
 							title={md.title}
 							uploadedAt={dayjs(md.createdAt).toNow(true)}
 							channelName={md.channel.name}
-							chnLink={`/${md.channel.channelId}`}
+							chnLink={`/ch/${md.channel.channelId}`}
 							vidLink={`watch/${md.videoId}`}
 						/>
 					))}
