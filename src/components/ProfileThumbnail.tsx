@@ -5,12 +5,12 @@ import { trunc } from '../libs/helper';
 type Props = {
 	thumbnail: string;
 	views: string;
-	timetamp: string;
+	timeStamp: string;
 	title: string;
 	uploadedAt: string;
-	channelName: string;
 	vidLink: string;
-	chnLink: string;
+	channelName?: string;
+	chnLink?: string;
 	isProfileIconVisible?: boolean;
 	isList?: boolean;
 	classes?: string;
@@ -19,7 +19,7 @@ type Props = {
 const ProfileThumbnail = ({
 	thumbnail,
 	views,
-	timetamp,
+	timeStamp,
 	title,
 	uploadedAt,
 	channelName,
@@ -38,11 +38,10 @@ const ProfileThumbnail = ({
 		>
 			<Link
 				to={vidLink}
-				className={`relative rounded-md overflow-hidden ${
-					!isList
-						? 'w-full max-h-52 sm:max-h-[11.5rem] md:max-h-[10rem] lg:max-h-[9.5rem]'
-						: 'w-40 max-h-24'
-				} ${classes}`}
+				className={`relative rounded-md overflow-hidden ${!isList
+					? 'w-full max-h-52 sm:max-h-[11.5rem] md:max-h-[10rem] lg:max-h-[9.5rem]'
+					: 'w-40 max-h-24'
+					} ${classes}`}
 			>
 				<img
 					className='w-full h-full object-cover'
@@ -56,39 +55,42 @@ const ProfileThumbnail = ({
 						{views}
 					</p>
 					<p className='bg-gray-900/80 text-white rounded-md py-1 px-1.5 text-xs tracking-wider'>
-						{timetamp}
+						{timeStamp}
 					</p>
 				</div>
 			</Link>
 
 			<div className='flex-1 flex gap-2'>
-				{!isList && (
-					<FaCircleUser
-						className={`h-9 w-9 ${!isProfileIconVisible ? 'block' : 'hidden'}`}
-					/>
+				{(!isList && chnLink) && (
+					<Link to={chnLink}>
+						<FaCircleUser
+							className={`h-9 w-9 ${!isProfileIconVisible ? 'block' : 'hidden'}`}
+						/>
+					</Link>
 				)}
 				<div className='flex-1 flex flex-col gap-1.5'>
 					<Link
 						to={vidLink}
-						className={`text-sm tracking-wide text-slate-800 ${
-							!isList
-								? 'font-semibold line-clamp-2'
-								: 'font-medium line-clamp-3'
-						}`}
+						className={`text-sm tracking-wide text-slate-800 ${!isList
+							? 'font-semibold line-clamp-2'
+							: 'font-medium line-clamp-3'
+							}`}
 					>
+						{/* {trunc(title, 20)} */}
 						{title}
 					</Link>
 					<div
-						className={`flex items-center text-xs tracking-wide ${
-							!isList ? 'gap-3' : 'gap-1.5'
-						}`}
+						className={`flex items-center text-xs tracking-wide ${!isList ? 'gap-3' : 'gap-1.5'
+							}`}
 					>
-						<Link
-							to={chnLink}
-							className='text-gray-700 font-medium flex-shrink-0'
-						>
-							{trunc(channelName, channelLen)}
-						</Link>
+						{(!chnLink || !channelName) ? null : (
+							<Link
+								to={chnLink}
+								className='text-gray-700 font-medium flex-shrink-0'
+							>
+								{trunc(channelName, channelLen)}
+							</Link>
+						)}
 
 						<p className='text-gray-500 flex-shrink-0'>{uploadedAt} ago</p>
 					</div>
