@@ -1,42 +1,58 @@
-import React, { ReactNode } from 'react';
-import { FiRefreshCw } from 'react-icons/fi';
-type BtnProp = {
-    title: string | null;
-    handler?: () => void;
-    type?: 'button' | 'submit';
-    children?: React.ReactNode;
-    transparent?: boolean;
-    isDisabled?: boolean;
-    isLoading?: boolean;
-    classes?: string;
-    icon?: ReactNode;
-    bg?: string
-};
+import { isAxiosError } from 'axios';
+import { useState } from 'react';
+import { axiosPrivate } from '../../libs/axios';
 
-const FollowButton = ({
-    title,
-    handler,
-    type = 'button',
-    isDisabled,
-    isLoading,
-    classes,
-    icon,
-    bg
-}: BtnProp) => {
+type ChannelStateType = {
+    error: string | null;
+    isFollowed: boolean;
+    loading: boolean;
+}
+
+const FollowButton = () => {
+    const [channelState, setChannelState] = useState<ChannelStateType>({ isFollowed: false, loading: false, error: null })
+
+    const handleFollow = async () => {
+        setChannelState(prev => ({
+            ...prev,
+            loading: true
+        }));
+
+        try {
+            const res = await axiosPrivate.post('/channels/follow', {
+                channel_id: "c5e93570-8cfd-4b90-8ee0-5bb607a38cc1"
+            });
+            const title = res?.data?.message;
+
+            setChannelState(prev => ({
+                ...prev,
+                isFollowed: title === 'followed'
+            }));
+        } catch (error) {
+            if (isAxiosError(error)) {
+                const message = error.response?.data?.message
+
+                setChannelState(prev => ({
+                    ...prev,
+                    error: message
+                }));
+            }
+        } finally {
+            setChannelState(prev => ({
+                ...prev,
+                loading: false
+            }));
+        }
+    };
+
     return (
         <button
-            type={type}
-            className={`rounded-full outline-none tracking-wider  font-semibold ${!bg ? "text-gray-50 bg-gray-900 hover:bg-gray-800" : bg} ${!icon ? "px-6" : "flex items-center gap-2 px-3"} ${isDisabled && 'opacity-50'} ${classes}`}
-            onClick={handler}
-            disabled={isLoading || isDisabled}
+            type='button'
+            className={`rounded-full outline-none tracking-wider font-semibold py-2.5 px-5 text-lg ${!channelState.isFollowed ? "text-gray-50 bg-gray-900 hover:bg-gray-800" : "bg-gray-300 text-gray-800"} ${channelState.loading && 'opacity-50'}`}
+            onClick={handleFollow}
+            disabled={channelState.loading}
         >
-            {!icon ? null : icon}
-
             <span className='flex items-center'>
-                <span className='text-sm md:text-md'>{title}</span>
-                {!isLoading ? null : (
-                    <FiRefreshCw className='ml-2 w-5 h-5 stroke-2 text-white animate-spin' />
-                )}
+                <span className='text-sm md:text-md'>{channelState.isFollowed ? "Following" : "Follow"}</span>
             </span>
         </button>
     );
