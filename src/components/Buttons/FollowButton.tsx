@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { FiRefreshCw } from 'react-icons/fi';
 type BtnProp = {
-    title: string;
+    title: string | null;
     handler?: () => void;
     type?: 'button' | 'submit';
     children?: React.ReactNode;

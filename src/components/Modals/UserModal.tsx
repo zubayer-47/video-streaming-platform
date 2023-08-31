@@ -10,7 +10,7 @@ type UserModalProps = {
 
 const UserModal: FC<UserModalProps> = ({ setOpenedModal }) => {
     const userContext = useAuth();
-    const modalContext = useModal();
+    const { dispatch } = useModal();
 
     const onSignOut = () => {
         userContext.logout();
@@ -18,8 +18,9 @@ const UserModal: FC<UserModalProps> = ({ setOpenedModal }) => {
     }
 
     const onChannelCreateModal = () => {
-        modalContext.dispatch({ type: "UPDATE_CHANNEL_CREATE_MODAL", payload: true });
+        dispatch({ type: "UPDATE_CHANNEL_CREATE_MODAL", payload: true });
     }
+
 
     return (
         <div className="w-full sm:w-72 fixed right-0 md:right-5 top-14 bg-gray-100 rounded-xl shadow-2xl z-30 overflow-hidden">

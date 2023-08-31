@@ -1,15 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
 import demoImg from '../../../../assets/demo.jpg';
 import ProfileThumbnail from '../../../../components/ProfileThumbnail';
+// import VideoDashboardLoader from '../../../../components/loaders/VideoDashboardLoader';
 import Playlist from './Playlist';
 
 export default function RelatedContent() {
     return (
-        <div className="lg:w-80 xl:w-96 flex flex-col gap-3">
+        <div className="lg:w-80 xl:w-96 flex flex-col gap-3 h-fit">
 
             <Playlist />
 
-            {new Array(30).fill(true).map(() => (
+            {new Array(10).fill(true).map(() => (
                 <ProfileThumbnail
                     key={uuidv4()}
                     thumbnail={demoImg}
@@ -23,6 +24,10 @@ export default function RelatedContent() {
                     isList
                 />
             ))}
+
+            {/* {new Array(10).fill(false).map(() => (
+                <VideoDashboardLoader isList />
+            ))} */}
         </div>
     )
 }
