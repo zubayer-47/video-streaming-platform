@@ -74,11 +74,11 @@ export default function VideoBody() {
 
 			<div className='flex justify-between gap-3 my-5'>
 				<div className='flex gap-2 items-center'>
-					<Link to='/@stacklearner' type='button'>
+					<Link to={`/@${metaData.channelId}`} type='button'>
 						<FaCircleUser className='h-10 w-10' />
 					</Link>
 					<p className='flex flex-col justify-center'>
-						<Link to='/@stacklearner' className='font-bold'>
+						<Link to={`/@${metaData.channelId}`} className='font-bold'>
 							{/* Stack Learner */}
 							{metaData?.channel?.name}
 						</Link>
@@ -87,14 +87,14 @@ export default function VideoBody() {
 						</span>
 					</p>
 
-					<FollowButton classes='ml-5 py-3' title='Follow' />
+					<FollowButton classes='ml-5 py-2.5' title='Follow' />
 				</div>
 
 				<div className='flex gap-2 items-center'>
 					<div className='flex items-center bg-indigo-100 rounded-full overflow-hidden'>
 						<button
 							type='button'
-							className='flex items-center gap-1.5 px-4 border-black hover:bg-indigo-200/50 py-3 h-full w-full'
+							className='flex items-center gap-1.5 px-3 border-black hover:bg-indigo-200/50 py-2 h-full w-full'
 						>
 							<FiThumbsUp className='h-6 w-6' />
 							<span>630</span>
@@ -102,7 +102,7 @@ export default function VideoBody() {
 						<span className='w-1 h-6 bg-gray-800'></span>
 						<button
 							type='button'
-							className='px-4 border-black hover:bg-indigo-200/50 py-3 h-full w-full'
+							className='px-3 border-black hover:bg-indigo-200/50 py-2 h-full w-full'
 						>
 							<FiThumbsDown className='h-6 w-6' />
 						</button>
@@ -112,9 +112,8 @@ export default function VideoBody() {
 
 			<div
 				onClick={() => (!descStatus ? setDescStatus(true) : undefined)}
-				className={`text-left bg-indigo-100/70 hover:bg-indigo-100 p-3 rounded-xl ${
-					!descStatus ? 'cursor-pointer' : 'cursor-text'
-				}`}
+				className={`text-left bg-indigo-100/70 hover:bg-indigo-100 p-3 rounded-xl ${!descStatus ? 'cursor-pointer' : 'cursor-text'
+					}`}
 			>
 				<p className='font-medium space-x-2'>
 					<span>6k views</span>
@@ -127,9 +126,8 @@ export default function VideoBody() {
 							setDescStatus(false);
 							console.log(descStatus);
 						}}
-						className={`font-bold  ml-auto ${
-							!descStatus ? 'inline-block' : 'block'
-						}`}
+						className={`font-bold  ml-auto ${!descStatus ? 'inline-block' : 'block'
+							}`}
 					>
 						{!descStatus ? 'more' : 'Show less'}
 					</button>
