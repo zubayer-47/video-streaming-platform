@@ -11,6 +11,7 @@ interface User {
   email: string;
   token: string;
   avater: string | null;
+  channelId?: string;
 }
 
 // type UserPartial = {
@@ -38,22 +39,22 @@ export interface UserStateType {
 
 // #-------------REDUCER TYPES--------------
 type AUTH_LOADING = {
-  type: "AUTH_LOADING";
+  type: 'AUTH_LOADING';
   payload?: boolean;
 };
 type AUTH_ERROR = {
-  type: "AUTH_ERROR";
+  type: 'AUTH_ERROR';
   payload: AuthErrorType | null;
 };
 type SET_AUTH = {
-  type: "SET_AUTH";
+  type: 'SET_AUTH';
   payload: User;
 };
 type REM_AUTH = {
-  type: "REM_AUTH";
+  type: 'REM_AUTH';
 };
 type UPDATE_USER = {
-  type: "UPDATE_USER";
+  type: 'UPDATE_USER';
   payload: User;
   // payload: Partial<UserPartial>;
 };

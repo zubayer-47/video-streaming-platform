@@ -1,47 +1,47 @@
 {
-	"[javascript]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"prettier.singleQuote": true,
-	"prettier.proseWrap": "always",
-	"prettier.jsxSingleQuote": true,
-	"prettier.endOfLine": "auto",
-	"editor.find.autoFindInSelection": "always",
-	"editor.smoothScrolling": true,
-	"editor.multiCursorModifier": "ctrlCmd",
-	"files.associations": {
-		"*.jsx": "javascriptreact",
-		"*.ts": "typescript"
-	},
-	"[json]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"[javascriptreact]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"javascript.updateImportsOnFileMove.enabled": "always",
-	"files.watcherExclude": {
-		"**/.git/objects/**": true,
-		"**/.git/subtree-cache/**": true,
-		"**/node_modules/*/**": true
-	},
-	"editor.cursorSmoothCaretAnimation": "on",
-	"[typescript]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"reactSnippets.settings.prettierEnabled": true,
-	"eslint.format.enable": true,
-	"path-intellisense.autoSlashAfterDirectory": true,
-	"path-intellisense.autoTriggerNextSuggestion": true,
-	"tailwindCSS.emmetCompletions": true,
-	"editor.cursorBlinking": "smooth",
-	"typescript.updateImportsOnFileMove.enabled": "always",
-	"[typescriptreact]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"[css]": {
-		"editor.defaultFormatter": "vscode.css-language-features"
-	},
-	"editor.guides.indentation": false,
-	"eslint.codeActionsOnSave.rules": null
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.singleQuote": true,
+  "prettier.proseWrap": "always",
+  "prettier.jsxSingleQuote": true,
+  "prettier.endOfLine": "auto",
+  "editor.find.autoFindInSelection": "always",
+  "editor.smoothScrolling": true,
+  // "editor.multiCursorModifier": "Cmd",
+  "files.associations": {
+    "*.jsx": "javascriptreact",
+    "*.ts": "typescript"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true
+  },
+  "editor.cursorSmoothCaretAnimation": "on",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "reactSnippets.settings.prettierEnabled": true,
+  "eslint.format.enable": true,
+  "path-intellisense.autoSlashAfterDirectory": true,
+  "path-intellisense.autoTriggerNextSuggestion": true,
+  "tailwindCSS.emmetCompletions": true,
+  "editor.cursorBlinking": "smooth",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
+  "editor.guides.indentation": false,
+  "eslint.codeActionsOnSave.rules": null
 }
