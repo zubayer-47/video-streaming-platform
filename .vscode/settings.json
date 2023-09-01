@@ -1,0 +1,133 @@
+{
+	"files.autoSave": "onFocusChange",
+	"git.enableSmartCommit": true,
+	"git.autofetch": true,
+	"workbench.iconTheme": "material-icon-theme",
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"explorer.confirmDragAndDrop": false,
+	"prettier.useTabs": true,
+	"prettier.singleQuote": true,
+	"prettier.proseWrap": "always",
+	"prettier.jsxSingleQuote": true,
+	"prettier.endOfLine": "auto",
+	"editor.fontFamily": "\"JetBrains Mono\", Hack Nerd font",
+	// "editor.fontLigatures": "'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'zero', 'onum'", // Light
+	"editor.fontLigatures": true,
+	"editor.fontWeight": "500",
+	"git.confirmSync": false,
+	"workbench.startupEditor": "newUntitledFile",
+	"[scss]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"terminal.integrated.sendKeybindingsToShell": true,
+	"editor.suggestSelection": "first",
+	"editor.formatOnPaste": true,
+	"editor.formatOnType": true,
+	"[html]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"editor.find.autoFindInSelection": "always",
+	"workbench.list.smoothScrolling": true,
+	"[markdown]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"editor.smoothScrolling": true,
+	"editor.multiCursorModifier": "ctrlCmd",
+	"files.associations": {
+		"*.jsx": "javascriptreact",
+		"*.ts": "typescript"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"files.watcherExclude": {
+		"**/.git/objects/**": true,
+		"**/.git/subtree-cache/**": true,
+		"**/node_modules/*/**": true
+	},
+	"workbench.editor.enablePreviewFromCodeNavigation": true,
+	"workbench.editor.enablePreviewFromQuickOpen": true,
+	"editor.cursorSmoothCaretAnimation": "on",
+	"editor.accessibilityPageSize": 12,
+	"editor.bracketPairColorization.enabled": true,
+	"editor.guides.bracketPairs": "active",
+	"editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+	"editor.largeFileOptimizations": false,
+	"editor.wordWrap": "on",
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"terminal.integrated.enableMultiLinePasteWarning": false,
+	"editor.foldingImportsByDefault": true,
+	"editor.renderLineHighlightOnlyWhenFocus": true,
+	"editor.tabCompletion": "on",
+	"diffEditor.codeLens": true,
+	"editor.suggest.filterGraceful": false,
+	"editor.suggest.preview": true,
+	"workbench.editor.autoLockGroups": {
+		"imagePreview.previewEditor": true,
+		"jsProfileVisualizer.cpuprofile.table": true
+	},
+	"workbench.editor.highlightModifiedTabs": true,
+	"workbench.editor.untitled.hint": "hidden",
+	"workbench.settings.openDefaultKeybindings": true,
+	"scm.alwaysShowActions": true,
+	"workbench.view.alwaysShowHeaderActions": true,
+	"workbench.editor.mouseBackForwardToNavigate": false,
+	"workbench.editor.revealIfOpen": true,
+	"database-client.highlightSQLBlock": true,
+	"reactSnippets.settings.prettierEnabled": true,
+	"eslint.format.enable": true,
+	"path-intellisense.autoSlashAfterDirectory": true,
+	"path-intellisense.autoTriggerNextSuggestion": true,
+	"tailwindCSS.emmetCompletions": true,
+	"[jsonc]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"workbench.preferredDarkColorTheme": "One Monokai",
+	"database-client.showTrigger": true,
+	"editor.cursorBlinking": "smooth",
+	"terminal.integrated.cursorWidth": 4,
+	"editor.cursorWidth": 3,
+	"terminal.integrated.cursorBlinking": true,
+	"terminal.integrated.cursorStyle": "line",
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"git.ignoreMissingGitWarning": true,
+	"editor.linkedEditing": true,
+	"workbench.colorCustomizations": {},
+	"database-client.showUser": true,
+	"database-client.reloadAfterDML": true,
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[css]": {
+		"editor.defaultFormatter": "vscode.css-language-features"
+	},
+	"editor.guides.indentation": false,
+	"eslint.codeActionsOnSave.rules": null,
+	"[python]": {
+		"editor.formatOnType": true
+	},
+	"terminal.integrated.fontSize": 14,
+	"terminal.integrated.defaultProfile.windows": "",
+	"editor.fontSize": 16,
+	"editor.mouseWheelZoom": true,
+	"debug.terminal.clearBeforeReusing": true,
+	"workbench.colorTheme": "Dracula",
+	"editor.minimap.showSlider": "always",
+	"editor.minimap.size": "fit",
+	"editor.stickyScroll.enabled": true,
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true,
+		"source.organizeImports": true
+	},
+	"window.zoomLevel": -1,
+	"git.ignoreRebaseWarning": true
+}
