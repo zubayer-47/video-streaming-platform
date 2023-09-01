@@ -38,10 +38,11 @@ const ProfileThumbnail = ({
 		>
 			<Link
 				to={vidLink}
-				className={`relative rounded-md overflow-hidden ${!isList
-					? 'w-full max-h-52 sm:max-h-[11.5rem] md:max-h-[10rem] lg:max-h-[9.5rem]'
-					: 'w-40 max-h-24'
-					} ${classes}`}
+				className={`relative block rounded-md overflow-hidden bg-indigo-200/40 ${
+					!isList
+						? 'w-full max-h-52 sm:max-h-[11.5rem] md:max-h-[10rem] lg:max-h-[9.5rem]'
+						: 'w-40 max-h-24'
+				} ${classes}`}
 			>
 				<img
 					className='w-full h-full object-cover'
@@ -61,29 +62,33 @@ const ProfileThumbnail = ({
 			</Link>
 
 			<div className='flex-1 flex gap-2'>
-				{(!isList && chnLink) && (
+				{!isList && chnLink && (
 					<Link to={chnLink}>
 						<FaCircleUser
-							className={`h-9 w-9 ${!isProfileIconVisible ? 'block' : 'hidden'}`}
+							className={`h-9 w-9 ${
+								!isProfileIconVisible ? 'block' : 'hidden'
+							}`}
 						/>
 					</Link>
 				)}
 				<div className='flex-1 flex flex-col gap-1.5'>
 					<Link
 						to={vidLink}
-						className={`text-sm tracking-wide text-slate-800 ${!isList
-							? 'font-semibold line-clamp-2'
-							: 'font-medium line-clamp-3'
-							}`}
+						className={`text-sm tracking-wide text-slate-800 ${
+							!isList
+								? 'font-semibold line-clamp-2'
+								: 'font-medium line-clamp-3'
+						}`}
 					>
 						{/* {trunc(title, 20)} */}
 						{title}
 					</Link>
 					<div
-						className={`flex items-center text-xs tracking-wide ${!isList ? 'gap-3' : 'gap-1.5'
-							}`}
+						className={`flex items-center text-xs tracking-wide ${
+							!isList ? 'gap-3' : 'gap-1.5'
+						}`}
 					>
-						{(!chnLink || !channelName) ? null : (
+						{!chnLink || !channelName ? null : (
 							<Link
 								to={chnLink}
 								className='text-gray-700 font-medium flex-shrink-0'

@@ -58,8 +58,9 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 					onClick={handlePlayPause}
 				>
 					<div
-						className={`px-10 py-5 rounded-2xl grid place-content-center bg-indigo-600/50 hover:bg-indigo-600/70 cursor-pointer ${!isPlay ? 'block' : 'hidden'
-							}`}
+						className={`px-10 py-5 rounded-2xl grid place-content-center bg-indigo-600/50 hover:bg-indigo-600/70 cursor-pointer ${
+							!isPlay ? 'block' : 'hidden'
+						}`}
 					>
 						<FiPlay className='w-7 h-7 text-white' />
 					</div>
@@ -116,7 +117,10 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				</video>
 			</div>
 
-			<ul ref={contextRef} className={`hidden py-1 bg-black/75 rounded-xl z-50`}>
+			<ul
+				ref={contextRef}
+				className={`hidden py-1 bg-black/75 rounded-xl z-50`}
+			>
 				<li>
 					<button
 						className='text-white px-3 py-2 w-full flex gap-8 items-center justify-between hover:bg-black/50'
@@ -186,7 +190,6 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 					</button>
 				</li>
 			</ul>
-
 		</>
 	);
 };

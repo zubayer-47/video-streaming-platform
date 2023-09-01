@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { isAxiosError } from 'axios';
+import { useEffect, useState } from 'react';
 import { FiArrowUp } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../../components/Buttons/Button';
@@ -25,6 +26,21 @@ type uploadType = {
 	contentUploadPercent: number;
 };
 
+export type PlaylistMeta = { playlistId: string; title: string };
+
+type MetaData = {
+	videoId: string;
+	title: string;
+	description: string;
+	tags: string;
+	status: string;
+	playlist: string;
+	playlists: PlaylistMeta[];
+	newPlaylist: string;
+	isNewPlaylist: boolean;
+	publishing: boolean;
+};
+
 const UploadVideo = () => {
 	const navigate = useNavigate();
 	const axiosPrivate = useAxiosPrivate();
@@ -37,16 +53,45 @@ const UploadVideo = () => {
 		thumbPreview: '',
 		contentUploadPercent: 0,
 	});
-	const [metadata, setMetadata] = useState({
+	const [metadata, setMetadata] = useState<MetaData>({
 		videoId: '',
 		title: '',
 		description: '',
 		tags: 'how to become a nodejs developer, how to, tutorial, online course',
 		status: 'PUBLIC',
 		playlist: '',
+		playlists: [],
+		newPlaylist: '',
+		isNewPlaylist: false,
 		publishing: false,
 	});
 	const [errors, setErrors] = useState<Record<string, string>>({});
+
+	useEffect(() => {
+		const controller = new AbortController();
+
+		(async () => {
+			try {
+				const res = await axiosPrivate.get(`/channels/playlists`, {
+					signal: controller.signal,
+				});
+				const resData = res?.data || [];
+				setMetadata((prev) => ({
+					...prev,
+					playlists: resData,
+				}));
+			} catch (error) {
+				if (isAxiosError(error)) {
+					const message = error.response?.data?.message;
+					console.log('message :', message);
+				}
+			}
+		})();
+
+		return () => {
+			controller.abort();
+		};
+	}, [axiosPrivate]);
 
 	const handleFile = async (e: InputType) => {
 		if (e.target?.files) {
@@ -114,6 +159,23 @@ const UploadVideo = () => {
 		}));
 	};
 
+	const handlePlaylist = (e: SelectType) => {
+		const { name, value } = e.target;
+		setMetadata((prev) => ({
+			...prev,
+			isNewPlaylist: false,
+			newPlaylist: '',
+			[name]: value,
+		}));
+	};
+
+	const handleNewPlaylist = () =>
+		setMetadata((prev) => ({
+			...prev,
+			isNewPlaylist: !prev.isNewPlaylist,
+			newPlaylist: '',
+			playlist: '',
+		}));
 	const handleValidate = () => {
 		const err: Record<string, string> = {};
 		const { videoId, title, description, tags, status } = metadata;
@@ -142,7 +204,8 @@ const UploadVideo = () => {
 	const handlePublish = async () => {
 		if (!handleValidate()) return;
 
-		const { videoId, title, description, tags, status, playlist } = metadata;
+		const { videoId, title, description, tags, status, playlist, newPlaylist } =
+			metadata;
 		const { thumbnail } = uploadedContent;
 
 		const form = new FormData();
@@ -153,6 +216,7 @@ const UploadVideo = () => {
 		form.append('status', status);
 		if (thumbnail) form.append('thumbnail', thumbnail);
 		if (playlist) form.append('playlist', playlist);
+		if (newPlaylist) form.append('newPlaylist', newPlaylist);
 
 		try {
 			setMetadata((prev) => ({ ...prev, publishing: true }));
@@ -307,7 +371,37 @@ const UploadVideo = () => {
 							More Settings
 						</h2>
 						<AudienceSetting status={metadata.status} handle={handleSelect} />
-						<PlaylistSetting status={metadata.playlist} handle={handleSelect} />
+						<PlaylistSetting
+							playlists={metadata.playlists}
+							active={metadata.playlist}
+							handle={handlePlaylist}
+						/>
+						<div className='border-t border-b border-slate-200 py-2 flex flex-col items-end gap-2'>
+							<button
+								type='button'
+								className={`m-0 outline-none px-1 py-0.5 rounded-sm tracking-wide text-xs font-medium ${
+									!metadata.isNewPlaylist
+										? 'bg-slate-200 text-slate-800'
+										: 'bg-red-200 text-red-600'
+								}`}
+								onClick={handleNewPlaylist}
+							>
+								{!metadata.isNewPlaylist
+									? 'Create new playlist'
+									: 'Cancel playlist'}
+							</button>
+							{metadata.isNewPlaylist && (
+								<MaterialInput
+									name='newPlaylist'
+									handler={handleInput}
+									value={metadata.newPlaylist}
+									hint='Playlist title...'
+									isLoading={metadata.publishing}
+									error={errors?.newPlaylist}
+									isRequired
+								/>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>

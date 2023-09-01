@@ -17,23 +17,25 @@ import VideoProfile from './pages/profiles/video/VideoProfile';
 import VideoDashboard from './pages/videoDashboard/VideoDashboard';
 
 function App() {
-	const userContext = useAuth()
-	const modalContext = useModal()
+	const userContext = useAuth();
+	const modalContext = useModal();
 	return (
 		<PageLayout>
 			<Header />
-			{!userContext.state.isLoggedIn && modalContext.state.isVisibleAuthModal ? <AuthModal /> : null}
-			{!modalContext.state.channel.createChannelModal ? null : <CreateChannelModal />}
+			{!userContext.state.isLoggedIn &&
+			modalContext.state.isVisibleAuthModal ? (
+				<AuthModal />
+			) : null}
+			{!modalContext.state.channel.createChannelModal ? null : (
+				<CreateChannelModal />
+			)}
 
 			<Routes>
 				<Route path='/' element={<Outlet />}>
 					<Route index element={<VideoDashboard />} />
 					<Route path='auth' element={<Auth />} />
 					<Route path='watch/:videoID' element={<VideoProfile />} />
-					<Route
-						path='ch/:channelName'
-						element={<ChannelProfile />}
-					>
+					<Route path='ch/:channelId' element={<ChannelProfile />}>
 						<Route index element={<Featured />} />
 						<Route path='featured' element={<Featured />} />
 						<Route path='videos' element={<Video />} />
