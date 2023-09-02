@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import {
 	FiChevronRight,
 	FiMaximize,
@@ -53,6 +54,8 @@ const VideoController = ({
 	handleSettings,
 	handlePlaybackSeed,
 }: Props) => {
+	const seekBarDurationRef = useRef<HTMLDivElement>(null);
+
 	const volIcon = () => {
 		if (!isMuted) {
 			return volume < 0.5 ? (
@@ -160,13 +163,38 @@ const VideoController = ({
 			</div>
 			{/* Video SeekBar */}
 			<div
-				className='flex items-center w-full h-1 bg-white/40 cursor-pointer hover:h-2 transition-all delay-75'
+				className='flex items-center w-full h-1 group/seek-bar bg-white/40 cursor-pointer hover:h-2 transition-all delay-75'
 				onClick={handleSeekBar}
+				onMouseMove={(e) => {
+					// console.log(e.pageX, e.pageY);
+					const durationEl = seekBarDurationRef.current;
+
+					if (!durationEl) return;
+
+					console.log((e.pageX - 100) / +'%');
+
+					durationEl.classList.add('try');
+					// durationEl.style.setProperty('--duration-top', `${e.pageY}px`);
+					durationEl.style.setProperty(
+						'--duration-left',
+						`${((e.pageX - 100) / 100) * 100 + '%'}`
+					);
+				}}
+				onMouseLeave={() => {
+					const durationEl = seekBarDurationRef.current;
+					if (!durationEl) return;
+
+					durationEl.classList.remove('try');
+				}}
 			>
 				{/* Progress Bar */}
 				<div className='h-full bg-indigo-500 z-[1]' ref={progressRef} />
 				{/* Buffer Bar */}
 				<div className='h-full bg-black' ref={bufferRef} />
+
+				<div className='bg-black text-white hidden' ref={seekBarDurationRef}>
+					asd
+				</div>
 			</div>
 			{/* Video Controller Information */}
 			<div className='mt-1 flex items-center justify-between gap-1.5'>

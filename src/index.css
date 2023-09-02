@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --duration-top: 0;
+  --duration-left: 0;
+}
+
 .search-bar:focus~.pre-search {
   display: block !important;
 }
@@ -82,4 +87,11 @@
   position: absolute;
   width: 100%;
   z-index: 1;
+}
+
+.try {
+  display: block !important;
+  position: absolute;
+  /* bottom: var(--duration-top) -1px; */
+  left: var(--duration-left);
 }
