@@ -30,6 +30,7 @@ const usePlayer = () => {
 	const [timeElapsed, setTimeElapsed] = useState(0);
 	const [volume, setVolume] = useState(0);
 	const [isFullScreen, setIsFullScreen] = useState(false);
+	const [isAds, setIsAds] = useState(false);
 
 	const [settings, setSettings] = useState<PlayerSettingsType>({
 		visibleWindow: 'none',
@@ -182,6 +183,9 @@ const usePlayer = () => {
 
 		const newElapsedMs = durationMs * pos;
 		const newTimeSec = newElapsedMs / 1000;
+
+		console.log({ newTimeSec });
+
 		vidRef.current.currentTime = newTimeSec;
 	};
 
