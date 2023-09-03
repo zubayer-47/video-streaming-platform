@@ -23,3 +23,36 @@ export interface Channel {
 	channelId: string;
 	name: string;
 }
+
+export interface VideoBodyMetaDataType {
+	channelId: string;
+	thumbnail: string;
+	title: string;
+	description: string;
+	createdAt: string;
+	channel: {
+		name: string;
+		user: { avater: string };
+	};
+	followers: number;
+}
+
+export interface PlaylistBodyDataType {
+	title: string;
+	description: string;
+	playlist_video: {
+		channelId: string;
+		videoId: string;
+		thumbnail: string;
+		title: string;
+		duration: number;
+		createdAt: string;
+		channel: {
+			name: string;
+		};
+	}[];
+}
+
+export interface MetaDataType extends VideoBodyMetaDataType {
+	playlist?: PlaylistBodyDataType;
+}

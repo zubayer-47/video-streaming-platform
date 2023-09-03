@@ -1,9 +1,9 @@
 import { FiChevronRight, FiPlay } from 'react-icons/fi';
-import defaultThumbnail from '../../assets/demo.jpg';
 import { BASE_URL } from '../../libs/axios';
 import usePlayer from './hooks/usePlayer';
 import VideoController from './partials/VideoController';
 import VideoLoading from './partials/VideoLoading';
+import VideoPlayerThumbnail from './partials/VideoPlayerThumbnail';
 
 type Props = {
 	source: string;
@@ -45,20 +45,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				onContextMenu={handleContextMenu}
 			>
 				{isWaiting && <VideoLoading />}
-				{!removeThumbnail && (
-					<div
-						className='video-thumb object-fill'
-						style={{
-							backgroundImage: `url(${
-								(thumbnail &&
-									`${
-										import.meta.env.VITE_API_URI
-									}/static/thumbnails/${thumbnail}`) ||
-								defaultThumbnail
-							})`,
-						}}
-					/>
-				)}
+				{!removeThumbnail && <VideoPlayerThumbnail thumbnail={thumbnail} />}
 
 				<button
 					type='button'

@@ -1,75 +1,67 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FaCircleUser } from 'react-icons/fa6';
 import { FiThumbsDown, FiThumbsUp } from 'react-icons/fi';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import VideoFile from '../../../../assets/array.mp4';
 import dayjs from 'dayjs';
 import FollowButton from '../../../../components/Buttons/FollowButton';
 import VideoPlayer from '../../../../components/VideoPlayer/VideoPlayer';
-import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
-import useQuery from '../../../../hooks/useQuery';
 import { trunc } from '../../../../libs/helper';
+import { VideoBodyMetaDataType } from '../../../../types/custom';
 // import CommentSection from './CommentSection';
 
-type MetaDataType = {
-	channelId: '';
-	thumbnail: '';
-	title: string;
-	description: string;
-	createdAt: string;
-	channel: {
-		name: string;
-		user: { avater: string };
-	};
-	followers: number;
+type VideoBodyProps = {
+	videoId: string;
+	metaData: VideoBodyMetaDataType;
 };
 
-export default function VideoBody() {
-	const query = useQuery();
-	const axiosPrivate = useAxiosPrivate();
+const VideoBody: React.FC<VideoBodyProps> = ({ videoId, metaData }) => {
 	const [descStatus, setDescStatus] = useState(false);
-	const [metaData, setMetaData] = useState<MetaDataType>({
-		channelId: '',
-		thumbnail: '',
-		title: '',
-		description: '',
-		createdAt: '',
-		channel: {
-			name: '',
-			user: { avater: '' },
-		},
-		followers: 0,
-	});
-	const navigate = useNavigate();
-	const videoId = query.get('v');
-	const playlistId = query.get('p');
 
-	useEffect(() => {
-		if (!videoId) return navigate('/404');
-		const controller = new AbortController();
+	// const query = useQuery();
+	// const axiosPrivate = useAxiosPrivate();
+	// const [metaData, setMetaData] = useState<MetaDataType>({
+	// 	channelId: '',
+	// 	thumbnail: '',
+	// 	title: '',
+	// 	description: '',
+	// 	createdAt: '',
+	// 	channel: {
+	// 		name: '',
+	// 		user: { avater: '' },
+	// 	},
+	// 	followers: 0,
+	// });
+	// const navigate = useNavigate();
+	// const videoId = query.get('v');
+	// const playlistId = query.get('p');
 
-		(async () => {
-			try {
-				const res = await axiosPrivate.get(
-					`/videos/metadata?v=${videoId}${
-						playlistId ? `&p=${playlistId}` : ``
-					}`,
-					{
-						signal: controller.signal,
-					}
-				);
-				const resData = res?.data || [];
-				// console.log('resData :', resData);
-				setMetaData(resData);
-			} catch (error) {
-				console.log('error :', error);
-			}
-		})();
+	// useEffect(() => {
+	// 	if (!videoId) return navigate('/404');
+	// 	const controller = new AbortController();
 
-		return () => {
-			controller.abort();
-		};
-	}, [axiosPrivate, videoId, playlistId, navigate]);
+	// 	(async () => {
+	// 		try {
+	// 			const res = await axiosPrivate.get(
+	// 				`/videos/metadata?v=${videoId}${
+	// 					playlistId ? `&p=${playlistId}` : ``
+	// 				}`,
+	// 				{
+	// 					signal: controller.signal,
+	// 				}
+	// 			);
+	// 			const resData = res?.data || [];
+	// 			// console.log('resData :', resData);
+	// 			setMetaData(resData);
+	// 		} catch (error) {
+	// 			console.log('error :', error);
+	// 		}
+	// 	})();
+
+	// 	return () => {
+	// 		controller.abort();
+	// 	};
+	// }, [axiosPrivate, videoId, playlistId, navigate]);
 
 	return (
 		<div className='flex-1 flex flex-col w-full h-fit'>
@@ -147,4 +139,6 @@ export default function VideoBody() {
 			{/* <CommentSection /> */}
 		</div>
 	);
-}
+};
+
+export default VideoBody;
