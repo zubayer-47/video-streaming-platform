@@ -77,6 +77,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				<VideoController
 					progressRef={progressRef}
 					bufferRef={bufferRef}
+					vidRef={vidRef}
 					isPlay={isPlay}
 					isMuted={isMuted}
 					duration={duration}
