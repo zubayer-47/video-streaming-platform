@@ -41,17 +41,23 @@ export default function VideoBody() {
 		followers: 0,
 	});
 	const navigate = useNavigate();
-	const videoID = query.get('v');
+	const videoId = query.get('v');
+	const playlistId = query.get('p');
 
 	useEffect(() => {
-		if (!videoID) return navigate('/404');
+		if (!videoId) return navigate('/404');
 		const controller = new AbortController();
 
 		(async () => {
 			try {
-				const res = await axiosPrivate.get(`/videos/${videoID}/metadata`, {
-					signal: controller.signal,
-				});
+				const res = await axiosPrivate.get(
+					`/videos/metadata?v=${videoId}${
+						playlistId ? `&p=${playlistId}` : ``
+					}`,
+					{
+						signal: controller.signal,
+					}
+				);
 				const resData = res?.data || [];
 				// console.log('resData :', resData);
 				setMetaData(resData);
@@ -63,12 +69,12 @@ export default function VideoBody() {
 		return () => {
 			controller.abort();
 		};
-	}, [axiosPrivate, videoID, navigate]);
+	}, [axiosPrivate, videoId, playlistId, navigate]);
 
 	return (
 		<div className='flex-1 flex flex-col w-full h-fit'>
 			{/* <VideoPlayer source={VideoFile} /> */}
-			<VideoPlayer source={videoID!} thumbnail={metaData.thumbnail} />
+			<VideoPlayer source={videoId!} thumbnail={metaData.thumbnail} />
 
 			<p className='mt-2.5 text-lg font-semibold text-slate-800'>
 				{/* How to Build Your Perfect Resume: Learn from a FAANG Employee Example! */}

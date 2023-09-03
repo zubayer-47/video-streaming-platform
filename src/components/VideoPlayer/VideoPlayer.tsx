@@ -102,7 +102,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 					preload='auto'
 					className='w-full h-full aspect-video'
 				>
-					<source src={`${BASE_URL}/videos/${source}`} type='video/mp4' />
+					<source src={`${BASE_URL}/videos/str/${source}`} type='video/mp4' />
 					{/* <source src={source} type='video/mp4' /> */}
 					<track
 						label='English'
