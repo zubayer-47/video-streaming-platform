@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { MouseEvent, useRef } from 'react';
 import {
 	FiChevronRight,
 	FiMaximize,
@@ -20,6 +20,7 @@ import Subtitle from './widgets/Subtitle';
 type Props = {
 	progressRef: React.RefObject<HTMLDivElement>;
 	bufferRef: React.RefObject<HTMLDivElement>;
+	vidRef: React.RefObject<HTMLVideoElement>;
 	isPlay: boolean;
 	isMuted: boolean;
 	duration: number;
@@ -39,6 +40,7 @@ type Props = {
 const VideoController = ({
 	progressRef,
 	bufferRef,
+	vidRef,
 	isPlay,
 	isMuted,
 	duration,
@@ -67,10 +69,37 @@ const VideoController = ({
 		return <FiVolumeX className='w-5 h-5 text-red-500 fill-white stroke-1' />;
 	};
 
-	const handleSeekBar = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+	const handleSeekBar = (e: MouseEvent<HTMLDivElement>) => {
 		const { left, width } = e.currentTarget.getBoundingClientRect();
 		const clickedPos = (e.clientX - left) / width;
 		handleSeekPosition(clickedPos);
+	};
+
+	const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+		// console.log(e.pageX, e.pageY);
+		const durationEl = seekBarDurationRef.current;
+		const { left, width } = e.currentTarget.getBoundingClientRect();
+		if (!durationEl || !vidRef.current) return;
+
+		const durationMs = vidRef.current.duration * 1000 || 0;
+		let hoveredTimeSec = (durationMs * ((e.clientX - left) / width)) / 1000;
+		if (hoveredTimeSec < 0) {
+			hoveredTimeSec = 0;
+		}
+
+		durationEl.classList.add('seekBar-duration-tracker');
+		durationEl.style.setProperty(
+			'--duration-left',
+			`${((e.pageX - left - 23) * 100) / width}%`
+		);
+		durationEl.innerText = formateTime(hoveredTimeSec);
+	};
+
+	const handleMouseLeave = () => {
+		const durationEl = seekBarDurationRef.current;
+		if (!durationEl) return;
+
+		durationEl.classList.remove('seekBar-duration');
 	};
 
 	return (
@@ -165,36 +194,19 @@ const VideoController = ({
 			<div
 				className='flex items-center w-full h-1 group/seek-bar bg-white/40 cursor-pointer hover:h-2 transition-all delay-75'
 				onClick={handleSeekBar}
-				onMouseMove={(e) => {
-					// console.log(e.pageX, e.pageY);
-					const durationEl = seekBarDurationRef.current;
-
-					if (!durationEl) return;
-
-					console.log((e.pageX - 100) / +'%');
-
-					durationEl.classList.add('try');
-					// durationEl.style.setProperty('--duration-top', `${e.pageY}px`);
-					durationEl.style.setProperty(
-						'--duration-left',
-						`${((e.pageX - 100) / 100) * 100 + '%'}`
-					);
-				}}
-				onMouseLeave={() => {
-					const durationEl = seekBarDurationRef.current;
-					if (!durationEl) return;
-
-					durationEl.classList.remove('try');
-				}}
+				onMouseMove={handleMouseMove}
+				onMouseLeave={handleMouseLeave}
 			>
 				{/* Progress Bar */}
 				<div className='h-full bg-indigo-500 z-[1]' ref={progressRef} />
 				{/* Buffer Bar */}
 				<div className='h-full bg-black' ref={bufferRef} />
 
-				<div className='bg-black text-white hidden' ref={seekBarDurationRef}>
-					asd
-				</div>
+				{/* seekBar Duration Modal */}
+				<div
+					className='bg-indigo-800/90 text-white hidden px-1 rounded-md'
+					ref={seekBarDurationRef}
+				></div>
 			</div>
 			{/* Video Controller Information */}
 			<div className='mt-1 flex items-center justify-between gap-1.5'>
