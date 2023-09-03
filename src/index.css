@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 :root {
-  --duration-top: 0;
   --duration-left: 0;
 }
 
@@ -89,9 +88,9 @@
   z-index: 1;
 }
 
-.try {
+.seekBar-duration-tracker {
   display: block !important;
   position: absolute;
-  /* bottom: var(--duration-top) -1px; */
+  bottom: 50px;
   left: var(--duration-left);
 }
