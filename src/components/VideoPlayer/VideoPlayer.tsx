@@ -28,6 +28,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 		volume,
 		isFullScreen,
 		settings,
+		ads,
 		setSettings,
 		handleContextMenu,
 		handlePlayPause,
@@ -62,8 +63,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 					</div>
 				</button>
 
-				<Ads />
-
+				{!ads.length ? null : <Ads />}
 				<VideoController
 					progressRef={progressRef}
 					bufferRef={bufferRef}

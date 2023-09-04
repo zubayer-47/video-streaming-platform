@@ -16,15 +16,12 @@ export type PlayerSettingsType = {
 	quality: string;
 };
 
-// ads
-// [
-// 	{
-// 		title,
-// 		desc,
-// 		link,
-// 		vidSrc,
-// 	}
-// ]
+export type AdsType = {
+	title: string;
+	desc: string;
+	link: string;
+	vidSrc: string;
+};
 
 const usePlayer = (videoId: string) => {
 	const parentRef = useRef<HTMLDivElement>(null);
@@ -42,6 +39,7 @@ const usePlayer = (videoId: string) => {
 	const [timeElapsed, setTimeElapsed] = useState(0);
 	const [volume, setVolume] = useState(0);
 	const [isFullScreen, setIsFullScreen] = useState(false);
+	const [ads, setAds] = useState<AdsType[]>([]);
 
 	const [settings, setSettings] = useState<PlayerSettingsType>({
 		visibleWindow: 'none',
@@ -283,6 +281,7 @@ const usePlayer = (videoId: string) => {
 		volume,
 		isFullScreen,
 		settings,
+		ads,
 		// Handlers
 		handleContextMenu,
 		handlePlayPause,
