@@ -5,7 +5,6 @@ import {
 	FiMinimize,
 	FiPause,
 	FiPlay,
-	FiRotateCcw,
 	FiSettings,
 	FiVolume1,
 	FiVolume2,
@@ -29,6 +28,7 @@ type Props = {
 	volume: number;
 	isFullScreen: boolean;
 	settings: PlayerSettingsType;
+	thumbnail?: string;
 	handleSettings: React.Dispatch<React.SetStateAction<PlayerSettingsType>>;
 	handlePlaybackSeed: ButtonClickHandler;
 	togglePlay: () => void;
@@ -49,6 +49,7 @@ const VideoController = ({
 	volume,
 	isFullScreen,
 	settings,
+	thumbnail,
 	togglePlay,
 	toggleMute,
 	handleSeekPosition,
@@ -83,16 +84,25 @@ const VideoController = ({
 		if (!durationEl || !vidRef.current) return;
 
 		const durationMs = vidRef.current.duration * 1000 || 0;
-		let hoveredTimeSec = (durationMs * ((e.clientX - left) / width)) / 1000;
-		if (hoveredTimeSec < 0) {
-			hoveredTimeSec = 0;
-		}
 
-		durationEl.classList.add('seekBar-duration-tracker');
-		durationEl.style.setProperty(
-			'--duration-left',
-			`${((e.pageX - left - 23) * 100) / width}%`
-		);
+		let hoveredTimeSec = (durationMs * ((e.clientX - left) / width)) / 1000;
+		if (hoveredTimeSec < 0) hoveredTimeSec = 0;
+
+		const centerPos = 22.5;
+		const cursorPos = ((e.pageX - left - centerPos) * 100) / width;
+
+		if (cursorPos < 93) {
+			durationEl.classList.remove('seekBar-duration-tracker-end');
+			durationEl.classList.add('seekBar-duration-tracker-start');
+			durationEl.style.setProperty(
+				'--duration-left',
+				`${cursorPos < 0.5 ? 0.5 : cursorPos}%`
+			);
+		} else {
+			durationEl.classList.remove('seekBar-duration-tracker-start');
+			durationEl.classList.add('seekBar-duration-tracker-end');
+			durationEl.style.setProperty('--duration-left', `1%`);
+		}
 		durationEl.innerText = formateTime(hoveredTimeSec);
 	};
 
@@ -100,36 +110,14 @@ const VideoController = ({
 		const durationEl = seekBarDurationRef.current;
 		if (!durationEl) return;
 
-		durationEl.classList.remove('seekBar-duration-tracker');
+		durationEl.classList.remove('seekBar-duration-tracker-start');
+		durationEl.classList.remove('seekBar-duration-tracker-end');
 	};
 
 	return (
 		<div
 			className={`video-controls-container absolute bottom-0 left-0 right-0 px-1 py-2 z-20 opacity-100 group-hover/video-player-item:opacity-100 transition-opacity duration-300`}
 		>
-			{/* ads */}
-			<div className='flex justify-between items-center'>
-				<div className='bg-white flex items-center gap-2 w-fit px-2 py-3 rounded-md overflow-hidden mb-3'>
-					{/* logo */}
-					<div className=' w-10 h-10 bg-emerald-500/70 p-1.5 rounded-full'>
-						<FiRotateCcw className='w-full h-full text-white' />
-					</div>
-
-					<div>
-						<h1 className='text-sm font-[500] -mb-1'>Tone Matters</h1>
-						<span className='text-sm text-slate-500'>grammarly.com</span>
-					</div>
-
-					<button className='bg-indigo-700 text-sm text-slate-200 px-2 py-1 rounded-2xl ml-2'>
-						Try Now
-					</button>
-				</div>
-
-				<div>
-					<span>4</span>
-				</div>
-			</div>
-
 			{/* settings popup window gose here  */}
 			<div
 				className={`absolute py-1 right-3 bg-black/75 rounded-xl overflow-hidden bottom-14`}
@@ -228,7 +216,7 @@ const VideoController = ({
 
 				{/* seekBar Duration Modal */}
 				<div
-					className='bg-indigo-800/90 text-white hidden px-1 rounded-md'
+					className='absolute bottom-[3.2rem] bg-black/70 text-white text-xs px-1 py-0.5 tracking-wider rounded-md hidden'
 					ref={seekBarDurationRef}
 				></div>
 			</div>

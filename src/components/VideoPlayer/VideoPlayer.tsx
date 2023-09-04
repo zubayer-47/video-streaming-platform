@@ -1,9 +1,9 @@
 import { FiChevronRight, FiPlay } from 'react-icons/fi';
-import defaultThumbnail from '../../assets/demo.jpg';
-import { BASE_URL } from '../../libs/axios';
+import Ads from './Ads';
 import usePlayer from './hooks/usePlayer';
 import VideoController from './partials/VideoController';
 import VideoLoading from './partials/VideoLoading';
+import VideoPlayerThumbnail from './partials/VideoPlayerThumbnail';
 
 type Props = {
 	source: string;
@@ -15,6 +15,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 	const {
 		parentRef,
 		vidRef,
+		vidSrcRef,
 		progressRef,
 		bufferRef,
 		contextRef,
@@ -35,7 +36,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 		toggleMute,
 		toggleFullScreen,
 		handlePlaybackSeed,
-	} = usePlayer();
+	} = usePlayer(source);
 
 	return (
 		<>
@@ -45,20 +46,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 				onContextMenu={handleContextMenu}
 			>
 				{isWaiting && <VideoLoading />}
-				{!removeThumbnail && (
-					<div
-						className='video-thumb object-fill'
-						style={{
-							backgroundImage: `url(${
-								(thumbnail &&
-									`${
-										import.meta.env.VITE_API_URI
-									}/static/thumbnails/${thumbnail}`) ||
-								defaultThumbnail
-							})`,
-						}}
-					/>
-				)}
+				{!removeThumbnail && <VideoPlayerThumbnail thumbnail={thumbnail} />}
 
 				<button
 					type='button'
@@ -73,6 +61,8 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 						<FiPlay className='w-7 h-7 text-white' />
 					</div>
 				</button>
+
+				<Ads />
 
 				<VideoController
 					progressRef={progressRef}
@@ -100,11 +90,12 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 					height={'auto'}
 					crossOrigin='anonymous'
 					preload='auto'
+					autoPlay={true}
 					className='w-full h-full aspect-video'
 				>
-					<source src={`${BASE_URL}/videos/${source}`} type='video/mp4' />
+					<source ref={vidSrcRef} src='' type='video/mp4' />
 					{/* <source src={source} type='video/mp4' /> */}
-					<track
+					{/* <track
 						label='English'
 						kind='subtitles'
 						srcLang='en'
@@ -122,7 +113,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 						kind='subtitles'
 						srcLang='es'
 						src='captions/vtt/sintel-es.vtt'
-					/>
+					/> */}
 				</video>
 			</div>
 			<ul
