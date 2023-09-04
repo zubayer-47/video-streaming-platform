@@ -1,5 +1,4 @@
 import { FiChevronRight, FiPlay } from 'react-icons/fi';
-import { BASE_URL } from '../../libs/axios';
 import usePlayer from './hooks/usePlayer';
 import VideoController from './partials/VideoController';
 import VideoLoading from './partials/VideoLoading';
@@ -15,6 +14,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 	const {
 		parentRef,
 		vidRef,
+		vidSrcRef,
 		progressRef,
 		bufferRef,
 		contextRef,
@@ -35,7 +35,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 		toggleMute,
 		toggleFullScreen,
 		handlePlaybackSeed,
-	} = usePlayer();
+	} = usePlayer(source);
 
 	return (
 		<>
@@ -87,11 +87,12 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 					height={'auto'}
 					crossOrigin='anonymous'
 					preload='auto'
+					autoPlay={true}
 					className='w-full h-full aspect-video'
 				>
-					<source src={`${BASE_URL}/videos/str/${source}`} type='video/mp4' />
+					<source ref={vidSrcRef} src='' type='video/mp4' />
 					{/* <source src={source} type='video/mp4' /> */}
-					<track
+					{/* <track
 						label='English'
 						kind='subtitles'
 						srcLang='en'
@@ -109,7 +110,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 						kind='subtitles'
 						srcLang='es'
 						src='captions/vtt/sintel-es.vtt'
-					/>
+					/> */}
 				</video>
 			</div>
 			<ul

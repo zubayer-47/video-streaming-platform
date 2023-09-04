@@ -88,9 +88,12 @@
   z-index: 1;
 }
 
-.seekBar-duration-tracker {
+.seekBar-duration-tracker-start {
   display: block !important;
-  position: absolute;
-  bottom: 50px;
   left: var(--duration-left);
+}
+
+.seekBar-duration-tracker-end {
+  display: block !important;
+  right: var(--duration-left);
 }

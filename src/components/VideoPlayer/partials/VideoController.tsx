@@ -82,16 +82,25 @@ const VideoController = ({
 		if (!durationEl || !vidRef.current) return;
 
 		const durationMs = vidRef.current.duration * 1000 || 0;
-		let hoveredTimeSec = (durationMs * ((e.clientX - left) / width)) / 1000;
-		if (hoveredTimeSec < 0) {
-			hoveredTimeSec = 0;
-		}
 
-		durationEl.classList.add('seekBar-duration-tracker');
-		durationEl.style.setProperty(
-			'--duration-left',
-			`${((e.pageX - left - 23) * 100) / width}%`
-		);
+		let hoveredTimeSec = (durationMs * ((e.clientX - left) / width)) / 1000;
+		if (hoveredTimeSec < 0) hoveredTimeSec = 0;
+
+		const centerPos = 22.5;
+		const cursorPos = ((e.pageX - left - centerPos) * 100) / width;
+
+		if (cursorPos < 93) {
+			durationEl.classList.remove('seekBar-duration-tracker-end');
+			durationEl.classList.add('seekBar-duration-tracker-start');
+			durationEl.style.setProperty(
+				'--duration-left',
+				`${cursorPos < 0.5 ? 0.5 : cursorPos}%`
+			);
+		} else {
+			durationEl.classList.remove('seekBar-duration-tracker-start');
+			durationEl.classList.add('seekBar-duration-tracker-end');
+			durationEl.style.setProperty('--duration-left', `1%`);
+		}
 		durationEl.innerText = formateTime(hoveredTimeSec);
 	};
 
@@ -99,7 +108,8 @@ const VideoController = ({
 		const durationEl = seekBarDurationRef.current;
 		if (!durationEl) return;
 
-		durationEl.classList.remove('seekBar-duration');
+		durationEl.classList.remove('seekBar-duration-tracker-start');
+		durationEl.classList.remove('seekBar-duration-tracker-end');
 	};
 
 	return (
@@ -204,7 +214,7 @@ const VideoController = ({
 
 				{/* seekBar Duration Modal */}
 				<div
-					className='bg-indigo-800/90 text-white hidden px-1 rounded-md'
+					className='absolute bottom-[3.2rem] bg-black/70 text-white text-xs px-1 py-0.5 tracking-wider rounded-md hidden'
 					ref={seekBarDurationRef}
 				></div>
 			</div>

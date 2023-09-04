@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { BASE_URL } from '../../../libs/axios';
 import { ButtonClickHandler, InputType } from '../../../types/custom';
 
 export type VisibleWindow =
@@ -15,9 +16,10 @@ export type PlayerSettingsType = {
 	quality: string;
 };
 
-const usePlayer = () => {
+const usePlayer = (videoId: string) => {
 	const parentRef = useRef<HTMLDivElement>(null);
 	const vidRef = useRef<HTMLVideoElement>(null);
+	const vidSrcRef = useRef<HTMLSourceElement>(null);
 	const progressRef = useRef<HTMLDivElement>(null);
 	const bufferRef = useRef<HTMLDivElement>(null);
 	const contextRef = useRef<HTMLUListElement>(null);
@@ -30,7 +32,6 @@ const usePlayer = () => {
 	const [timeElapsed, setTimeElapsed] = useState(0);
 	const [volume, setVolume] = useState(0);
 	const [isFullScreen, setIsFullScreen] = useState(false);
-	const [isAds, setIsAds] = useState(false);
 
 	const [settings, setSettings] = useState<PlayerSettingsType>({
 		visibleWindow: 'none',
@@ -38,6 +39,16 @@ const usePlayer = () => {
 		subtitle: 'Off',
 		quality: 'Default',
 	});
+
+	useEffect(() => {
+		if (!vidRef?.current || !vidSrcRef?.current) return;
+		const vidEl = vidRef?.current;
+		const src = vidSrcRef.current;
+		console.log('videoId :', videoId);
+		src.src = `${BASE_URL}/videos/str/${videoId}`;
+		vidEl.load();
+		setRemoveThumbnail(true);
+	}, [videoId]);
 
 	useEffect(() => {
 		if (!vidRef?.current) return;
@@ -50,6 +61,7 @@ const usePlayer = () => {
 
 		const loadedMetadata = () => {
 			setVolume(vidEl.volume);
+
 			// setDuration(+vidEl?.duration || 0);
 			// console.log(vidEl.duration)
 			// AutoPlay
@@ -246,6 +258,7 @@ const usePlayer = () => {
 		//Refs
 		parentRef,
 		vidRef,
+		vidSrcRef,
 		progressRef,
 		bufferRef,
 		contextRef,
