@@ -183,9 +183,6 @@ const usePlayer = () => {
 
 		const newElapsedMs = durationMs * pos;
 		const newTimeSec = newElapsedMs / 1000;
-
-		console.log({ newTimeSec });
-
 		vidRef.current.currentTime = newTimeSec;
 	};
 

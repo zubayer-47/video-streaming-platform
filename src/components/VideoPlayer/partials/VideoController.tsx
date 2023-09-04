@@ -5,6 +5,7 @@ import {
 	FiMinimize,
 	FiPause,
 	FiPlay,
+	FiRotateCcw,
 	FiSettings,
 	FiVolume1,
 	FiVolume2,
@@ -99,13 +100,36 @@ const VideoController = ({
 		const durationEl = seekBarDurationRef.current;
 		if (!durationEl) return;
 
-		durationEl.classList.remove('seekBar-duration');
+		durationEl.classList.remove('seekBar-duration-tracker');
 	};
 
 	return (
 		<div
-			className={`video-controls-container absolute bottom-0 left-0 right-0 px-1 py-2 z-20 opacity-0 group-hover/video-player-item:opacity-100 transition-opacity duration-300`}
+			className={`video-controls-container absolute bottom-0 left-0 right-0 px-1 py-2 z-20 opacity-100 group-hover/video-player-item:opacity-100 transition-opacity duration-300`}
 		>
+			{/* ads */}
+			<div className='flex justify-between items-center'>
+				<div className='bg-white flex items-center gap-2 w-fit px-2 py-3 rounded-md overflow-hidden mb-3'>
+					{/* logo */}
+					<div className=' w-10 h-10 bg-emerald-500/70 p-1.5 rounded-full'>
+						<FiRotateCcw className='w-full h-full text-white' />
+					</div>
+
+					<div>
+						<h1 className='text-sm font-[500] -mb-1'>Tone Matters</h1>
+						<span className='text-sm text-slate-500'>grammarly.com</span>
+					</div>
+
+					<button className='bg-indigo-700 text-sm text-slate-200 px-2 py-1 rounded-2xl ml-2'>
+						Try Now
+					</button>
+				</div>
+
+				<div>
+					<span>4</span>
+				</div>
+			</div>
+
 			{/* settings popup window gose here  */}
 			<div
 				className={`absolute py-1 right-3 bg-black/75 rounded-xl overflow-hidden bottom-14`}
@@ -192,7 +216,7 @@ const VideoController = ({
 			</div>
 			{/* Video SeekBar */}
 			<div
-				className='flex items-center w-full h-1 group/seek-bar bg-white/40 cursor-pointer hover:h-2 transition-all delay-75'
+				className='flex items-center w-full h-1 bg-white/40 cursor-pointer hover:h-2 transition-all delay-75'
 				onClick={handleSeekBar}
 				onMouseMove={handleMouseMove}
 				onMouseLeave={handleMouseLeave}
