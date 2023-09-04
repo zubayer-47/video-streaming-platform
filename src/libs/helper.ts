@@ -7,15 +7,18 @@ export const trunc = (text: string, len?: number) => {
 };
 
 export const formateTime = (timeInSec: number) => {
-	const seconds = Math.round(timeInSec);
-	const minutes = Math.floor(seconds / 60);
-	const hours = Math.floor(minutes / 60);
+	const time = Math.round(timeInSec);
 
-	const res = !hours
-		? `${('0' + minutes).slice(-2)}:${('0' + seconds).slice(-2)}`
-		: `${('0' + hours).slice(-2)}:${('0' + minutes).slice(-2)}:${('0' + seconds)
-				// eslint-disable-next-line no-mixed-spaces-and-tabs
-				.slice(-2)}`;
+	const seconds = Math.floor(time % 60);
+	const minutes = Math.floor((time / 60) % 60);
+	const hours = Math.floor(time / 3600);
 
-	return res;
+	const miniTimestemp = `${('0' + minutes).slice(-2)}:${('0' + seconds).slice(
+		-2
+	)}`;
+	const fullTimestemp = `${('0' + hours).slice(-2)}:${('0' + minutes).slice(
+		-2
+	)}:${('0' + seconds).slice(-2)}`;
+
+	return !hours ? miniTimestemp : fullTimestemp;
 };
