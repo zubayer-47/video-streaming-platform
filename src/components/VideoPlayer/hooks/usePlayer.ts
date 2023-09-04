@@ -61,6 +61,7 @@ const usePlayer = (videoId: string) => {
 
 		const loadedMetadata = () => {
 			setVolume(vidEl.volume);
+			setDuration(vidEl.duration);
 
 			// setDuration(+vidEl?.duration || 0);
 			// console.log(vidEl.duration)
