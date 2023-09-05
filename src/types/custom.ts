@@ -2,7 +2,7 @@ import React from 'react';
 
 export type InputType = React.ChangeEvent<HTMLInputElement>;
 export type SelectType = React.ChangeEvent<HTMLSelectElement>;
-export type ClickType = React.MouseEventHandler<HTMLInputElement>;
+export type ClickHandler = React.MouseEventHandler<HTMLInputElement>;
 export type ButtonClickHandler = React.MouseEventHandler<HTMLButtonElement>;
 export type FormHandler = React.FormEventHandler<HTMLFormElement>;
 export type BooleanSetStateType = React.Dispatch<React.SetStateAction<boolean>>;

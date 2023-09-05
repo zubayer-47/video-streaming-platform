@@ -6,10 +6,6 @@
   --duration-left: 0;
 }
 
-.search-bar:focus~.pre-search {
-  display: block !important;
-}
-
 .volume-range {
   /* removing default appearance */
   -webkit-appearance: none;

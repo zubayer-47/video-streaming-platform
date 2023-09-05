@@ -2,7 +2,7 @@ import { FiSearch } from 'react-icons/fi';
 import PreSearch from './PreSearch';
 
 const SearchBar = () => (
-	<div className='flex-1 relative max-w-2xl flex items-stretch'>
+	<div className='flex-1 relative max-w-2xl flex items-stretch group/searchBar'>
 		<input
 			type='search'
 			name='search'
