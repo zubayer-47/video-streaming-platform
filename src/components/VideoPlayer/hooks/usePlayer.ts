@@ -56,6 +56,9 @@ const usePlayer = (videoId: string) => {
 		src.src = `${BASE_URL}/videos/str/${videoId}`;
 		vidEl.load();
 
+		// load ads
+		// handleAds();
+
 		if (!vidEl.paused) {
 			setRemoveThumbnail(false);
 		} else {
@@ -64,9 +67,10 @@ const usePlayer = (videoId: string) => {
 	}, [videoId]);
 
 	useEffect(() => {
-		if (!vidRef?.current) return;
+		if (!vidRef?.current || !parentRef.current) return;
 		let reachDuration = 5;
 		const vidEl = vidRef?.current;
+		const parentEl = parentRef?.current;
 
 		const onFullscreenChange = () => {
 			setIsFullScreen(!!document.fullscreenElement);
@@ -128,7 +132,6 @@ const usePlayer = (videoId: string) => {
 		const onPause = () => {
 			setPlay(false);
 			setWaiting(false);
-
 			// contextRef.current.
 
 			// vidEl.pause();
@@ -140,6 +143,17 @@ const usePlayer = (videoId: string) => {
 			if (parent && document.fullscreenElement) document.exitFullscreen();
 		};
 
+		const onKeyDown = (e: KeyboardEvent) => {
+			const key = e.key.toLowerCase();
+			if (key === 'arrowright') {
+				setTimeElapsed((prev) => prev + 10);
+				vidEl.currentTime += 10;
+			} else if (key === 'arrowleft') {
+				setTimeElapsed((prev) => prev - 10);
+				vidEl.currentTime -= 10;
+			}
+		};
+
 		// Events
 		vidEl.addEventListener('loadedmetadata', loadedMetadata);
 		vidEl.addEventListener('timeupdate', onTimeUpdate);
@@ -149,6 +163,7 @@ const usePlayer = (videoId: string) => {
 		vidEl.addEventListener('pause', onPause);
 		vidEl.addEventListener('ended', onEnd);
 		document.addEventListener('fullscreenchange', onFullscreenChange);
+		parentEl.addEventListener('keydown', onKeyDown);
 		//Clean up
 		return () => {
 			vidEl.removeEventListener('loadedmetadata', loadedMetadata);
@@ -159,14 +174,27 @@ const usePlayer = (videoId: string) => {
 			vidEl.removeEventListener('progress', onProgress);
 			vidEl.removeEventListener('timeupdate', onTimeUpdate);
 			vidEl.removeEventListener('ended', onEnd);
+			parentEl.removeEventListener('keydown', onKeyDown);
 			document.removeEventListener('fullscreenchange', onFullscreenChange);
 		};
 	}, [isPlay, isWaiting]);
 
+	const handleAds = () => {
+		// fetch ads here
+		setAds((prev) => [...prev, { desc: '', link: '', title: '', vidSrc: '' }]);
+	};
+
+	const stopAds = () => {
+		// fetch ads here
+		setAds([]);
+	};
+
 	const handleContextMenu: React.MouseEventHandler<HTMLDivElement> = (e) => {
 		e.preventDefault();
 		const ulElem = contextRef.current;
-		if (!ulElem) return;
+
+		// hide context menu when ads exist
+		if (!ulElem || ads.length) return;
 
 		ulElem.classList.remove('hidden');
 		ulElem.classList.add('block');
@@ -291,6 +319,7 @@ const usePlayer = (videoId: string) => {
 		toggleFullScreen,
 		setSettings,
 		handlePlaybackSeed,
+		stopAds,
 	};
 };
 

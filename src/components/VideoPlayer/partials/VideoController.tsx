@@ -13,7 +13,7 @@ import {
 import '../../../index.css';
 import { formateTime } from '../../../libs/helper';
 import { ButtonClickHandler, InputType } from '../../../types/custom';
-import { PlayerSettingsType } from '../hooks/usePlayer';
+import { AdsType, PlayerSettingsType } from '../hooks/usePlayer';
 import PlaybackSpeed from './widgets/PlaybackSpeed';
 import Subtitle from './widgets/Subtitle';
 
@@ -28,6 +28,7 @@ type Props = {
 	volume: number;
 	isFullScreen: boolean;
 	settings: PlayerSettingsType;
+	ads: AdsType[];
 	thumbnail?: string;
 	handleSettings: React.Dispatch<React.SetStateAction<PlayerSettingsType>>;
 	handlePlaybackSeed: ButtonClickHandler;
@@ -49,6 +50,7 @@ const VideoController = ({
 	volume,
 	isFullScreen,
 	settings,
+	ads,
 	thumbnail,
 	togglePlay,
 	toggleMute,
@@ -124,7 +126,7 @@ const VideoController = ({
 			>
 				{settings.visibleWindow === 'settings' && (
 					<ul>
-						<li>
+						<li className={!ads.length ? 'block' : 'hidden'}>
 							<button
 								className='text-white px-3 py-2 w-full flex gap-8 items-center justify-between hover:bg-black/50'
 								onClick={() =>
@@ -167,7 +169,7 @@ const VideoController = ({
 								</span>
 							</button>
 						</li>
-						<li>
+						<li className={!ads.length ? 'block' : 'hidden'}>
 							<button
 								type='button'
 								className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50'

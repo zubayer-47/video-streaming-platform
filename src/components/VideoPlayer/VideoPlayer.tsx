@@ -75,6 +75,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 					volume={volume}
 					isFullScreen={isFullScreen}
 					settings={settings}
+					ads={ads}
 					handleSettings={setSettings}
 					handlePlaybackSeed={handlePlaybackSeed}
 					togglePlay={handlePlayPause}
