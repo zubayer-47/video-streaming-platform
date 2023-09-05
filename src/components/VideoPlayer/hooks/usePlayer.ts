@@ -207,8 +207,8 @@ const usePlayer = (videoId: string) => {
 		const ulEl = contextRef?.current;
 		if (!ulEl) return;
 
-		ulEl.classList.add('hidden');
 		ulEl.classList.remove('block');
+		ulEl.classList.add('hidden');
 	};
 
 	const handlePlayPause = () => {

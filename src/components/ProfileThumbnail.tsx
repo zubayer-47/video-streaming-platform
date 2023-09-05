@@ -30,8 +30,7 @@ const ProfileThumbnail = ({
 	classes,
 }: Props) => {
 	const channelLen = !isList ? 15 : 10;
-	//max-h-56 md:max-h-52 h-2/5
-	//className={`rounded-md object-cover ${!isList ? "w-full max-h-56 md:max-h-52" : "w-40 max-h-24"}`}
+
 	return (
 		<div
 			className={`flex m-3 md:m-0 gap-2 ${!isList ? 'flex-col' : 'flex-row'}`}
@@ -40,8 +39,8 @@ const ProfileThumbnail = ({
 				to={vidLink}
 				className={`relative block rounded-md overflow-hidden bg-indigo-200/40 ${
 					!isList
-						? 'w-full max-h-52 sm:max-h-[11.5rem] md:max-h-[10rem] lg:max-h-[9.5rem]'
-						: 'w-40 max-h-24'
+						? 'w-full h-52 sm:h-[11.5rem] md:h-[10rem] lg:h-[13rem]'
+						: 'w-40 h-24'
 				} ${classes}`}
 			>
 				<img

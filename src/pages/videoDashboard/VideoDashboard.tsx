@@ -6,8 +6,6 @@ import VideoContent from './partials/VideoContent';
 dayjs.extend(relativeTime);
 
 export default function VideoDashboard() {
-
-
 	return (
 		<div className='fixed inset-0 flex flex-col'>
 			<div className='flex gap-3'>
