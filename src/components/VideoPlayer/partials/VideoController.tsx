@@ -1,3 +1,4 @@
+import { MouseEvent, useRef } from 'react';
 import {
 	FiChevronRight,
 	FiMaximize,
@@ -12,13 +13,14 @@ import {
 import '../../../index.css';
 import { formateTime } from '../../../libs/helper';
 import { ButtonClickHandler, InputType } from '../../../types/custom';
-import { PlayerSettingsType } from '../hooks/usePlayer';
+import { AdsType, PlayerSettingsType } from '../hooks/usePlayer';
 import PlaybackSpeed from './widgets/PlaybackSpeed';
 import Subtitle from './widgets/Subtitle';
 
 type Props = {
 	progressRef: React.RefObject<HTMLDivElement>;
 	bufferRef: React.RefObject<HTMLDivElement>;
+	vidRef: React.RefObject<HTMLVideoElement>;
 	isPlay: boolean;
 	isMuted: boolean;
 	duration: number;
@@ -26,6 +28,8 @@ type Props = {
 	volume: number;
 	isFullScreen: boolean;
 	settings: PlayerSettingsType;
+	ads: AdsType[];
+	thumbnail?: string;
 	handleSettings: React.Dispatch<React.SetStateAction<PlayerSettingsType>>;
 	handlePlaybackSeed: ButtonClickHandler;
 	togglePlay: () => void;
@@ -38,6 +42,7 @@ type Props = {
 const VideoController = ({
 	progressRef,
 	bufferRef,
+	vidRef,
 	isPlay,
 	isMuted,
 	duration,
@@ -45,6 +50,8 @@ const VideoController = ({
 	volume,
 	isFullScreen,
 	settings,
+	ads,
+	thumbnail,
 	togglePlay,
 	toggleMute,
 	handleSeekPosition,
@@ -53,6 +60,8 @@ const VideoController = ({
 	handleSettings,
 	handlePlaybackSeed,
 }: Props) => {
+	const seekBarDurationRef = useRef<HTMLDivElement>(null);
+
 	const volIcon = () => {
 		if (!isMuted) {
 			return volume < 0.5 ? (
@@ -64,15 +73,52 @@ const VideoController = ({
 		return <FiVolumeX className='w-5 h-5 text-red-500 fill-white stroke-1' />;
 	};
 
-	const handleSeekBar = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+	const handleSeekBar = (e: MouseEvent<HTMLDivElement>) => {
 		const { left, width } = e.currentTarget.getBoundingClientRect();
 		const clickedPos = (e.clientX - left) / width;
 		handleSeekPosition(clickedPos);
 	};
 
+	const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+		// console.log(e.pageX, e.pageY);
+		const durationEl = seekBarDurationRef.current;
+		const { left, width } = e.currentTarget.getBoundingClientRect();
+		if (!durationEl || !vidRef.current) return;
+
+		const durationMs = vidRef.current.duration * 1000 || 0;
+
+		let hoveredTimeSec = (durationMs * ((e.clientX - left) / width)) / 1000;
+		if (hoveredTimeSec < 0) hoveredTimeSec = 0;
+
+		const centerPos = 22.5;
+		const cursorPos = ((e.pageX - left - centerPos) * 100) / width;
+
+		if (cursorPos < 93) {
+			durationEl.classList.remove('seekBar-duration-tracker-end');
+			durationEl.classList.add('seekBar-duration-tracker-start');
+			durationEl.style.setProperty(
+				'--duration-left',
+				`${cursorPos < 0.5 ? 0.5 : cursorPos}%`
+			);
+		} else {
+			durationEl.classList.remove('seekBar-duration-tracker-start');
+			durationEl.classList.add('seekBar-duration-tracker-end');
+			durationEl.style.setProperty('--duration-left', `1%`);
+		}
+		durationEl.innerText = formateTime(hoveredTimeSec);
+	};
+
+	const handleMouseLeave = () => {
+		const durationEl = seekBarDurationRef.current;
+		if (!durationEl) return;
+
+		durationEl.classList.remove('seekBar-duration-tracker-start');
+		durationEl.classList.remove('seekBar-duration-tracker-end');
+	};
+
 	return (
 		<div
-			className={`video-controls-container absolute bottom-0 left-0 right-0 px-1 py-2 z-20 opacity-0 group-hover/video-player-item:opacity-100 transition-opacity duration-300`}
+			className={`video-controls-container absolute bottom-0 left-0 right-0 px-1 py-2 z-20 opacity-100 group-hover/video-player-item:opacity-100 transition-opacity duration-300`}
 		>
 			{/* settings popup window gose here  */}
 			<div
@@ -80,7 +126,7 @@ const VideoController = ({
 			>
 				{settings.visibleWindow === 'settings' && (
 					<ul>
-						<li>
+						<li className={!ads.length ? 'block' : 'hidden'}>
 							<button
 								className='text-white px-3 py-2 w-full flex gap-8 items-center justify-between hover:bg-black/50'
 								onClick={() =>
@@ -123,7 +169,7 @@ const VideoController = ({
 								</span>
 							</button>
 						</li>
-						<li>
+						<li className={!ads.length ? 'block' : 'hidden'}>
 							<button
 								type='button'
 								className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50'
@@ -162,11 +208,19 @@ const VideoController = ({
 			<div
 				className='flex items-center w-full h-1 bg-white/40 cursor-pointer hover:h-2 transition-all delay-75'
 				onClick={handleSeekBar}
+				onMouseMove={handleMouseMove}
+				onMouseLeave={handleMouseLeave}
 			>
 				{/* Progress Bar */}
 				<div className='h-full bg-indigo-500 z-[1]' ref={progressRef} />
 				{/* Buffer Bar */}
 				<div className='h-full bg-black' ref={bufferRef} />
+
+				{/* seekBar Duration Modal */}
+				<div
+					className='absolute bottom-[3.2rem] bg-black/70 text-white text-xs px-1 py-0.5 tracking-wider rounded-md hidden'
+					ref={seekBarDurationRef}
+				></div>
 			</div>
 			{/* Video Controller Information */}
 			<div className='mt-1 flex items-center justify-between gap-1.5'>

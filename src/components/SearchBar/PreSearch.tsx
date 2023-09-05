@@ -35,8 +35,12 @@ const SearchPreview = ({ search, isHistory }: SP) => {
 };
 
 const PreSearch = () => {
+	// const [searchValue, setSearchValue] = useState('');
+
+	// const handleSearch = debounce((e: ButtonClickHandler) => {});
+
 	return (
-		<ul className='absolute top-12 bg-indigo-100 rounded-xl py-1.5 w-full overflow-hidden hidden pre-search border border-indigo-200/50 shadow-md'>
+		<ul className='absolute top-12 bg-indigo-100 rounded-xl py-1.5 w-full overflow-hidden hidden group-focus-within/searchBar:block border border-indigo-200/50 shadow-md'>
 			<SearchPreview search='Alan Walker Mashup' isHistory />
 			<SearchPreview search='Zara Zara Bahekta Hai' isHistory />
 			<SearchPreview search='history search query' isHistory />

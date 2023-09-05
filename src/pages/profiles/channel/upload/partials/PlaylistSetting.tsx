@@ -1,13 +1,15 @@
 import { FiFilePlus } from 'react-icons/fi';
 import { InlineSelectInput } from '../../../../../components/Inputs/MaterialInput';
 import { SelectType } from '../../../../../types/custom';
+import { PlaylistMeta } from '../UploadVideo';
 
 type Props = {
-	status: string;
+	playlists: PlaylistMeta[];
+	active: string;
 	handle: (e: SelectType) => void;
 };
 
-const PlaylistSetting = ({ status, handle }: Props) => {
+const PlaylistSetting = ({ playlists, active, handle }: Props) => {
 	return (
 		<div className='flex items-center justify-between gap-2 text-xs'>
 			<div className='flex items-center gap-1'>
@@ -18,13 +20,10 @@ const PlaylistSetting = ({ status, handle }: Props) => {
 			</div>
 			<InlineSelectInput
 				name='playlist'
-				value={status}
+				value={active}
 				defValue='Add to Playlist'
 				handler={handle}
-				options={[
-					{ id: 'PUBLIC', name: 'Public' },
-					{ id: 'PRIVATE', name: 'Private' },
-				]}
+				options={playlists.map((pl) => ({ id: pl.playlistId, name: pl.title }))}
 			/>
 		</div>
 	);

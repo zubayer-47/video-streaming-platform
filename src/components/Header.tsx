@@ -3,8 +3,7 @@ import { FaCircleUser } from 'react-icons/fa6';
 import { FiBell, FiUpload } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
-import useModal from '../hooks/useModal';
-import FollowButton from './Buttons/FollowButton';
+import LoginButton from './Buttons/LoginButton';
 import NotificationModal from './Modals/NotificationModal/NotificationModal';
 import UserModal from './Modals/UserModal';
 import SearchBar from './SearchBar/SearchBar';
@@ -12,7 +11,6 @@ import SearchBar from './SearchBar/SearchBar';
 const Header = () => {
 	const [openedModal, setOpenedModal] = useState('');
 	const { state } = useAuth();
-	const { dispatch } = useModal();
 
 	const handleUserModal = () =>
 		setOpenedModal((prev) => (prev === 'user' ? '' : 'user'));
@@ -33,17 +31,7 @@ const Header = () => {
 				</div>
 				<div className='flex items-center gap-3 md:gap-4'>
 					{!state.isLoggedIn ? (
-						<FollowButton
-							title='Log In'
-							handler={() =>
-								dispatch({
-									type: 'UPDATE_AUTH_MODAL',
-									payload: true,
-								})
-							}
-							icon={<FaCircleUser className='w-5 h-5 fill-slate-500' />}
-							classes='py-2.5 text-xs md:text-sm'
-						/>
+						<LoginButton />
 					) : (
 						<>
 							<Link
@@ -84,16 +72,3 @@ const Header = () => {
 };
 
 export default Header;
-
-/**
- * video
- * title
- * channelinfo: name, avatar, followers count
- * like, dislike,
- * view
- * timestamps
- * description
- * comments count
- * comments
- *
- */
