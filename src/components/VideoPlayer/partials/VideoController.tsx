@@ -93,7 +93,7 @@ const VideoController = ({
 		const centerPos = 22.5;
 		const cursorPos = ((e.pageX - left - centerPos) * 100) / width;
 
-		if (cursorPos < 93) {
+		if (cursorPos < 94.5) {
 			durationEl.classList.remove('seekBar-duration-tracker-end');
 			durationEl.classList.add('seekBar-duration-tracker-start');
 			durationEl.style.setProperty(
@@ -103,7 +103,7 @@ const VideoController = ({
 		} else {
 			durationEl.classList.remove('seekBar-duration-tracker-start');
 			durationEl.classList.add('seekBar-duration-tracker-end');
-			durationEl.style.setProperty('--duration-left', `1%`);
+			durationEl.style.setProperty('--duration-left', `0.5%`);
 		}
 		durationEl.innerText = formateTime(hoveredTimeSec);
 	};
@@ -218,7 +218,7 @@ const VideoController = ({
 
 				{/* seekBar Duration Modal */}
 				<div
-					className='absolute bottom-[3.2rem] bg-black/70 text-white text-xs px-1 py-0.5 tracking-wider rounded-md hidden'
+					className='absolute bottom-14 bg-black/70 text-white text-xs px-1 py-0.5 tracking-wider rounded-sm hidden'
 					ref={seekBarDurationRef}
 				></div>
 			</div>
