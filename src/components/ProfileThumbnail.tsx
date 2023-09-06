@@ -39,7 +39,7 @@ const ProfileThumbnail = ({
 				to={vidLink}
 				className={`relative block rounded-md overflow-hidden bg-indigo-200/40 ${
 					!isList
-						? 'w-full h-52 sm:h-[11.5rem] md:h-[10rem] lg:h-[13rem]'
+						? 'w-full h-52 sm:h-[11rem] md:h-[10rem] lg:h-[12rem]'
 						: 'w-40 h-24'
 				} ${classes}`}
 			>
