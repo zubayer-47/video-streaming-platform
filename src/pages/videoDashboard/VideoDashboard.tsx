@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { Outlet } from 'react-router-dom';
 import Sidebar from './partials/Sidebar';
 import Tags from './partials/Tags';
-import VideoContent from './partials/VideoContent';
 dayjs.extend(relativeTime);
 
 export default function VideoDashboard() {
@@ -13,7 +13,8 @@ export default function VideoDashboard() {
 				<div className='pt-20 flex-1 overflow-hidden'>
 					<Tags />
 					<div className='w-full h-[85dvh] overflow-auto'>
-						<VideoContent />
+						{/* <VideoContent /> */}
+						<Outlet />
 					</div>
 				</div>
 			</div>

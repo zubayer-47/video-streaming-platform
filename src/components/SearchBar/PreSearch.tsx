@@ -1,26 +1,60 @@
+import { useRef } from 'react';
 import { FiClock, FiSearch } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
-type SP = {
-	search: string;
-	isHistory?: boolean;
+type Props = {
+	searchTerm: string;
 };
 
-const SearchPreview = ({ search, isHistory }: SP) => {
+export default function PreSearch({ searchTerm }: Props) {
+	const ulRef = useRef<HTMLUListElement>(null);
+	// const [searchValue, setSearchValue] = useState('');
+	// query.set('search_query', searchTerm);
+
+	// const handleSearch = debounce((e: ButtonClickHandler) => {});
+
+	return (
+		<ul
+			ref={ulRef}
+			className={`absolute top-12 bg-indigo-100 rounded-xl py-1.5 w-full overflow-hidden hidden group-focus-within/searchBar:block border border-indigo-200/50 shadow-md`}
+		>
+			<SearchPreview search={searchTerm} />
+			<SearchPreview history='Zara Zara Bahekta Hai' />
+			<SearchPreview history='history search query' />
+			<SearchPreview history='Pre search query' />
+		</ul>
+	);
+}
+
+type SP = {
+	search?: string;
+	history?: string;
+};
+
+const SearchPreview = ({ search, history }: SP) => {
 	return (
 		<li className='flex items-stretch hover:bg-indigo-200/50'>
 			<Link
-				to={'/xyz'}
+				to={`/result?sq=${search || history}`}
 				className='flex flex-1 items-center gap-2 px-3 py-1.5 tracking-wide font-semibold text-slate-700'
 			>
-				{!isHistory ? (
-					<FiSearch className='w-4 h-4' />
+				{!history ? (
+					<>
+						{!search ? null : (
+							<>
+								<FiSearch className='w-4 h-4' />
+								<p>{search}</p>
+							</>
+						)}
+					</>
 				) : (
-					<FiClock className='w-4 h-4' />
+					<>
+						<FiClock className='w-4 h-4' />
+						<p>{history}</p>
+					</>
 				)}
-				<p>{search}</p>
 			</Link>
-			{!isHistory ? null : (
+			{!history ? null : (
 				<div className='px-2 grid place-content-center'>
 					<button
 						type='button'
@@ -33,20 +67,3 @@ const SearchPreview = ({ search, isHistory }: SP) => {
 		</li>
 	);
 };
-
-const PreSearch = () => {
-	// const [searchValue, setSearchValue] = useState('');
-
-	// const handleSearch = debounce((e: ButtonClickHandler) => {});
-
-	return (
-		<ul className='absolute top-12 bg-indigo-100 rounded-xl py-1.5 w-full overflow-hidden hidden group-focus-within/searchBar:block border border-indigo-200/50 shadow-md'>
-			<SearchPreview search='Alan Walker Mashup' isHistory />
-			<SearchPreview search='Zara Zara Bahekta Hai' isHistory />
-			<SearchPreview search='history search query' isHistory />
-			<SearchPreview search='Pre search query' />
-		</ul>
-	);
-};
-
-export default PreSearch;
