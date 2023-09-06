@@ -18,51 +18,6 @@ type VideoBodyProps = {
 const VideoBody: React.FC<VideoBodyProps> = ({ videoId, metaData }) => {
 	const [descStatus, setDescStatus] = useState(false);
 
-	// const query = useQuery();
-	// const axiosPrivate = useAxiosPrivate();
-	// const [metaData, setMetaData] = useState<MetaDataType>({
-	// 	channelId: '',
-	// 	thumbnail: '',
-	// 	title: '',
-	// 	description: '',
-	// 	createdAt: '',
-	// 	channel: {
-	// 		name: '',
-	// 		user: { avater: '' },
-	// 	},
-	// 	followers: 0,
-	// });
-	// const navigate = useNavigate();
-	// const videoId = query.get('v');
-	// const playlistId = query.get('p');
-
-	// useEffect(() => {
-	// 	if (!videoId) return navigate('/404');
-	// 	const controller = new AbortController();
-
-	// 	(async () => {
-	// 		try {
-	// 			const res = await axiosPrivate.get(
-	// 				`/videos/metadata?v=${videoId}${
-	// 					playlistId ? `&p=${playlistId}` : ``
-	// 				}`,
-	// 				{
-	// 					signal: controller.signal,
-	// 				}
-	// 			);
-	// 			const resData = res?.data || [];
-	// 			// console.log('resData :', resData);
-	// 			setMetaData(resData);
-	// 		} catch (error) {
-	// 			console.log('error :', error);
-	// 		}
-	// 	})();
-
-	// 	return () => {
-	// 		controller.abort();
-	// 	};
-	// }, [axiosPrivate, videoId, playlistId, navigate]);
-
 	return (
 		<div className='flex-1 flex flex-col w-full h-fit'>
 			{/* <VideoPlayer source={VideoFile} /> */}
@@ -122,14 +77,14 @@ const VideoBody: React.FC<VideoBodyProps> = ({ videoId, metaData }) => {
 					<span>{dayjs(metaData.createdAt).toNow(true)}</span>
 				</p>
 				<p className='font-normal text-gray-700'>
-					{trunc(metaData?.description || '', !descStatus ? 500 : undefined)}
+					{trunc(metaData?.description || '', !descStatus ? 150 : undefined)}
 					<button
 						onClick={() => {
 							setDescStatus(false);
 							console.log(descStatus);
 						}}
-						className={`font-bold  ml-auto ${
-							!descStatus ? 'inline-block' : 'block'
+						className={`font-bold ${
+							!descStatus ? 'inline-block ml-2' : 'block ml-auto'
 						}`}
 					>
 						{!descStatus ? 'more' : 'Show less'}
