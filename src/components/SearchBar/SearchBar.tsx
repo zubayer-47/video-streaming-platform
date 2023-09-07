@@ -15,7 +15,7 @@ const SearchBar = () => {
 			<input
 				type='search'
 				name='search'
-				className='w-full pl-5 pr-3 py-2 bg-transparent outline-none tracking-wider search-bar rounded-l-full border border-indigo-200 dark:border-slate-700'
+				className='w-full pl-5 pr-3 py-2 bg-transparent outline-none tracking-wider search-bar rounded-l-full border border-indigo-200 dark:border-dark-text/20'
 				placeholder='Search'
 				value={searchTerm}
 				onChange={handleSearchTerm}
@@ -25,7 +25,7 @@ const SearchBar = () => {
 			<button
 				type='button'
 				title='Search'
-				className='bg-indigo-100 dark:bg-transparent w-16 grid place-content-center rounded-r-full border border-indigo-200 dark:border-slate-700'
+				className='bg-indigo-100 dark:bg-transparent w-16 grid place-content-center rounded-r-full border border-indigo-200 dark:border-dark-text/20'
 			>
 				<FiSearch className='w-6 h-6 text-slate-700 dark:text-slate-300' />
 			</button>

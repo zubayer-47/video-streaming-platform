@@ -16,7 +16,7 @@ export default function PreSearch({ searchTerm }: Props) {
 	return (
 		<ul
 			ref={ulRef}
-			className={`absolute top-12 bg-indigo-100 rounded-xl py-1.5 w-full overflow-hidden hidden group-focus-within/searchBar:block border border-indigo-200/50 shadow-md`}
+			className={`absolute top-12 bg-indigo-100 dark:bg-dark-modal rounded-xl py-1.5 w-full overflow-hidden hidden group-focus-within/searchBar:block border border-indigo-200/50 dark:border-dark-text/20 shadow-md`}
 		>
 			<SearchPreview search={searchTerm} />
 			<SearchPreview history='Zara Zara Bahekta Hai' />
@@ -33,10 +33,10 @@ type SP = {
 
 const SearchPreview = ({ search, history }: SP) => {
 	return (
-		<li className='flex items-stretch hover:bg-indigo-200/50'>
+		<li className='flex items-stretch hover:bg-indigo-200/50 dark:hover:bg-dark-overlay-100'>
 			<Link
 				to={`/result?sq=${search || history}`}
-				className='flex flex-1 items-center gap-2 px-3 py-1.5 tracking-wide font-semibold text-slate-700'
+				className='flex flex-1 items-center gap-2 px-3 py-1.5 tracking-wide font-semibold text-slate-700 dark:text-slate-300'
 			>
 				{!history ? (
 					<>
