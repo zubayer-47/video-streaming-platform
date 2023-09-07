@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import PageLayout from './components/Layouts/PageLayout';
 import CreateChannelModal from './components/Modals/CreateChannelModal/CreateChannelModal';
 import useAuth from './hooks/useAuth';
 import useModal from './hooks/useModal';
+import useTheme from './hooks/useTheme';
 import Auth from './pages/auth/Auth';
 import AuthModal from './pages/auth/authModals/AuthModal';
 import NotFound from './pages/notfound/NotFound';
@@ -21,6 +23,19 @@ import VideoContent from './pages/videoDashboard/partials/VideoContent';
 function App() {
 	const userContext = useAuth();
 	const modalContext = useModal();
+	const { state, updateTheme } = useTheme();
+
+	useEffect(() => {
+		const theme = localStorage.getItem('theme');
+		updateTheme(theme === 'dark' ? 'dark' : 'light');
+
+		if (theme === 'dark') {
+			document.documentElement?.classList.add('dark');
+		} else {
+			document.documentElement?.classList.remove('dark');
+		}
+	}, [state.theme, updateTheme]);
+
 	return (
 		<PageLayout>
 			<Header />

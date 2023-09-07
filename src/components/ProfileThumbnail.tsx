@@ -73,7 +73,7 @@ const ProfileThumbnail = ({
 				<div className='flex-1 flex flex-col gap-1.5'>
 					<Link
 						to={vidLink}
-						className={`text-sm tracking-wide text-slate-800 ${
+						className={`text-sm tracking-wide dark:text-slate-300 text-slate-800 ${
 							!isList
 								? 'font-semibold line-clamp-2'
 								: 'font-medium line-clamp-3'
@@ -90,13 +90,15 @@ const ProfileThumbnail = ({
 						{!chnLink || !channelName ? null : (
 							<Link
 								to={chnLink}
-								className='text-gray-700 font-medium flex-shrink-0'
+								className={`font-medium flex-shrink-0 dark:text-slate-400 text-slate-700`}
 							>
 								{trunc(channelName, channelLen)}
 							</Link>
 						)}
 
-						<p className='text-gray-500 flex-shrink-0'>{uploadedAt} ago</p>
+						<p className={`flex-shrink-0 dark:text-slate-400 text-slate-700`}>
+							{uploadedAt} ago
+						</p>
 					</div>
 				</div>
 			</div>
