@@ -23,7 +23,7 @@ const VideoBody: React.FC<VideoBodyProps> = ({ videoId, metaData }) => {
 			{/* <VideoPlayer source={VideoFile} /> */}
 			<VideoPlayer source={videoId!} thumbnail={metaData.thumbnail} />
 
-			<p className='mt-2.5 text-lg font-semibold text-slate-800'>
+			<p className='mt-2.5 text-lg font-semibold text-slate-800 dark:text-slate-200'>
 				{/* How to Build Your Perfect Resume: Learn from a FAANG Employee Example! */}
 				{metaData.title}
 			</p>
@@ -34,11 +34,13 @@ const VideoBody: React.FC<VideoBodyProps> = ({ videoId, metaData }) => {
 						<FaCircleUser className='h-10 w-10' />
 					</Link>
 					<p className='flex flex-col justify-center'>
-						<Link to={`/ch/${metaData.channelId}`} className='font-bold'>
-							{/* Stack Learner */}
+						<Link
+							to={`/ch/${metaData.channelId}`}
+							className='font-bold dark:text-slate-200 text-inherit'
+						>
 							{metaData?.channel?.name}
 						</Link>
-						<span className='text-sm text-gray-800'>
+						<span className='text-sm text-gray-800 dark:text-slate-400'>
 							{metaData.followers} followers
 						</span>
 					</p>
@@ -47,20 +49,20 @@ const VideoBody: React.FC<VideoBodyProps> = ({ videoId, metaData }) => {
 				</div>
 
 				<div className='flex gap-2 items-center'>
-					<div className='flex items-center bg-indigo-100 rounded-full overflow-hidden'>
+					<div className='flex items-center bg-indigo-100 dark:bg-dark-overlay-100 rounded-full overflow-hidden'>
 						<button
 							type='button'
-							className='flex items-center gap-1.5 px-3 border-black hover:bg-indigo-200/50 py-2 h-full w-full'
+							className='flex items-center gap-1.5 px-3 border-black dark:hover:bg-dark-overlay-200 py-2 h-full w-full'
 						>
-							<FiThumbsUp className='h-6 w-6 text-indigo-700' />
-							<span>630</span>
+							<FiThumbsUp className='h-6 w-6 text-indigo-700 dark:text-slate-300' />
+							<span className='dark:text-slate-300 text-inherit'>630</span>
 						</button>
-						<span className='w-1 h-6 bg-gray-800'></span>
+						<span className='w-1 h-6 bg-gray-800 dark:bg-slate-300'></span>
 						<button
 							type='button'
-							className='px-3 border-black hover:bg-indigo-200/50 py-2 h-full w-full'
+							className='px-3 border-black dark:hover:bg-dark-overlay-200 py-2 h-full w-full'
 						>
-							<FiThumbsDown className='h-6 w-6' />
+							<FiThumbsDown className='h-6 w-6 dark:text-slate-300' />
 						</button>
 					</div>
 				</div>
@@ -68,15 +70,17 @@ const VideoBody: React.FC<VideoBodyProps> = ({ videoId, metaData }) => {
 
 			<div
 				onClick={() => (!descStatus ? setDescStatus(true) : undefined)}
-				className={`text-left bg-indigo-100/70 hover:bg-indigo-100 p-3 rounded-xl ${
+				className={`text-left bg-indigo-100/70 hover:bg-indigo-100 dark:bg-dark-overlay-100 dark:hover:bg-dark-overlay-200 p-3 rounded-xl ${
 					!descStatus ? 'cursor-pointer' : 'cursor-text'
 				}`}
 			>
 				<p className='font-medium space-x-2'>
-					<span>6k views</span>
-					<span>{dayjs(metaData.createdAt).toNow(true)}</span>
+					<span className='dark:text-slate-300'>6k views</span>
+					<span className='text-dark-text text-sm'>
+						{dayjs(metaData.createdAt).toNow(true)}
+					</span>
 				</p>
-				<p className='font-normal text-gray-700'>
+				<p className='font-normal text-gray-700 dark:text-slate-300 mt-3'>
 					{trunc(metaData?.description || '', !descStatus ? 150 : undefined)}
 					<button
 						onClick={() => {

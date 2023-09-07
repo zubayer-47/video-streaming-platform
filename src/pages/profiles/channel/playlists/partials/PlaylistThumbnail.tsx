@@ -36,8 +36,12 @@ const PlaylistThumbnail: FC<{ info: PlaylistDataType }> = ({
 				</div>
 			</div>
 
-			<h1 className='line-clamp-2 font-medium my-2'>{title}</h1>
-			<p className='text-sm font-medium text-gray-600'>View full playlist</p>
+			<h1 className='line-clamp-2 font-medium my-2 dark:text-slate-300'>
+				{title}
+			</h1>
+			<p className='text-sm font-medium text-gray-600 dark:text-dark-text'>
+				View full playlist
+			</p>
 		</Link>
 	);
 };

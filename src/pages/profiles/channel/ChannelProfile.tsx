@@ -75,16 +75,22 @@ const ChannelProfile = () => {
 							/>
 						</div>
 						<div className='flex-1 max-w-lg'>
-							<h1 className='text-2xl tracking-wider'>{user?.fullname}</h1>
+							<h1 className='text-2xl tracking-wider dark:text-slate-300'>
+								{user?.fullname}
+							</h1>
 							<p className='space-x-2'>
-								<span className='font-medium text-sm text-gray-900'>
+								<span className='font-medium text-sm text-slate-900 dark:text-dark-text'>
 									@{user?.username}
 								</span>
-								<span className='text-gray-900'>106k followers</span>
-								<span className='text-gray-900'>430 videos</span>
+								<span className='text-gray-900 dark:text-dark-text'>
+									106k followers
+								</span>
+								<span className='text-gray-900 dark:text-dark-text'>
+									430 videos
+								</span>
 							</p>
 							<div className='flex items-center mt-3'>
-								<span className='line-clamp-1'>
+								<span className='line-clamp-1 dark:text-slate-300'>
 									It's all about teaching web development skills and techniques
 									in an efficient and practical manner. If you are just getting
 									started in web development, "Learn with Sumit" has all the
@@ -95,7 +101,7 @@ const ChannelProfile = () => {
 									developers.
 								</span>
 								<Link to='about'>
-									<FiChevronRight className='w-7 h-7 text-gray-700' />
+									<FiChevronRight className='w-7 h-7 text-gray-700 dark:text-slate-300' />
 								</Link>
 							</div>
 						</div>
@@ -107,7 +113,7 @@ const ChannelProfile = () => {
 				</div>
 			</div>
 
-			<div className='border-b border-gray-300'>
+			<div className='border-b border-gray-300 dark:border-dark-text/20'>
 				<div className='max-w-7xl mx-auto w-full overflow-auto scrollbar-track-slate-200 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-thumb-rounded-full'>
 					<ChannelNav />
 				</div>
