@@ -1,5 +1,4 @@
 import { FiChevronRight, FiPlay } from 'react-icons/fi';
-import Ads from './Ads';
 import usePlayer from './hooks/usePlayer';
 import VideoController from './partials/VideoController';
 import VideoLoading from './partials/VideoLoading';
@@ -28,7 +27,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 		volume,
 		isFullScreen,
 		settings,
-		ads,
+		availableAds,
 		setSettings,
 		handleContextMenu,
 		handlePlayPause,
@@ -63,7 +62,7 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 					</div>
 				</button>
 
-				{!ads.length ? null : <Ads />}
+				{/* {availableAds.length ? null : <Ads />} */}
 				<VideoController
 					progressRef={progressRef}
 					bufferRef={bufferRef}
@@ -75,7 +74,8 @@ const VideoPlayer = ({ source, thumbnail }: Props) => {
 					volume={volume}
 					isFullScreen={isFullScreen}
 					settings={settings}
-					ads={ads}
+					ads={availableAds}
+					thumbnail={thumbnail}
 					handleSettings={setSettings}
 					handlePlaybackSeed={handlePlaybackSeed}
 					togglePlay={handlePlayPause}

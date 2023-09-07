@@ -14,6 +14,7 @@ import '../../../index.css';
 import { formateTime } from '../../../libs/helper';
 import { ButtonClickHandler, InputType } from '../../../types/custom';
 import { AdsType, PlayerSettingsType } from '../hooks/usePlayer';
+import Advertise from './Advertise';
 import PlaybackSpeed from './widgets/PlaybackSpeed';
 import Subtitle from './widgets/Subtitle';
 
@@ -118,15 +119,21 @@ const VideoController = ({
 
 	return (
 		<div
-			className={`video-controls-container absolute bottom-0 left-0 right-0 px-1 py-2 z-20 opacity-100 group-hover/video-player-item:opacity-100 transition-opacity duration-300`}
+			className={`video-controls-container absolute inset-x-0 bottom-0 px-1 py-2 z-20 opacity-100 group-hover/video-player-item:opacity-100 transition-opacity duration-300`}
 		>
+			{/* Ads controller here */}
+			<Advertise
+				title='New Song'
+				link='http://www.google.com'
+				refThumbnail={thumbnail || ''}
+			/>
 			{/* settings popup window gose here  */}
 			<div
 				className={`absolute py-1 right-3 bg-black/75 rounded-xl overflow-hidden bottom-14`}
 			>
 				{settings.visibleWindow === 'settings' && (
 					<ul>
-						<li className={!ads.length ? 'block' : 'hidden'}>
+						<li>
 							<button
 								className='text-white px-3 py-2 w-full flex gap-8 items-center justify-between hover:bg-black/50'
 								onClick={() =>
@@ -169,7 +176,7 @@ const VideoController = ({
 								</span>
 							</button>
 						</li>
-						<li className={!ads.length ? 'block' : 'hidden'}>
+						<li>
 							<button
 								type='button'
 								className='text-white px-3 py-2  w-full flex gap-8 items-center justify-between hover:bg-black/50'
@@ -220,7 +227,7 @@ const VideoController = ({
 				<div
 					className='absolute bottom-14 bg-black/70 text-white text-xs px-1 py-0.5 tracking-wider rounded-sm hidden'
 					ref={seekBarDurationRef}
-				></div>
+				/>
 			</div>
 			{/* Video Controller Information */}
 			<div className='mt-1 flex items-center justify-between gap-1.5'>
