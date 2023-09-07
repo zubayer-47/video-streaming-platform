@@ -68,6 +68,7 @@ export default function VideoProfile() {
 	return (
 		<div className='w-full h-full overflow-auto px-2 lg:px-10 xl:px-24 flex flex-col lg:flex-row gap-7 py-2'>
 			<VideoBody videoId={query.get('v')!} metaData={metaData} />
+
 			<div className='lg:w-80 xl:w-96 flex flex-col gap-3 h-fit'>
 				{query.has('p') && (
 					<Playlist playlist={metaData.playlist} isLoading={isLoading} />

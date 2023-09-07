@@ -69,7 +69,7 @@ export default function VideoContent() {
 	return (
 		<>
 			{state.loading ? (
-				<VideoPlaceholder />
+				<VideoPlaceholder withGrid />
 			) : (
 				<>
 					{!state.metadatas.length ? (
