@@ -48,6 +48,7 @@ const FollowButton = ({ channel_id, isFollowed }: FollowBtnType) => {
 		} catch (error) {
 			if (isAxiosError(error)) {
 				const message = error.response?.data?.message;
+				console.log('message :', message);
 				setChannelState((prev) => ({
 					...prev,
 					// isFollowed: 'title' === 'followed',
