@@ -39,7 +39,7 @@ const usePlayer = (videoId: string) => {
 	const [timeElapsed, setTimeElapsed] = useState(0);
 	const [volume, setVolume] = useState(0);
 	const [isFullScreen, setIsFullScreen] = useState(false);
-	const [ads, setAds] = useState<AdsType[]>([]);
+	const [availableAds, setAds] = useState<AdsType[]>([]);
 
 	const [settings, setSettings] = useState<PlayerSettingsType>({
 		visibleWindow: 'none',
@@ -55,6 +55,18 @@ const usePlayer = (videoId: string) => {
 		// console.log('videoId :', videoId);
 		src.src = `${BASE_URL}/videos/str/${videoId}`;
 		vidEl.load();
+
+		// setTimeout(() => {
+		// 	setAds((prev) => [
+		// 		...prev,
+		// 		{
+		// 			desc: 'Google Search',
+		// 			link: 'https://www.google.com',
+		// 			title: 'Google',
+		// 			vidSrc: '',
+		// 		},
+		// 	]);
+		// }, 5000);
 
 		// load ads
 		// handleAds();
@@ -179,16 +191,6 @@ const usePlayer = (videoId: string) => {
 		};
 	}, [isPlay, isWaiting]);
 
-	const handleAds = () => {
-		// fetch ads here
-		setAds((prev) => [...prev, { desc: '', link: '', title: '', vidSrc: '' }]);
-	};
-
-	const stopAds = () => {
-		// fetch ads here
-		setAds([]);
-	};
-
 	const handleContextMenu: React.MouseEventHandler<HTMLDivElement> = (e) => {
 		e.preventDefault();
 		const ulElem = contextRef.current;
@@ -291,6 +293,18 @@ const usePlayer = (videoId: string) => {
 		}
 	}, []);
 
+	const handleSkipAds = () => {
+		if (!vidRef?.current || !vidSrcRef?.current) return;
+		// fetch ads here
+		setAds([]);
+		// rearrange original video source
+		const vidEl = vidRef?.current;
+		const src = vidSrcRef.current;
+		// console.log('videoId :', videoId);
+		src.src = `${BASE_URL}/videos/str/${videoId}`;
+		vidEl.load();
+	};
+
 	return {
 		//Refs
 		parentRef,
@@ -309,7 +323,7 @@ const usePlayer = (videoId: string) => {
 		volume,
 		isFullScreen,
 		settings,
-		ads,
+		availableAds,
 		// Handlers
 		handleContextMenu,
 		handlePlayPause,
@@ -319,7 +333,7 @@ const usePlayer = (videoId: string) => {
 		toggleFullScreen,
 		setSettings,
 		handlePlaybackSeed,
-		stopAds,
+		handleSkipAds,
 	};
 };
 
