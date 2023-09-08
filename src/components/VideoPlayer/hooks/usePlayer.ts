@@ -51,9 +51,9 @@ const usePlayer = (videoId: string) => {
 	useEffect(() => {
 		if (!vidRef?.current || !vidSrcRef?.current) return;
 		const vidEl = vidRef?.current;
-		const src = vidSrcRef.current;
+		const vidSrc = vidSrcRef.current;
 		// console.log('videoId :', videoId);
-		src.src = `${BASE_URL}/videos/str/${videoId}`;
+		vidSrc.src = `${BASE_URL}/videos/str/${videoId}`;
 		vidEl.load();
 
 		// setTimeout(() => {
@@ -76,6 +76,12 @@ const usePlayer = (videoId: string) => {
 		} else {
 			setRemoveThumbnail(true);
 		}
+
+		// Clean up
+		return () => {
+			vidSrc.src = ``;
+			vidEl.load();
+		};
 	}, [videoId]);
 
 	useEffect(() => {
@@ -176,7 +182,7 @@ const usePlayer = (videoId: string) => {
 		vidEl.addEventListener('ended', onEnd);
 		document.addEventListener('fullscreenchange', onFullscreenChange);
 		parentEl.addEventListener('keydown', onKeyDown);
-		//Clean up
+		// Clean up
 		return () => {
 			vidEl.removeEventListener('loadedmetadata', loadedMetadata);
 			vidEl.removeEventListener('waiting', onWaiting);
@@ -196,7 +202,7 @@ const usePlayer = (videoId: string) => {
 		const ulElem = contextRef.current;
 
 		// hide context menu when ads exist
-		if (!ulElem || ads.length) return;
+		if (!ulElem || availableAds.length) return;
 
 		ulElem.classList.remove('hidden');
 		ulElem.classList.add('block');
