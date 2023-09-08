@@ -3,7 +3,6 @@ import { FaCircleUser } from 'react-icons/fa6';
 import { FiBell, FiUpload } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
-import useTheme from '../hooks/useTheme';
 import LoginButton from './Buttons/LoginButton';
 import NotificationModal from './Modals/NotificationModal/NotificationModal';
 import UserModal from './Modals/UserModal';
@@ -12,7 +11,6 @@ import SearchBar from './SearchBar/SearchBar';
 const Header = () => {
 	const [openedModal, setOpenedModal] = useState('');
 	const { state } = useAuth();
-	const themeContext = useTheme();
 
 	const handleUserModal = () =>
 		setOpenedModal((prev) => (prev === 'user' ? '' : 'user'));
@@ -20,7 +18,7 @@ const Header = () => {
 		setOpenedModal((prev) => (prev === 'notification' ? '' : 'notification'));
 
 	return (
-		<div className='z-40 bg-indigo-50 dark:bg-dark flex flex-col justify-center px-2 md:px-10'>
+		<div className='z-40 bg-indigo-50 dark:bg-black/10 flex flex-col justify-center px-2 md:px-10'>
 			<div className='flex items-center justify-between gap-5 py-2.5'>
 				<Link to={'/'}>
 					<h1 className='font-bold text-2xl tracking-wide'>

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export default function Sidebar() {
 	return (
-		<div className='hidden md:w-3/12 lg:w-3/12 xl:w-2/12 mt-[61px] md:flex flex-col overflow-y-auto bg-indigo-100/40 dark:bg-dark scrollbar-thin scrollbar-track-gray-200/90 scrollbar-thumb-gray-400/90 scrollbar-thumb-rounded-full'>
+		<div className='hidden md:w-3/12 lg:w-3/12 xl:w-2/12 mt-[61px] md:flex flex-col overflow-y-auto bg-indigo-100/40 dark:bg-black/10 scrollbar-thin scrollbar-track-gray-200/90 scrollbar-thumb-gray-400/90 scrollbar-thumb-rounded-full'>
 			<Link
 				to='/'
 				type='button'
@@ -26,7 +26,7 @@ export default function Sidebar() {
 				type='button'
 				className='flex items-center gap-4 px-3 py-2 font-[500] hover:bg-gray-400/20 dark:text-slate-300'
 			>
-				<FiThumbsUp className='w-5 h-5' /> <span>Likes videos</span>
+				<FiThumbsUp className='w-5 h-5' /> <span>Liked videos</span>
 			</Link>
 
 			<hr className='border border-gray-300/50 my-5' />
@@ -42,7 +42,7 @@ export default function Sidebar() {
 				<RiFireLine className='w-6 h-6' /> <span>Trending</span>
 			</Link>
 			<Link
-				to='/'
+				to='/result?sec=history'
 				type='button'
 				className='flex items-center gap-4 px-3 py-2 font-[500] hover:bg-gray-400/20 dark:text-slate-300'
 			>
@@ -63,7 +63,7 @@ export default function Sidebar() {
 				<span>History</span>
 			</Link>
 			<Link
-				to='/'
+				to='/result?sec=wl'
 				type='button'
 				className='flex items-center gap-4 px-3 py-2 font-[500] hover:bg-gray-400/20 dark:text-slate-300'
 			>
