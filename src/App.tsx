@@ -6,6 +6,7 @@ import CreateChannelModal from './components/Modals/CreateChannelModal/CreateCha
 import useAuth from './hooks/useAuth';
 import useModal from './hooks/useModal';
 import useTheme from './hooks/useTheme';
+import SectionControllerPage from './pages/SectionControllerPage';
 import Auth from './pages/auth/Auth';
 import AuthModal from './pages/auth/authModals/AuthModal';
 import NotFound from './pages/notfound/NotFound';
@@ -16,7 +17,6 @@ import Playlists from './pages/profiles/channel/playlists/Playlists';
 import UploadVideo from './pages/profiles/channel/upload/UploadVideo';
 import Video from './pages/profiles/channel/videos/Videos';
 import VideoProfile from './pages/profiles/video/VideoProfile';
-import SearchPage from './pages/search/SearchPage';
 import VideoDashboard from './pages/videoDashboard/VideoDashboard';
 import VideoContent from './pages/videoDashboard/partials/VideoContent';
 
@@ -51,7 +51,8 @@ function App() {
 				<Route path='/' element={<Outlet />}>
 					<Route path='/' element={<VideoDashboard />}>
 						<Route index element={<VideoContent />} />
-						<Route path='result' element={<SearchPage />} />
+						{/* change path name instead "result" */}
+						<Route path='result' element={<SectionControllerPage />} />
 					</Route>
 					<Route path='auth' element={<Auth />} />
 					<Route path='watch' element={<VideoProfile />} />
