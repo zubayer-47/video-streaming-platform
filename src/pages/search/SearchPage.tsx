@@ -50,13 +50,15 @@ const SearchPage = () => {
 
 					<div className='flex-1'>
 						<Link to={'/watch?v=asd'}>
-							<h1 className='w-full md:w-10/12 lg:w-3/5 font-bold md:font-medium line-clamp-2 text-sm md:text-base'>
+							<h1 className='w-full md:w-10/12 lg:w-3/5 font-bold md:font-medium line-clamp-2 text-sm md:text-base dark:text-slate-300'>
 								How to Learn TypeScript in 10 Seconds for Fresher How to Learn
 								How How to Learn TypeScript in 10 Seconds for Fresher How to How
 								How to Learn TypeScript in 10 Seconds for Fresher How to Learn
 							</h1>
 						</Link>
-						<p className='text-xs text-slate-600'>1 month ago</p>
+						<p className='text-xs text-slate-600 dark:text-dark-text mt-1'>
+							1 month ago
+						</p>
 
 						<div className='flex gap-1.5 items-center my-1.5 md:my-3'>
 							<Link to={'ch/asd'}>
@@ -65,12 +67,12 @@ const SearchPage = () => {
 
 							<Link
 								to={'ch/asd'}
-								className='text-slate-700 text-sm font-medium flex-shrink-0'
+								className='text-slate-700 dark:text-slate-400 text-sm font-medium flex-shrink-0'
 							>
 								Zubayer
 							</Link>
 						</div>
-						<p className='text-sm text-slate-600 line-clamp-2 w-full md:w-9/12'>
+						<p className='text-sm text-slate-600 dark:text-dark-text line-clamp-2 w-full md:w-9/12'>
 							In this tutorial we will teach you how to learn ts in 10 seconds
 							with the help of Rasel Dev. so, let's start In this tutorial we
 							will teach you how to learn ts in 10 seconds with the help of will

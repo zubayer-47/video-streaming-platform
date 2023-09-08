@@ -17,7 +17,7 @@ const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading }) => {
 
 	if (isLoading) {
 		return (
-			<div className='animate-pulse'>
+			<div className='animate-pulse dark:bg-dark-modal'>
 				<div className='bg-gray-300/50 p-4 w-full rounded-xl space-y-4'>
 					<h1 className='bg-gray-300 h-3.5 w-full rounded-xl'></h1>
 					<h1 className='bg-gray-300 h-3 w-4/5 rounded-xl'></h1>
@@ -28,29 +28,29 @@ const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading }) => {
 
 	return (
 		<div
-			className={`border-2 border-indigo-200 rounded-xl p-3 ${
+			className={`border-2 border-indigo-200 dark:border-dark-modal dark:bg-dark-overlay-100/50 rounded-xl p-3 ${
 				!playlistOpen ? 'bg-indigo-200/30' : 'bg-indigo-50'
 			}`}
 		>
 			<div className='flex justify-between items-center'>
 				<div>
-					<h1 className='text-xl line-clamp-1 font-medium'>
+					<h1 className='text-xl line-clamp-1 font-medium dark:text-slate-300'>
 						{/* Mix - Zara Zara Bahekta Hai - halraj [asdasdas] */}
 						{playlist?.title}
 					</h1>
-					<h2 className='text-sm line-clamp-1 text-gray-700'>
+					<h2 className='text-sm line-clamp-1 text-gray-700 dark:text-dark-text'>
 						{/* Mixes are playlists YoutUbe makes for you */}
 						{playlist?.description}
 					</h2>
 				</div>
 				<button
 					onClick={() => setPlaylistOpen((prev) => !prev)}
-					className='focus:bg-indigo-200/60 focus:border rounded-full p-2'
+					className='focus:bg-indigo-200/60 dark:focus:bg-dark-overlay-100 bg-dark-overlay-200 focus:border dark:border-none rounded-full p-2'
 				>
 					{!playlistOpen ? (
-						<FiChevronDown className='h-7 w-7' />
+						<FiChevronDown className='h-7 w-7 dark:text-slate-300' />
 					) : (
-						<FiX className='h-7 w-7' />
+						<FiX className='h-7 w-7 dark:text-slate-300' />
 					)}
 				</button>
 			</div>

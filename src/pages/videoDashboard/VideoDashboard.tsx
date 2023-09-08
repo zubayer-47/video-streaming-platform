@@ -12,7 +12,7 @@ export default function VideoDashboard() {
 				<Sidebar />
 				<div className='pt-20 flex-1 overflow-hidden'>
 					<Tags />
-					<div className='w-full h-[84vh] overflow-auto'>
+					<div className='w-full h-[84vh] overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-dark-text dark:scrollbar-thumb-gray-400/50 scrollbar-thumb-rounded-3xl'>
 						{/* <VideoContent /> */}
 						<Outlet />
 					</div>
