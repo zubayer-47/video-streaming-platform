@@ -1,5 +1,5 @@
 import { isAxiosError } from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import { axiosPrivate } from '../../libs/axios';
 
@@ -9,15 +9,25 @@ type ChannelStateType = {
 	loading: boolean;
 };
 
-const FollowButton = ({ channel_id }: { channel_id: string }) => {
+type FollowBtnType = {
+	channel_id: string;
+	isFollowed?: boolean;
+};
+
+const FollowButton = ({ channel_id, isFollowed }: FollowBtnType) => {
+	const {
+		state: { user },
+	} = useAuth();
+
 	const [channelState, setChannelState] = useState<ChannelStateType>({
 		isFollowed: false,
 		loading: false,
 		error: null,
 	});
-	const {
-		state: { user },
-	} = useAuth();
+
+	useEffect(() => {
+		setChannelState((prev) => ({ ...prev, isFollowed: !!isFollowed }));
+	}, [isFollowed]);
 
 	const handleFollow = async () => {
 		setChannelState((prev) => ({
@@ -38,10 +48,10 @@ const FollowButton = ({ channel_id }: { channel_id: string }) => {
 		} catch (error) {
 			if (isAxiosError(error)) {
 				const message = error.response?.data?.message;
-
+				console.log('message :', message);
 				setChannelState((prev) => ({
 					...prev,
-					error: message,
+					// isFollowed: 'title' === 'followed',
 				}));
 			}
 		} finally {
@@ -52,16 +62,15 @@ const FollowButton = ({ channel_id }: { channel_id: string }) => {
 		}
 	};
 
-	// dark:bg-[#e9e9e9] dark:hover:bg-[#d4d4d4]
 	return (
 		<>
-			{user?.channelId !== channel_id ? (
+			{user?.channelId === channel_id ? null : (
 				<button
 					type='button'
 					className={`rounded-full outline-none tracking-wider font-semibold py-2.5 px-5 text-lg ${
 						!channelState.isFollowed
-							? 'text-gray-50 bg-gray-900 hover:bg-gray-800 dark:text-slate-900 dark:bg-indigo-100 dark:hover:bg-indigo-100/80 '
-							: 'bg-gray-300 text-gray-800 dark:text-slate-200 dark:bg-dark-overlay-100 dark:hover:bg-dark-overlay-200'
+							? 'text-gray-50 bg-gray-900 hover:bg-gray-800'
+							: 'bg-gray-300 text-gray-800'
 					} ${channelState.loading && 'opacity-50'}`}
 					onClick={handleFollow}
 					disabled={channelState.loading}
@@ -72,7 +81,7 @@ const FollowButton = ({ channel_id }: { channel_id: string }) => {
 						</span>
 					</span>
 				</button>
-			) : null}
+			)}
 		</>
 	);
 };

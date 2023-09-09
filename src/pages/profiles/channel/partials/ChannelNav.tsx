@@ -3,13 +3,13 @@ import { NavLink } from 'react-router-dom';
 
 const ChannelNav = () => {
 	return (
-		<ul className='flex items-center ml-14 mt-7 gap-10'>
+		<ul className='flex items-center gap-8'>
 			<NavLink
 				to={`featured`}
 				className={({ isActive }) =>
 					!isActive
-						? 'text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium dark:text-slate-300'
-						: 'text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 dark:bg-dark-overlay-100 dark:hover:bg-dark-overlay-200 dark:text-slate-300 dark:border-dark-text/70 font-medium px-5 py-2'
+						? 'text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium'
+						: 'text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 font-medium px-5 py-2'
 				}
 			>
 				HOME
@@ -18,8 +18,8 @@ const ChannelNav = () => {
 				to={`videos`}
 				className={({ isActive }) =>
 					!isActive
-						? 'text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium dark:text-slate-300'
-						: 'text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 dark:bg-dark-overlay-100 dark:hover:bg-dark-overlay-200 dark:text-slate-300 dark:border-dark-text/70 font-medium px-5 py-2'
+						? 'text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium'
+						: 'text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 font-medium px-5 py-2'
 				}
 			>
 				VIDEOS
@@ -28,21 +28,21 @@ const ChannelNav = () => {
 				to={`playlists`}
 				className={({ isActive }) =>
 					!isActive
-						? 'text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium dark:text-slate-300'
-						: 'text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 dark:bg-dark-overlay-100 dark:hover:bg-dark-overlay-200 dark:text-slate-300 dark:border-dark-text/70 font-medium px-5 py-2'
+						? 'text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium'
+						: 'text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 font-medium px-5 py-2'
 				}
 			>
 				PLAYLISTS
 			</NavLink>
 			{/* <NavLink to={`channels`} className={({ isActive }) => (
-            !isActive ? "text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium dark:text-slate-300" : "text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 font-medium px-5 py-2"
+            !isActive ? "text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium" : "text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 font-medium px-5 py-2"
         )}>CHANNELS</NavLink> */}
 			<NavLink
 				to={`about`}
 				className={({ isActive }) =>
 					!isActive
-						? 'text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium dark:text-slate-300'
-						: 'text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 dark:bg-dark-overlay-100 dark:hover:bg-dark-overlay-200 dark:text-slate-300 dark:border-dark-text/70 font-medium px-5 py-2'
+						? 'text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium'
+						: 'text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 font-medium px-5 py-2'
 				}
 			>
 				ABOUT
@@ -51,8 +51,8 @@ const ChannelNav = () => {
 				to={`@stacklearner7`}
 				className={({ isActive }) =>
 					!isActive
-						? 'text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium dark:text-slate-300'
-						: 'text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 dark:bg-dark-overlay-100 dark:hover:bg-dark-overlay-200 dark:text-slate-300 dark:border-dark-text/70 font-medium px-5 py-2'
+						? 'text-gray-700/90 border-b-2 border-transparent px-5 py-2 font-medium'
+						: 'text-gray-800 border-b-2 border-gray-700 bg-gray-700/10 font-medium px-5 py-2'
 				}
 			>
 				<FiSearch />
