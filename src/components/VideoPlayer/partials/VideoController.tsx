@@ -122,11 +122,13 @@ const VideoController = ({
 			className={`video-controls-container absolute inset-x-0 bottom-0 px-1 py-2 z-20 opacity-100 group-hover/video-player-item:opacity-100 transition-opacity duration-300`}
 		>
 			{/* Ads controller here */}
-			<Advertise
-				title='New Song'
-				link='http://www.google.com'
-				refThumbnail={thumbnail || ''}
-			/>
+			{false && (
+				<Advertise
+					title='New Song'
+					link='http://www.google.com'
+					refThumbnail={thumbnail || ''}
+				/>
+			)}
 			{/* settings popup window gose here  */}
 			<div
 				className={`absolute py-1 right-3 bg-black/75 rounded-xl overflow-hidden bottom-14`}

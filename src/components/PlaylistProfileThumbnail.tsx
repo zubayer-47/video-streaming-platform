@@ -34,7 +34,7 @@ const PlaylistProfileThumbnail = ({
 				{!isActive ? (
 					<span className='w-4 h-4' />
 				) : (
-					<FiPlay className='w-4 h-4' />
+					<FiPlay className='w-4 h-4 dark:text-dark-text' />
 				)}
 				<Link
 					to={vidLink}
@@ -59,7 +59,7 @@ const PlaylistProfileThumbnail = ({
 				<div className='flex-1 flex flex-col gap-1.5'>
 					<Link
 						to={vidLink}
-						className={`text-sm tracking-wide text-slate-800 font-semibold line-clamp-2`}
+						className={`text-sm tracking-wide text-slate-800 dark:text-slate-300 font-semibold line-clamp-2`}
 					>
 						{/* {trunc(title, 20)} */}
 						{title}
@@ -68,13 +68,15 @@ const PlaylistProfileThumbnail = ({
 						{!chnLink || !channelName ? null : (
 							<Link
 								to={chnLink}
-								className='text-gray-700 font-medium flex-shrink-0'
+								className='text-gray-700 dark:text-gray-400 font-medium flex-shrink-0'
 							>
 								{trunc(channelName, 10)}
 							</Link>
 						)}
 
-						<p className='text-gray-500 flex-shrink-0'>{uploadedAt} ago</p>
+						<p className='text-gray-500 flex-shrink-0 dark:text-dark-text'>
+							{uploadedAt} ago
+						</p>
 					</div>
 				</div>
 			</div>

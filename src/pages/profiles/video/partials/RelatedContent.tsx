@@ -6,7 +6,7 @@ import ProfileThumbnail from '../../../../components/ProfileThumbnail';
 export default function RelatedContent() {
 	return (
 		<>
-			{new Array(10).fill(true).map(() => (
+			{new Array(20).fill(true).map(() => (
 				<ProfileThumbnail
 					key={uuidv4()}
 					thumbnail={demoImg}

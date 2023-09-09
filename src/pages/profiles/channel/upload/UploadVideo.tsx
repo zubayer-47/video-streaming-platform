@@ -176,7 +176,6 @@ const UploadVideo = () => {
 			newPlaylist: '',
 			playlist: '',
 		}));
-
 	const handleValidate = () => {
 		const err: Record<string, string> = {};
 		const { videoId, title, description, tags, status } = metadata;
@@ -237,18 +236,18 @@ const UploadVideo = () => {
 
 	if (!uploadedContent.content) {
 		return (
-			<div className='flex-1 flex items-center justify-center overflow-y-scroll'>
-				<div className='w-full mx-5 md:mx-0 md:w-3/5 bg-white rounded-lg p-5 shadow-lg'>
-					<h1 className='mb-3 text-2xl text-center font-semibold uppercase tracking-wide text-slate-600'>
+			<div className='flex-1 flex items-center justify-center overflow-y-auto'>
+				<div className='w-full mx-5 md:mx-0 md:w-3/5 bg-white dark:bg-dark-overlay-100/30 rounded-lg p-5 shadow-lg'>
+					<h1 className='mb-3 text-2xl text-center font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300'>
 						you can upload a video
 					</h1>
-					<p className='text-sm text-center text-slate-400 font-medium tracking-wider'>
+					<p className='text-sm text-center text-slate-400 dark:text-dark-text/60 font-medium tracking-wider'>
 						Click on the button & select a video file to upload
 					</p>
 
 					<div className='my-7 grid place-content-center'>
 						<label htmlFor='uploadVid'>
-							<div className='inline-flex items-center bg-indigo-400 rounded-lg shadow-lg shadow-indigo-300 cursor-pointer'>
+							<div className='inline-flex items-center bg-indigo-400 rounded-lg shadow-lg dark:shadow-sm shadow-indigo-300 cursor-pointer'>
 								<FiArrowUp className='w-5 h-5 text-white stroke-white m-2' />
 								<span className='text-white font-medium tracking-wide uppercase p-2 border-l border-indigo-300'>
 									upload
@@ -271,10 +270,10 @@ const UploadVideo = () => {
 
 	return (
 		<div className='flex-1 overflow-y-scroll p-3 md:p-10'>
-			<div className='w-full bg-white rounded-lg'>
+			<div className='w-full bg-white dark:bg-dark-overlay-100/30 rounded-lg'>
 				{/* upload process info */}
-				<div className='flex items-stretch gap-3 p-5 border-b border-slate-300'>
-					<div className='w-32 h-32 border border-indigo-300 rounded-lg'>
+				<div className='flex items-stretch gap-3 p-5 border-b border-slate-300 dark:border-dark-text/50'>
+					<div className='w-32 h-32 border border-indigo-300 dark:border-none rounded-lg'>
 						<video
 							width={'100%'}
 							height={'100%'}
@@ -298,7 +297,7 @@ const UploadVideo = () => {
 						<div>
 							<div className='flex items-center justify-between'>
 								{uploadedContent.contentUploadPercent === 100 ? (
-									<div className='text-xs tracking-wide text-slate-700'>
+									<div className='text-xs tracking-wide text-slate-700 dark:text-dark-text'>
 										<span className='text-indigo-500 font-semibold'>
 											Complete!
 										</span>{' '}
@@ -306,15 +305,14 @@ const UploadVideo = () => {
 										requirements
 									</div>
 								) : (
-									<p className='font-light text-sm tracking-wide text-slate-500'>
+									<p className='font-light text-sm tracking-wide text-slate-500 dark:text-slate-300'>
 										Your video is uploading...
 									</p>
 								)}
-								<p className='font-semibold text-slate-400 text-xs'>
+								<p className='font-semibold text-slate-400 dark:text-dark-text text-xs'>
 									{uploadedContent.contentUploadPercent}%
 								</p>
 							</div>
-
 							<div className='w-full mt-3 h-1 bg-indigo-200 rounded-full'>
 								<div
 									className='h-full bg-indigo-500 rounded-full transition-transform'
@@ -328,7 +326,7 @@ const UploadVideo = () => {
 				<div className='flex items-stretch gap-3'>
 					{/* video metadata form */}
 					<div className='flex-1 flex flex-col gap-3 px-5 py-3'>
-						<h2 className='font-bold text-base tracking-wide text-slate-500'>
+						<h2 className='font-bold text-base tracking-wide text-slate-500 dark:text-slate-300'>
 							Title & Informations
 						</h2>
 						<MaterialInput
@@ -368,8 +366,8 @@ const UploadVideo = () => {
 						/>
 					</div>
 					{/* video metadata aside */}
-					<div className='w-48 md:w-52 lg:w-64 p-3 sm:border-l sm:border-slate-300 flex flex-col gap-1'>
-						<h2 className='font-bold text-base tracking-wide text-slate-500 mb-5'>
+					<div className='w-48 md:w-52 lg:w-64 p-3 sm:border-l sm:border-slate-300 dark:sm:border-dark-text/50 flex flex-col gap-1'>
+						<h2 className='font-bold text-base tracking-wide text-slate-500 dark:text-slate-300 mb-5'>
 							More Settings
 						</h2>
 						<AudienceSetting status={metadata.status} handle={handleSelect} />
@@ -378,7 +376,7 @@ const UploadVideo = () => {
 							active={metadata.playlist}
 							handle={handlePlaylist}
 						/>
-						<div className='border-t border-b border-slate-200 py-2 flex flex-col items-end gap-2'>
+						<div className='border-t border-b border-slate-200 dark:border-dark-text/50 py-2 flex flex-col items-end gap-2'>
 							<button
 								type='button'
 								className={`m-0 outline-none px-1 py-0.5 rounded-sm tracking-wide text-xs font-medium ${

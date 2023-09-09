@@ -1,12 +1,13 @@
 import { useRef } from 'react';
 import { FiClock, FiSearch } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
 	searchTerm: string;
+	setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export default function PreSearch({ searchTerm }: Props) {
+export default function PreSearch({ searchTerm, setSearchTerm }: Props) {
 	const ulRef = useRef<HTMLUListElement>(null);
 	// const [searchValue, setSearchValue] = useState('');
 	// query.set('search_query', searchTerm);
@@ -18,24 +19,41 @@ export default function PreSearch({ searchTerm }: Props) {
 			ref={ulRef}
 			className={`absolute top-12 bg-indigo-100 dark:bg-dark-modal rounded-xl py-1.5 w-full overflow-hidden hidden group-focus-within/searchBar:block border border-indigo-200/50 dark:border-dark-text/20 shadow-md`}
 		>
-			<SearchPreview search={searchTerm} />
-			<SearchPreview history='Zara Zara Bahekta Hai' />
-			<SearchPreview history='history search query' />
-			<SearchPreview history='Pre search query' />
+			<SearchPreview setSearchTerm={setSearchTerm} search={searchTerm} />
+			<SearchPreview
+				setSearchTerm={setSearchTerm}
+				history='Zara Zara Bahekta Hai'
+			/>
+			<SearchPreview
+				setSearchTerm={setSearchTerm}
+				history='history search query'
+			/>
+			<SearchPreview setSearchTerm={setSearchTerm} history='Pre search query' />
 		</ul>
 	);
 }
 
 type SP = {
+	setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 	search?: string;
 	history?: string;
 };
 
-const SearchPreview = ({ search, history }: SP) => {
+const SearchPreview = ({ setSearchTerm, search, history }: SP) => {
+	const navigate = useNavigate();
+
 	return (
 		<li className='flex items-stretch hover:bg-indigo-200/50 dark:hover:bg-dark-overlay-100'>
-			<Link
-				to={`/result?sq=${search || history}`}
+			<button
+				onClick={() => {
+					if (search) {
+						setSearchTerm(search);
+						navigate(`/result?sq=${search}`);
+					} else if (history) {
+						setSearchTerm(history);
+						navigate(`/result?sq=${history}`);
+					}
+				}}
 				className='flex flex-1 items-center gap-2 px-3 py-1.5 tracking-wide font-semibold text-slate-700 dark:text-slate-300'
 			>
 				{!history ? (
@@ -53,7 +71,7 @@ const SearchPreview = ({ search, history }: SP) => {
 						<p>{history}</p>
 					</>
 				)}
-			</Link>
+			</button>
 			{!history ? null : (
 				<div className='px-2 grid place-content-center'>
 					<button

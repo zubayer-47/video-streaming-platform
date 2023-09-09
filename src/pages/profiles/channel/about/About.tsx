@@ -104,11 +104,11 @@ const About: FC<AboutProps> = () => {
 
 					<div className='flex gap-10 items-center'>
 						<button type='button'>
-							<FiFlag className='w-5 h-5' />
+							<FiFlag className='w-5 h-5 dark:text-slate-300' />
 						</button>
 
 						<button type='button'>
-							<PiShareFat className='w-5 h-5' />
+							<PiShareFat className='w-5 h-5 dark:text-slate-300' />
 						</button>
 					</div>
 				</div>

@@ -13,8 +13,8 @@ const PlaylistSetting = ({ playlists, active, handle }: Props) => {
 	return (
 		<div className='flex items-center justify-between gap-2 text-xs'>
 			<div className='flex items-center gap-1'>
-				<FiFilePlus className='w-4 h-4 text-slate-500' />
-				<span className='font-normal tracking-wide text-slate-600'>
+				<FiFilePlus className='w-4 h-4 text-slate-500 dark:text-dark-text' />
+				<span className='font-normal tracking-wide text-slate-600 dark:text-dark-text'>
 					Playlist
 				</span>
 			</div>
