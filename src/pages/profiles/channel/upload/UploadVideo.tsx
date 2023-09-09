@@ -313,7 +313,6 @@ const UploadVideo = () => {
 									{uploadedContent.contentUploadPercent}%
 								</p>
 							</div>
-
 							<div className='w-full mt-3 h-1 bg-indigo-200 rounded-full'>
 								<div
 									className='h-full bg-indigo-500 rounded-full transition-transform'
