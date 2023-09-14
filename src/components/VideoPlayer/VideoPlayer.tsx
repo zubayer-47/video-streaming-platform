@@ -47,7 +47,7 @@ const VideoPlayer = ({ source, metaData, thumbnail }: Props) => {
 	// console.dir(vidRef);
 
 	return (
-		<div className='flex gap-5'>
+		<div className='flex flex-col lg:flex-row gap-5'>
 			<div className='flex-1'>
 				<div
 					className='w-full flex-1 relative group/video-player-item rounded overflow-hidden'

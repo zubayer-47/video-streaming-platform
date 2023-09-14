@@ -21,18 +21,6 @@ import VideoContent from './pages/videoDashboard/partials/VideoContent';
 function App() {
 	const userContext = useAuth();
 	const modalContext = useModal();
-	// const { state, updateTheme } = useTheme();
-
-	// useEffect(() => {
-	// 	const currentTheme = localStorage.getItem('theme');
-	// 	updateTheme(currentTheme === 'dark' ? 'dark' : 'light');
-
-	// 	if (currentTheme === 'dark') {
-	// 		document.documentElement?.classList.add('dark');
-	// 	} else {
-	// 		document.documentElement?.classList.remove('dark');
-	// 	}
-	// }, [state.theme, updateTheme]);
 
 	return (
 		<PageLayout>

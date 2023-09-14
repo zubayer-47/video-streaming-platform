@@ -15,29 +15,21 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	useEffect(() => {
 		const theme = localStorage.getItem('theme');
-
 		dispatch({
 			type: 'UPDATE_THEME',
 			payload: theme === 'dark' ? 'dark' : 'light',
 		});
 
-		console.log(
-			theme === 'dark' &&
-				window.matchMedia('(prefers-color-scheme: dark)').matches,
-			'!!@s'
-		);
-
 		if (
-			theme === 'dark' &&
-			window.matchMedia('(prefers-color-scheme: dark)').matches
+			theme === 'dark' ||
+			(!('theme' in localStorage) &&
+				window.matchMedia('prefers-color-scheme: dark').matches)
 		) {
 			document.documentElement?.classList.add('dark');
 		} else {
 			document.documentElement?.classList.remove('dark');
 		}
 	}, [state.theme]);
-
-	console.log({ state });
 
 	return (
 		<ThemeContext.Provider value={{ state, dispatch }}>
