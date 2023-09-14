@@ -9,9 +9,10 @@ import { PlaylistBodyDataType } from '../../../../types/custom';
 type PlaylistProps = {
 	isLoading: boolean;
 	playlist: PlaylistBodyDataType | undefined;
+	vidRef: React.RefObject<HTMLVideoElement>;
 };
 
-const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading }) => {
+const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading, vidRef }) => {
 	const query = useQuery();
 	const [playlistOpen, setPlaylistOpen] = useState(true);
 
@@ -26,9 +27,11 @@ const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading }) => {
 		);
 	}
 
+	const height = vidRef.current?.clientHeight;
+
 	return (
 		<div
-			className={`border-2 border-indigo-200 dark:border-dark-modal dark:bg-dark-overlay-100/50 rounded-xl p-3 ${
+			className={`w-full h-[${height}px] lg:w-80 xl:w-96 relative border-indigo-200 dark:border-dark-modal dark:bg-dark-overlay-100/50 rounded-xl p-3 ${
 				!playlistOpen ? 'bg-indigo-200/30' : 'bg-indigo-50'
 			}`}
 		>
@@ -56,7 +59,8 @@ const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading }) => {
 			</div>
 
 			{!playlistOpen ? null : (
-				<div className='flex flex-col gap-3 mt-5 max-h-[60vh] overflow-auto'>
+				// <div className='flex flex-col gap-3 mt-5 max-h-[60vh] overflow-y-auto overflow-x-hidden '>
+				<div className='flex flex-col gap-3 mt-5  overflow-auto'>
 					{playlist?.playlist_video.map((plItem) => (
 						<PlaylistProfileThumbnail
 							key={plItem.videoId}

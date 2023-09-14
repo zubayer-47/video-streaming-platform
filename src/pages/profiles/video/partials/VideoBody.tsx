@@ -6,14 +6,13 @@ import { Link } from 'react-router-dom';
 // import VideoFile from '../../../../assets/array.mp4';
 import dayjs from 'dayjs';
 import FollowButton from '../../../../components/Buttons/FollowButton';
-import VideoPlayer from '../../../../components/VideoPlayer/VideoPlayer';
 import { trunc } from '../../../../libs/helper';
-import { VideoBodyMetaDataType } from '../../../../types/custom';
+import { MetaDataType } from '../../../../types/custom';
 // import CommentSection from './CommentSection';
 
 type VideoBodyProps = {
 	videoId: string;
-	metaData: VideoBodyMetaDataType;
+	metaData: MetaDataType;
 };
 
 const VideoBody: React.FC<VideoBodyProps> = ({ videoId, metaData }) => {
@@ -22,7 +21,14 @@ const VideoBody: React.FC<VideoBodyProps> = ({ videoId, metaData }) => {
 	return (
 		<div className='flex-1 flex flex-col w-full h-fit'>
 			{/* <VideoPlayer source={VideoFile} /> */}
-			<VideoPlayer source={videoId!} thumbnail={metaData.thumbnail} />
+
+			{/* <div className='flex flex-col lg:flex-row gap-5'>
+				<VideoPlayer source={videoId!} thumbnail={metaData.thumbnail} />
+
+				{query.has('p') && (
+					<Playlist playlist={metaData.playlist} isLoading={false} />
+				)}
+			</div> */}
 
 			<p className='mt-2.5 text-lg font-semibold text-slate-800 dark:text-slate-200'>
 				{/* How to Build Your Perfect Resume: Learn from a FAANG Employee Example! */}

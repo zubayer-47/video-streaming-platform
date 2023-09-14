@@ -3,7 +3,9 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import useQuery from '../../../hooks/useQuery';
 import { MetaDataType } from '../../../types/custom';
-import Playlist from './partials/Playlist';
+// import Playlist from './partials/Playlist';
+// import RelatedContent from './partials/RelatedContent';
+import VideoPlayer from '../../../components/VideoPlayer/VideoPlayer';
 import RelatedContent from './partials/RelatedContent';
 import VideoBody from './partials/VideoBody';
 
@@ -66,15 +68,30 @@ export default function VideoProfile() {
 	}
 
 	return (
-		<div className='w-full h-full overflow-auto px-2 lg:px-10 xl:px-24 flex flex-col lg:flex-row gap-7 py-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-dark-text dark:scrollbar-thumb-gray-400/50 scrollbar-thumb-rounded-3xl'>
-			<VideoBody videoId={query.get('v')!} metaData={metaData} />
+		<div
+			className={`w-full h-full overflow-auto px-2 lg:px-10 xl:px-24 py-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-dark-text dark:scrollbar-thumb-gray-400/50 scrollbar-thumb-rounded-3xl`}
+		>
+			{/* <div className='flex flex-col lg:flex-row gap-5'> */}
+			<VideoPlayer
+				metaData={metaData}
+				source={videoId!}
+				thumbnail={metaData.thumbnail}
+			/>
 
-			<div className='lg:w-80 xl:w-96 flex flex-col gap-3 h-fit'>
+			{/* {query.has('p') && (
+					<Playlist playlist={metaData.playlist} isLoading={isLoading} />
+				)}
+			</div> */}
+			<div className='flex flex-col lg:flex-row gap-5'>
+				<VideoBody videoId={query.get('v')!} metaData={metaData} />
+				<RelatedContent />
+			</div>
+
+			{/* <div className='lg:w-80 xl:w-96 flex flex-col gap-3 h-fit'>
 				{query.has('p') && (
 					<Playlist playlist={metaData.playlist} isLoading={isLoading} />
 				)}
-				<RelatedContent />
-			</div>
+			</div> */}
 		</div>
 	);
 }
