@@ -1,11 +1,9 @@
-import { useEffect } from 'react';
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import PageLayout from './components/Layouts/PageLayout';
 import CreateChannelModal from './components/Modals/CreateChannelModal/CreateChannelModal';
 import useAuth from './hooks/useAuth';
 import useModal from './hooks/useModal';
-import useTheme from './hooks/useTheme';
 import SectionControllerPage from './pages/SectionControllerPage';
 import Auth from './pages/auth/Auth';
 import AuthModal from './pages/auth/authModals/AuthModal';
@@ -23,18 +21,18 @@ import VideoContent from './pages/videoDashboard/partials/VideoContent';
 function App() {
 	const userContext = useAuth();
 	const modalContext = useModal();
-	const { state, updateTheme } = useTheme();
+	// const { state, updateTheme } = useTheme();
 
-	useEffect(() => {
-		const theme = localStorage.getItem('theme');
-		updateTheme(theme === 'dark' ? 'dark' : 'light');
+	// useEffect(() => {
+	// 	const currentTheme = localStorage.getItem('theme');
+	// 	updateTheme(currentTheme === 'dark' ? 'dark' : 'light');
 
-		if (theme === 'dark') {
-			document.documentElement?.classList.add('dark');
-		} else {
-			document.documentElement?.classList.remove('dark');
-		}
-	}, [state.theme, updateTheme]);
+	// 	if (currentTheme === 'dark') {
+	// 		document.documentElement?.classList.add('dark');
+	// 	} else {
+	// 		document.documentElement?.classList.remove('dark');
+	// 	}
+	// }, [state.theme, updateTheme]);
 
 	return (
 		<PageLayout>

@@ -31,8 +31,8 @@ const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading, vidRef }) => {
 
 	return (
 		<div
-			className={`w-full h-[${height}px] lg:w-80 xl:w-96 relative border-indigo-200 dark:border-dark-modal dark:bg-dark-overlay-100/50 rounded-xl p-3 ${
-				!playlistOpen ? 'bg-indigo-200/30' : 'bg-indigo-50'
+			className={`w-full h-fit max-h-[${height}px] lg:w-80 xl:w-96 border-indigo-200 dark:border-dark-modal dark:bg-dark-overlay-100/50 rounded-xl p-3 ${
+				!playlistOpen ? 'bg-indigo-200/30' : 'bg-indigo-100'
 			}`}
 		>
 			<div className='flex justify-between items-center'>
@@ -48,7 +48,7 @@ const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading, vidRef }) => {
 				</div>
 				<button
 					onClick={() => setPlaylistOpen((prev) => !prev)}
-					className='focus:bg-indigo-200/60 dark:focus:bg-dark-overlay-100 bg-dark-overlay-200 focus:border dark:border-none rounded-full p-2'
+					className='focus:bg-indigo-200/60 dark:focus:bg-dark-overlay-100 dark:bg-dark-overlay-200 focus:border dark:border-none rounded-full p-2'
 				>
 					{!playlistOpen ? (
 						<FiChevronDown className='h-7 w-7 dark:text-slate-300' />

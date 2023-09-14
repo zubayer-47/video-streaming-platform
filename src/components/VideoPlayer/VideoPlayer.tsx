@@ -44,11 +44,11 @@ const VideoPlayer = ({ source, metaData, thumbnail }: Props) => {
 		handlePlaybackSeed,
 	} = usePlayer(source);
 
-	console.dir(vidRef);
+	// console.dir(vidRef);
 
 	return (
 		<div className='flex gap-5'>
-			<div>
+			<div className='flex-1'>
 				<div
 					className='w-full flex-1 relative group/video-player-item rounded overflow-hidden'
 					ref={parentRef}
