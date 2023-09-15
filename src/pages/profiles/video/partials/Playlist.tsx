@@ -9,7 +9,7 @@ import { PlaylistBodyDataType } from '../../../../types/custom';
 type PlaylistProps = {
 	isLoading: boolean;
 	playlist: PlaylistBodyDataType | undefined;
-	vidRef: React.RefObject<HTMLVideoElement>;
+	vidRef?: React.RefObject<HTMLVideoElement>;
 };
 
 const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading, vidRef }) => {
@@ -19,27 +19,23 @@ const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading, vidRef }) => {
 	const playlistRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		if (!playlistRef.current || !vidRef.current) return;
+		if (!playlistRef.current || !vidRef?.current) return;
 
 		const playlistEl = playlistRef.current;
 		const vidHeight = vidRef.current.clientHeight;
 
-		// playlistEl.style.maxHeight = `${vidHeight! - 95}px`;
 		playlistEl.style.setProperty('--max-height', `${vidHeight - 95}px`);
+		console.log({ vidHeight });
 
 		window.addEventListener('resize', () => {
 			const resizeVidHeight = vidRef.current?.clientHeight;
-			// console.log({
-			// 	vidRefHeight: vidRef.current?.clientHeight,
-			// 	playlistRefHeight: playlistEl?.clientHeight,
-			// });
 
 			playlistEl.style.setProperty(
 				'--max-height',
 				`${resizeVidHeight! - 95}px`
 			);
 		});
-	}, [vidRef]);
+	}, [vidRef, vidRef?.current?.clientHeight]);
 
 	if (isLoading) {
 		return (

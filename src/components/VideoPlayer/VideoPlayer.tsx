@@ -10,10 +10,11 @@ import VideoPlayerThumbnail from './partials/VideoPlayerThumbnail';
 type Props = {
 	source: string;
 	metaData: MetaDataType;
+	isLoading: boolean;
 	thumbnail?: string;
 };
 
-const VideoPlayer = ({ source, metaData, thumbnail }: Props) => {
+const VideoPlayer = ({ source, metaData, isLoading, thumbnail }: Props) => {
 	// const [show, setShow] = useState(false);
 	const query = useQuery();
 
@@ -44,10 +45,12 @@ const VideoPlayer = ({ source, metaData, thumbnail }: Props) => {
 		handlePlaybackSeed,
 	} = usePlayer(source);
 
-	// console.dir(vidRef);
+	const isPlaylistExist = query.has('p');
 
 	return (
-		<div className='flex flex-col lg:flex-row gap-5'>
+		<div
+			className={`${!isPlaylistExist ? '' : 'flex flex-col lg:flex-row gap-5'}`}
+		>
 			<div className='flex-1'>
 				<div
 					className='w-full flex-1 relative group/video-player-item rounded overflow-hidden'
@@ -100,7 +103,7 @@ const VideoPlayer = ({ source, metaData, thumbnail }: Props) => {
 						height={'auto'}
 						crossOrigin='anonymous'
 						preload='auto'
-						autoPlay={true}
+						autoPlay
 						className='w-full h-full aspect-video'
 					>
 						<source ref={vidSrcRef} src='' type='video/mp4' />
