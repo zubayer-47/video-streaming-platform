@@ -1,74 +1,36 @@
 import { useState } from 'react';
+import { BiListPlus } from 'react-icons/bi';
 import { FaCircleUser } from 'react-icons/fa6';
 import { FiThumbsDown, FiThumbsUp } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 // import VideoFile from '../../../../assets/array.mp4';
 import dayjs from 'dayjs';
 import FollowButton from '../../../../components/Buttons/FollowButton';
-import VideoPlayer from '../../../../components/VideoPlayer/VideoPlayer';
 import { trunc } from '../../../../libs/helper';
-import { VideoBodyMetaDataType } from '../../../../types/custom';
+import { MetaDataType } from '../../../../types/custom';
 // import CommentSection from './CommentSection';
 
 type VideoBodyProps = {
 	videoId: string;
-	metaData: VideoBodyMetaDataType;
+	metaData: MetaDataType;
 };
 
 const VideoBody: React.FC<VideoBodyProps> = ({ videoId, metaData }) => {
 	const [descStatus, setDescStatus] = useState(false);
 
-	// const query = useQuery();
-	// const axiosPrivate = useAxiosPrivate();
-	// const [metaData, setMetaData] = useState<MetaDataType>({
-	// 	channelId: '',
-	// 	thumbnail: '',
-	// 	title: '',
-	// 	description: '',
-	// 	createdAt: '',
-	// 	channel: {
-	// 		name: '',
-	// 		user: { avater: '' },
-	// 	},
-	// 	followers: 0,
-	// });
-	// const navigate = useNavigate();
-	// const videoId = query.get('v');
-	// const playlistId = query.get('p');
-
-	// useEffect(() => {
-	// 	if (!videoId) return navigate('/404');
-	// 	const controller = new AbortController();
-
-	// 	(async () => {
-	// 		try {
-	// 			const res = await axiosPrivate.get(
-	// 				`/videos/metadata?v=${videoId}${
-	// 					playlistId ? `&p=${playlistId}` : ``
-	// 				}`,
-	// 				{
-	// 					signal: controller.signal,
-	// 				}
-	// 			);
-	// 			const resData = res?.data || [];
-	// 			// console.log('resData :', resData);
-	// 			setMetaData(resData);
-	// 		} catch (error) {
-	// 			console.log('error :', error);
-	// 		}
-	// 	})();
-
-	// 	return () => {
-	// 		controller.abort();
-	// 	};
-	// }, [axiosPrivate, videoId, playlistId, navigate]);
-
 	return (
 		<div className='flex-1 flex flex-col w-full h-fit'>
 			{/* <VideoPlayer source={VideoFile} /> */}
-			<VideoPlayer source={videoId!} thumbnail={metaData.thumbnail} />
 
-			<p className='mt-2.5 text-lg font-semibold text-slate-800'>
+			{/* <div className='flex flex-col lg:flex-row gap-5'>
+				<VideoPlayer source={videoId!} thumbnail={metaData.thumbnail} />
+
+				{query.has('p') && (
+					<Playlist playlist={metaData.playlist} isLoading={false} />
+				)}
+			</div> */}
+
+			<p className='mt-2.5 text-lg font-semibold text-slate-800 dark:text-slate-200'>
 				{/* How to Build Your Perfect Resume: Learn from a FAANG Employee Example! */}
 				{metaData.title}
 			</p>
@@ -79,11 +41,13 @@ const VideoBody: React.FC<VideoBodyProps> = ({ videoId, metaData }) => {
 						<FaCircleUser className='h-10 w-10' />
 					</Link>
 					<p className='flex flex-col justify-center'>
-						<Link to={`/ch/${metaData.channelId}`} className='font-bold'>
-							{/* Stack Learner */}
+						<Link
+							to={`/ch/${metaData.channelId}`}
+							className='font-bold dark:text-slate-200 text-inherit'
+						>
 							{metaData?.channel?.name}
 						</Link>
-						<span className='text-sm text-gray-800'>
+						<span className='text-sm text-gray-800 dark:text-slate-400'>
 							{metaData.followers} followers
 						</span>
 					</p>
@@ -92,20 +56,31 @@ const VideoBody: React.FC<VideoBodyProps> = ({ videoId, metaData }) => {
 				</div>
 
 				<div className='flex gap-2 items-center'>
-					<div className='flex items-center bg-indigo-100 rounded-full overflow-hidden'>
+					<div className='bg-indigo-100 dark:bg-dark-overlay-100 rounded-full overflow-hidden'>
 						<button
 							type='button'
-							className='flex items-center gap-1.5 px-3 border-black hover:bg-indigo-200/50 py-2 h-full w-full'
+							className='flex items-center gap-1 px-3 border-black dark:hover:bg-dark-overlay-200 py-2 h-full w-full'
 						>
-							<FiThumbsUp className='h-6 w-6 text-indigo-700' />
-							<span>630</span>
+							<BiListPlus className='h-6 w-6 text-indigo-700 dark:text-slate-300' />
+							<span className='dark:text-slate-300 text-inherit'>
+								watch later
+							</span>
 						</button>
-						<span className='w-1 h-6 bg-gray-800'></span>
+					</div>
+					<div className='flex items-center bg-indigo-100 dark:bg-dark-overlay-100 rounded-full overflow-hidden'>
 						<button
 							type='button'
-							className='px-3 border-black hover:bg-indigo-200/50 py-2 h-full w-full'
+							className='flex items-center gap-1.5 px-3 border-black dark:hover:bg-dark-overlay-200 py-2 h-full w-full'
 						>
-							<FiThumbsDown className='h-6 w-6' />
+							<FiThumbsUp className='h-6 w-6 text-indigo-700 dark:text-slate-300' />
+							<span className='dark:text-slate-300 text-inherit'>630</span>
+						</button>
+						<span className='w-1 h-6 bg-gray-800 dark:bg-slate-300'></span>
+						<button
+							type='button'
+							className='px-3 border-black dark:hover:bg-dark-overlay-200 py-2 h-full w-full'
+						>
+							<FiThumbsDown className='h-6 w-6 dark:text-slate-300' />
 						</button>
 					</div>
 				</div>
@@ -113,23 +88,25 @@ const VideoBody: React.FC<VideoBodyProps> = ({ videoId, metaData }) => {
 
 			<div
 				onClick={() => (!descStatus ? setDescStatus(true) : undefined)}
-				className={`text-left bg-indigo-100/70 hover:bg-indigo-100 p-3 rounded-xl ${
+				className={`text-left bg-indigo-100/70 hover:bg-indigo-100 dark:bg-dark-overlay-100 dark:hover:bg-dark-overlay-200 p-3 rounded-xl ${
 					!descStatus ? 'cursor-pointer' : 'cursor-text'
 				}`}
 			>
 				<p className='font-medium space-x-2'>
-					<span>6k views</span>
-					<span>{dayjs(metaData.createdAt).toNow(true)}</span>
+					<span className='dark:text-slate-300'>6k views</span>
+					<span className='text-dark-text text-sm'>
+						{dayjs(metaData.createdAt).toNow(true)}
+					</span>
 				</p>
-				<p className='font-normal text-gray-700'>
-					{trunc(metaData?.description || '', !descStatus ? 500 : undefined)}
+				<p className='font-normal text-gray-700 dark:text-slate-300 mt-3'>
+					{trunc(metaData?.description || '', !descStatus ? 150 : undefined)}
 					<button
 						onClick={() => {
 							setDescStatus(false);
 							console.log(descStatus);
 						}}
-						className={`font-bold  ml-auto ${
-							!descStatus ? 'inline-block' : 'block'
+						className={`font-bold ${
+							!descStatus ? 'inline-block ml-2' : 'block ml-auto'
 						}`}
 					>
 						{!descStatus ? 'more' : 'Show less'}

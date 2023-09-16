@@ -29,7 +29,7 @@ const MaterialInput = ({
 			{title && (
 				<label
 					htmlFor={name}
-					className='inline-block uppercase ml-1 mb-1 font-bold text-xs text-slate-500'
+					className='inline-block uppercase ml-1 mb-1 font-bold text-xs text-slate-500 dark:text-slate-300'
 				>
 					{title}
 				</label>
@@ -38,7 +38,7 @@ const MaterialInput = ({
 				type={type}
 				name={name}
 				id={name}
-				className='w-full px-3 py-2 rounded-md bg-transparent outline-none tracking-wider border border-indigo-200'
+				className='w-full px-3 py-3 rounded-md bg-transparent outline-none tracking-wider border border-indigo-200 dark:text-slate-300 dark:border-transparent dark:bg-black/50 dark:focus:ring-2 ring-indigo-500/50'
 				placeholder={hint}
 				value={value || ''}
 				onChange={handler}
@@ -81,7 +81,7 @@ export const MaterialTextArea = ({
 			{title && (
 				<label
 					htmlFor={name}
-					className={`inline-block uppercase ml-1 mb-1 font-bold text-xs text-slate-600 ${
+					className={`inline-block uppercase ml-1 mb-1 font-bold text-xs text-slate-600 dark:text-slate-300 ${
 						!isRequired ? '' : "after:content-['*'] after:text-red-500"
 					}`}
 				>
@@ -91,7 +91,7 @@ export const MaterialTextArea = ({
 			<textarea
 				name={name}
 				id={name}
-				className='w-full px-3 py-2 rounded-md bg-transparent outline-none tracking-wider border border-indigo-200'
+				className='w-full px-3 py-2 rounded-md bg-transparent outline-none tracking-wider border border-indigo-200 dark:text-slate-300 dark:border-transparent dark:bg-black/50 dark:focus:ring-2 ring-indigo-500/50'
 				placeholder={hint}
 				value={value || ''}
 				onChange={handler}
@@ -133,18 +133,18 @@ export const MaterialTagInput = ({
 			{title && (
 				<label
 					htmlFor={name}
-					className='inline-block uppercase ml-1 mb-1 font-bold text-xs text-slate-500'
+					className='inline-block uppercase ml-1 mb-1 font-bold text-xs text-slate-500 dark:text-slate-300'
 				>
 					{title}
 				</label>
 			)}
 
 			{isLoading ? (
-				<div className='w-full px-3 py-2 rounded-md bg-transparent outline-none tracking-wider border border-indigo-200'>
+				<div className='w-full px-3 py-2 rounded-md bg-transparent outline-none tracking-wider border border-indigo-200 dark:text-slate-300 dark:border-transparent dark:bg-black/50'>
 					{value?.split(',').map((tag) => (
 						<span
 							key={tag}
-							className='flex-shrink-0 m-0.5 font-medium text-xs tracking-wide text-slate-700 bg-indigo-500/20 px-1 py-0.5 rounded-sm'
+							className='flex-shrink-0 m-0.5 font-medium text-xs tracking-wide text-slate-700 bg-indigo-500/20 dark:text-slate-300 dark:bg-dark-overlay-200 px-1 py-0.5 rounded-sm'
 						>
 							{tag.trim()}
 						</span>
@@ -154,7 +154,7 @@ export const MaterialTagInput = ({
 				<textarea
 					name={name}
 					id={name}
-					className='w-full px-3 py-2 rounded-md bg-transparent outline-none tracking-wider border border-indigo-200'
+					className='w-full px-3 py-2 rounded-md bg-transparent outline-none tracking-wider border border-indigo-200 dark:text-slate-300 dark:border-transparent dark:bg-black/50 dark:focus:ring-2 ring-indigo-500/50'
 					placeholder={hint}
 					value={value || ''}
 					onChange={handler}
@@ -186,14 +186,14 @@ export const MaterialThumbnail = ({
 }: ThumbType) => {
 	return (
 		<div className='flex-col gap-2'>
-			<p className='uppercase ml-1 mb-1 font-bold tracking-wide text-xs text-slate-500'>
+			<p className='uppercase ml-1 mb-1 font-bold tracking-wide text-xs text-slate-500 dark:text-slate-300'>
 				Thumbnail
 			</p>
 			<label
 				htmlFor='thumbnail'
-				className='w-36 h-24 relative grid place-content-center border border-dashed border-indigo-300 rounded-lg cursor-pointer overflow-hidden'
+				className='w-36 h-24 relative grid place-content-center border border-dashed border-indigo-300 dark:text-slate-300 dark:border-transparent dark:bg-black/50 dark:focus:ring-2 ring-indigo-500/50 rounded-lg cursor-pointer overflow-hidden'
 			>
-				<FiPlus className='w-6 h-6 stroke-1 text-indigo-600' />
+				<FiPlus className='w-7 h-7 stroke-1 text-indigo-600 dark:text-indigo-500' />
 				<input
 					type='file'
 					name='thumbnail'
@@ -249,7 +249,7 @@ export const InlineSelectInput = ({
 		<select
 			name={name}
 			id={name}
-			className='inline-block outline-none bg-transparent py-2 text-right font-bold text-slate-500'
+			className='inline-block outline-none bg-transparent py-2 text-right font-bold text-slate-500 dark:text-dark-text'
 			onChange={handler}
 			value={value || ''}
 			disabled={isLoading}

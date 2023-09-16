@@ -24,17 +24,21 @@ const Playlists = () => {
 	return (
 		<ChannelNavLayout>
 			<div className='flex justify-between items-center mb-5'>
-				<h1 className='font-medium text-gray-800'>Created Playlists</h1>
+				<h1 className='font-medium text-gray-800 dark:text-dark-text'>
+					Created Playlists
+				</h1>
 				<button className='flex gap-0.5 items-center'>
-					<MdSort className='w-6 h-6 fill-gray-600' />
-					<span className='font-medium text-gray-800'>Sort by</span>
+					<MdSort className='w-6 h-6 fill-gray-600 dark:fill-dark-text' />
+					<span className='font-medium text-gray-800 dark:text-dark-text'>
+						Sort by
+					</span>
 				</button>
 			</div>
 			<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2'>
 				{isLoading && <VideoPlaceholder />}
 
 				{!data.length ? (
-					<p className='col-span-full text-center text-gray-500'>
+					<p className='col-span-full text-center text-gray-500 dark:text-dark-text'>
 						{' '}
 						playlists not exist{' '}
 					</p>

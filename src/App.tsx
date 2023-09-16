@@ -4,6 +4,7 @@ import PageLayout from './components/Layouts/PageLayout';
 import CreateChannelModal from './components/Modals/CreateChannelModal/CreateChannelModal';
 import useAuth from './hooks/useAuth';
 import useModal from './hooks/useModal';
+import SectionControllerPage from './pages/SectionControllerPage';
 import Auth from './pages/auth/Auth';
 import AuthModal from './pages/auth/authModals/AuthModal';
 import NotFound from './pages/notfound/NotFound';
@@ -15,46 +16,52 @@ import UploadVideo from './pages/profiles/channel/upload/UploadVideo';
 import Video from './pages/profiles/channel/videos/Videos';
 import VideoProfile from './pages/profiles/video/VideoProfile';
 import VideoDashboard from './pages/videoDashboard/VideoDashboard';
+import VideoContent from './pages/videoDashboard/partials/VideoContent';
 
 function App() {
-  const userContext = useAuth();
-  const modalContext = useModal();
-  return (
-    <PageLayout>
-      <Header />
-      {!userContext.state.isLoggedIn &&
-      modalContext.state.isVisibleAuthModal ? (
-        <AuthModal />
-      ) : null}
-      {!modalContext.state.channel.createChannelModal ? null : (
-        <CreateChannelModal />
-      )}
+	const userContext = useAuth();
+	const modalContext = useModal();
 
-      <Routes>
-        <Route path='/' element={<Outlet />}>
-          <Route index element={<VideoDashboard />} />
-          <Route path='auth' element={<Auth />} />
-          <Route path='watch' element={<VideoProfile />} />
-          <Route path='ch/:channelId' element={<ChannelProfile />}>
-            <Route index element={<Featured />} />
-            <Route path='featured' element={<Featured />} />
-            <Route path='videos' element={<Video />} />
-            <Route path='playlists' element={<Playlists />} />
-            {/* <Route path='channels' element={<Channels />} /> */}
-            <Route path='about' element={<About />} />
-          </Route>
-          <Route path='upload' element={<UploadVideo />} />
+	return (
+		<PageLayout>
+			<Header />
+			{!userContext.state.isLoggedIn &&
+			modalContext.state.isVisibleAuthModal ? (
+				<AuthModal />
+			) : null}
+			{!modalContext.state.channel.createChannelModal ? null : (
+				<CreateChannelModal />
+			)}
 
-          {/* <Route element={<Protected />}>
+			<Routes>
+				<Route path='/' element={<Outlet />}>
+					<Route path='/' element={<VideoDashboard />}>
+						<Route index element={<VideoContent />} />
+						{/* change path name instead "result" */}
+						<Route path='result' element={<SectionControllerPage />} />
+					</Route>
+					<Route path='auth' element={<Auth />} />
+					<Route path='watch' element={<VideoProfile />} />
+					<Route path='ch/:channelId' element={<ChannelProfile />}>
+						<Route index element={<Featured />} />
+						<Route path='featured' element={<Featured />} />
+						<Route path='videos' element={<Video />} />
+						<Route path='playlists' element={<Playlists />} />
+						{/* <Route path='channels' element={<Channels />} /> */}
+						<Route path='about' element={<About />} />
+					</Route>
+					<Route path='upload' element={<UploadVideo />} />
+
+					{/* <Route element={<Protected />}>
           <Route path='register' element={<RegisterPage />} />
         </Route> */}
 
-          <Route path='404' element={<NotFound />} />
-          <Route path='*' element={<Navigate to='404' />} />
-        </Route>
-      </Routes>
-    </PageLayout>
-  );
+					<Route path='404' element={<NotFound />} />
+					<Route path='*' element={<Navigate to='404' />} />
+				</Route>
+			</Routes>
+		</PageLayout>
+	);
 }
 
 export default App;

@@ -37,8 +37,18 @@ const VideoLoader: FC<Props> = ({ isList = false }: Props) => {
 
 export default VideoLoader;
 
-export const VideoPlaceholder = () => {
-	return (
+export const VideoPlaceholder = ({
+	withGrid = false,
+}: {
+	withGrid?: boolean;
+}) => {
+	return !withGrid ? (
+		<>
+			<VideoLoader />
+			<VideoLoader />
+			<VideoLoader />
+		</>
+	) : (
 		<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:pr-3 pb-10 pt-1.5'>
 			<VideoLoader />
 			<VideoLoader />

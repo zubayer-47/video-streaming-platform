@@ -4,6 +4,7 @@
 
 :root {
   --duration-left: 0;
+  --max-height: 0;
 }
 
 .volume-range {
@@ -93,3 +94,18 @@
   display: block !important;
   right: var(--duration-left);
 }
+
+/* configure height for video profile's player and playlist section*/
+.cHeight {
+  /* max-height: 100%; */
+  max-height: var(--max-height);
+}
+
+/* 
+@media screen and (min-width: 1024px) {
+  .cHeight {
+    max-height: var(--max-height);
+    background-color: blue;
+    box-shadow: 10px 10px blue;
+  }
+} */

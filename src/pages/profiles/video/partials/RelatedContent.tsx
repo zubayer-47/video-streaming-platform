@@ -5,8 +5,8 @@ import ProfileThumbnail from '../../../../components/ProfileThumbnail';
 
 export default function RelatedContent() {
 	return (
-		<>
-			{new Array(10).fill(true).map(() => (
+		<div className='w-full h-fit lg:w-80 xl:w-96 flex flex-col gap-5'>
+			{new Array(20).fill(true).map(() => (
 				<ProfileThumbnail
 					key={uuidv4()}
 					thumbnail={demoImg}
@@ -24,6 +24,6 @@ export default function RelatedContent() {
 			{/* {new Array(10).fill(false).map(() => (
                 <VideoDashboardLoader isList />
             ))} */}
-		</>
+		</div>
 	);
 }

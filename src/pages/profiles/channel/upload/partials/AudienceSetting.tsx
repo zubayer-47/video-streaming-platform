@@ -12,11 +12,11 @@ const AudienceSetting = ({ status, handle }: Props) => {
 		<div className='flex items-center justify-between gap-2 text-xs'>
 			<div className='flex items-center gap-1'>
 				{status === 'PUBLIC' ? (
-					<FiGlobe className='w-4 h-4 text-slate-500' />
+					<FiGlobe className='w-4 h-4 text-slate-500 dark:text-dark-text' />
 				) : (
-					<FiLock className='w-4 h-4 text-slate-500' />
+					<FiLock className='w-4 h-4 text-slate-500 dark:text-dark-text' />
 				)}
-				<span className='font-normal tracking-wide text-slate-600'>
+				<span className='font-normal tracking-wide text-slate-600 dark:text-dark-text'>
 					Audience
 				</span>
 			</div>
