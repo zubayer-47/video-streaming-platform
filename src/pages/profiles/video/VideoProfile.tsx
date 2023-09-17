@@ -71,28 +71,18 @@ export default function VideoProfile() {
 		<div
 			className={`w-full h-full overflow-auto px-2 lg:px-10 xl:px-24 py-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-dark-text dark:scrollbar-thumb-gray-400/50 scrollbar-thumb-rounded-3xl`}
 		>
-			<div className='flex flex-col lg:flex-row gap-5'>
-				<VideoPlayer
-					metaData={metaData}
-					source={videoId!}
-					isLoading={isLoading}
-					thumbnail={metaData.thumbnail}
-				/>
-
-				{/* {query.has('p') && (
-					<Playlist playlist={metaData.playlist} isLoading={isLoading} />
-				)} */}
-			</div>
-			<div className='flex flex-col lg:flex-row gap-5'>
-				<VideoBody videoId={query.get('v')!} metaData={metaData} />
+			{/* <div className='flex flex-col lg:flex-row gap-5'> */}
+			<VideoPlayer
+				metaData={metaData}
+				source={videoId!}
+				isLoading={isLoading}
+				thumbnail={metaData.thumbnail}
+			/>
+			{/* </div> */}
+			<div className='flex flex-col lg:flex-row gap-5 mt-2.5'>
+				<VideoBody metaData={metaData} />
 				<RelatedContent />
 			</div>
-
-			{/* <div className='lg:w-80 xl:w-96 flex flex-col gap-3 h-fit'>
-				{query.has('p') && (
-					<Playlist playlist={metaData.playlist} isLoading={isLoading} />
-				)}
-			</div> */}
 		</div>
 	);
 }

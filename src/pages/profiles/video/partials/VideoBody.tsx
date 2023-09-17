@@ -11,27 +11,15 @@ import { MetaDataType } from '../../../../types/custom';
 // import CommentSection from './CommentSection';
 
 type VideoBodyProps = {
-	videoId: string;
 	metaData: MetaDataType;
 };
 
-const VideoBody: React.FC<VideoBodyProps> = ({ videoId, metaData }) => {
+const VideoBody: React.FC<VideoBodyProps> = ({ metaData }) => {
 	const [descStatus, setDescStatus] = useState(false);
 
 	return (
 		<div className='flex-1 flex flex-col w-full h-fit'>
-			{/* <VideoPlayer source={VideoFile} /> */}
-
-			{/* <div className='flex flex-col lg:flex-row gap-5'>
-				<VideoPlayer source={videoId!} thumbnail={metaData.thumbnail} />
-
-				{query.has('p') && (
-					<Playlist playlist={metaData.playlist} isLoading={false} />
-				)}
-			</div> */}
-
-			<p className='mt-2.5 text-lg font-semibold text-slate-800 dark:text-slate-200'>
-				{/* How to Build Your Perfect Resume: Learn from a FAANG Employee Example! */}
+			<p className='text-lg font-semibold text-slate-800 dark:text-slate-200'>
 				{metaData.title}
 			</p>
 

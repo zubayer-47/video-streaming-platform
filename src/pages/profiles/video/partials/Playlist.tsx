@@ -25,7 +25,7 @@ const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading, vidRef }) => {
 		const vidHeight = vidRef.current.clientHeight;
 
 		playlistEl.style.setProperty('--max-height', `${vidHeight - 95}px`);
-		console.log({ vidHeight });
+		// console.log({ vidHeight });
 
 		window.addEventListener('resize', () => {
 			const resizeVidHeight = vidRef.current?.clientHeight;
@@ -47,8 +47,6 @@ const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading, vidRef }) => {
 			</div>
 		);
 	}
-
-	// const height = vidRef.current?.clientHeight;
 
 	return (
 		<div
@@ -80,10 +78,9 @@ const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading, vidRef }) => {
 			</div>
 
 			{!playlistOpen ? null : (
-				// <div className='flex flex-col gap-3 mt-5 max-h-[60vh] overflow-y-auto overflow-x-hidden '>
 				<div
 					ref={playlistRef}
-					className='flex cHeight flex-col bg-transparent gap-3 mt-5  overflow-auto'
+					className='flex cHeight flex-col bg-transparent gap-3 mt-5 overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-dark-text dark:scrollbar-thumb-gray-400/50 scrollbar-thumb-rounded-3xl'
 				>
 					{playlist?.playlist_video.map((plItem) => (
 						<PlaylistProfileThumbnail

@@ -15,7 +15,6 @@ type Props = {
 };
 
 const VideoPlayer = ({ source, metaData, isLoading, thumbnail }: Props) => {
-	// const [show, setShow] = useState(false);
 	const query = useQuery();
 
 	const {
@@ -208,7 +207,7 @@ const VideoPlayer = ({ source, metaData, isLoading, thumbnail }: Props) => {
 				<Playlist
 					vidRef={vidRef}
 					playlist={metaData.playlist}
-					isLoading={false}
+					isLoading={isLoading}
 				/>
 			)}
 		</div>
