@@ -249,7 +249,7 @@ export const InlineSelectInput = ({
 		<select
 			name={name}
 			id={name}
-			className='inline-block outline-none bg-transparent py-2 text-right font-bold text-slate-500 dark:text-dark-text'
+			className='inline-block w-full outline-none bg-transparent py-2 text-right font-bold text-slate-500 dark:text-dark-text'
 			onChange={handler}
 			value={value || ''}
 			disabled={isLoading}

@@ -11,7 +11,7 @@ interface NotificationModalProps {
 
 const NotificationModal: FC<NotificationModalProps> = ({ setOpen }) => {
 	return (
-		<div className='w-full sm:w-102 fixed right-0 md:right-24 top-14 bg-slate-100 dark:bg-dark-modal py-3 rounded-xl shadow-2xl z-30 overflow-hidden'>
+		<div className='w-full sm:w-102 fixed right-0 md:right-24 top-14 bg-slate-100 dark:bg-dark-modal dark:border border-dark-overlay-200 dark:shadow-lg py-3 rounded-xl shadow-2xl z-30 overflow-hidden'>
 			<h1 className='font-medium text-slate-800 dark:text-slate-300 border-b border-slate-300 dark:border-dark-text/30 px-3 pb-2'>
 				Notifications
 			</h1>

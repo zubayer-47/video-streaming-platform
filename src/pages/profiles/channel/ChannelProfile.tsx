@@ -79,20 +79,24 @@ const ChannelProfile = () => {
 							/>
 						</div>
 						<div className='flex-1 max-w-lg'>
-							<h1 className='text-2xl tracking-wider'>{profile?.fullname}</h1>
+							<h1 className='text-2xl tracking-wider dark:text-slate-300'>
+								{profile?.fullname}
+							</h1>
 							<p className='space-x-2'>
-								<span className='font-medium text-sm text-gray-900'>
+								<span className='font-medium text-sm text-gray-900 dark:text-dark-text'>
 									@{profile?.username}
 								</span>
-								<span className='text-gray-900'>
+								<span className='text-gray-900 dark:text-dark-text'>
 									{profile.totalFollowers} followers
 								</span>
-								<span className='text-gray-900'>
+								<span className='text-gray-900 dark:text-dark-text'>
 									{profile.totalVideos} videos
 								</span>
 							</p>
 							<div className='flex items-center mt-3'>
-								<span className='line-clamp-1'>{profile.about}</span>
+								<span className='line-clamp-1 dark:text-slate-300'>
+									{profile.about}
+								</span>
 								<Link to='about'>
 									<FiChevronRight className='w-7 h-7 text-gray-700 dark:text-slate-300' />
 								</Link>
@@ -109,7 +113,7 @@ const ChannelProfile = () => {
 				</div>
 			</div>
 
-			<div className='border-b border-gray-300 mt-5'>
+			<div className='border-b border-gray-300 dark:border-dark-text/20 mt-5'>
 				<div className='container mx-auto w-full overflow-auto scrollbar-track-slate-200 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-thumb-rounded-full'>
 					<ChannelNav />
 				</div>
