@@ -9,7 +9,7 @@ type Props = {
 
 const AudienceSetting = ({ status, handle }: Props) => {
 	return (
-		<div className='flex items-center justify-between gap-2 text-xs'>
+		<div className='flex w-full items-center justify-between gap-2 text-xs'>
 			<div className='flex items-center gap-1'>
 				{status === 'PUBLIC' ? (
 					<FiGlobe className='w-4 h-4 text-slate-500 dark:text-dark-text' />

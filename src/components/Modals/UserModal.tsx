@@ -26,7 +26,7 @@ const UserModal: FC<UserModalProps> = ({ setOpenedModal }) => {
 	};
 
 	return (
-		<div className='w-full sm:w-72 fixed right-0 md:right-5 top-14 bg-slate-100 dark:bg-dark-modal rounded-xl shadow-2xl z-30 overflow-hidden transition-colors duration-300'>
+		<div className='w-full sm:w-72 fixed right-0 md:right-5 top-14 bg-slate-100 dark:bg-dark-modal dark:border border-dark-overlay-200 dark:shadow-lg rounded-xl shadow-2xl z-30 overflow-hidden transition-colors duration-300'>
 			<div className='flex gap-4 border-b border-slate-300 dark:border-dark-text/30 p-3'>
 				<FaCircleUser className='w-9 h-9' />
 				<div className=''>

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { FiChevronDown, FiX } from 'react-icons/fi';
 import PlaylistProfileThumbnail from '../../../../components/PlaylistProfileThumbnail';
 import useQuery from '../../../../hooks/useQuery';
@@ -12,9 +12,15 @@ type PlaylistProps = {
 	vidRef?: React.RefObject<HTMLVideoElement>;
 };
 
-const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading, vidRef }) => {
+const Playlist: React.FC<PlaylistProps> = memo(function Playlist({
+	playlist,
+	isLoading,
+	vidRef,
+}) {
 	const query = useQuery();
 	const [playlistOpen, setPlaylistOpen] = useState(true);
+
+	console.log('rendering');
 
 	const playlistRef = useRef<HTMLDivElement>(null);
 
@@ -35,7 +41,7 @@ const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading, vidRef }) => {
 				`${resizeVidHeight! - 95}px`
 			);
 		});
-	}, [vidRef, vidRef?.current?.clientHeight]);
+	}, [vidRef, vidRef?.current?.clientHeight, playlistOpen]);
 
 	if (isLoading) {
 		return (
@@ -107,6 +113,5 @@ const Playlist: React.FC<PlaylistProps> = ({ playlist, isLoading, vidRef }) => {
 			)}
 		</div>
 	);
-};
-
+});
 export default Playlist;

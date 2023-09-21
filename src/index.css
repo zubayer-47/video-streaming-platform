@@ -99,6 +99,8 @@
 .cHeight {
   /* max-height: 100%; */
   max-height: var(--max-height);
+
+  height: 100%;
 }
 
 /* 

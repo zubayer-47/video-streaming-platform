@@ -23,27 +23,29 @@ const VideoBody: React.FC<VideoBodyProps> = ({ metaData }) => {
 				{metaData.title}
 			</p>
 
-			<div className='flex justify-between gap-3 my-5'>
-				<div className='flex gap-2 items-center'>
-					<Link to={`/ch/${metaData.channelId}`} type='button'>
-						<FaCircleUser className='h-10 w-10' />
-					</Link>
-					<p className='flex flex-col justify-center'>
-						<Link
-							to={`/ch/${metaData.channelId}`}
-							className='font-bold dark:text-slate-200 text-inherit'
-						>
-							{metaData?.channel?.name}
+			<div className='flex flex-col md:flex-row justify-between gap-3 my-5'>
+				<div className='flex justify-between md:justify-start items-center gap-2'>
+					<div className='flex items-center gap-2'>
+						<Link to={`/ch/${metaData.channelId}`} type='button'>
+							<FaCircleUser className='h-10 w-10' />
 						</Link>
-						<span className='text-sm text-gray-800 dark:text-slate-400'>
-							{metaData.followers} followers
-						</span>
-					</p>
+						<p className='flex flex-col justify-center'>
+							<Link
+								to={`/ch/${metaData.channelId}`}
+								className='font-bold dark:text-slate-200 text-inherit'
+							>
+								{metaData?.channel?.name}
+							</Link>
+							<span className='text-sm text-gray-800 dark:text-slate-400'>
+								{metaData.followers} followers
+							</span>
+						</p>
+					</div>
 
 					<FollowButton channel_id={metaData.channelId} />
 				</div>
 
-				<div className='flex gap-2 items-center'>
+				<div className='flex gap-2 items-center justify-end md:justify-start'>
 					<div className='bg-indigo-100 dark:bg-dark-overlay-100 rounded-full overflow-hidden'>
 						<button
 							type='button'

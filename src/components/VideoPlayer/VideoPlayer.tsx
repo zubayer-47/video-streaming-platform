@@ -103,29 +103,11 @@ const VideoPlayer = ({ source, metaData, isLoading, thumbnail }: Props) => {
 						crossOrigin='anonymous'
 						preload='auto'
 						autoPlay
-						className='w-full h-full aspect-video'
+						className={`aspect-video  ${
+							!isPlaylistExist ? '2xl:h-[80vh]' : 'h-full '
+						}`}
 					>
 						<source ref={vidSrcRef} src='' type='video/mp4' />
-						{/* <source src={source} type='video/mp4' /> */}
-						{/* <track
-						label='English'
-						kind='subtitles'
-						srcLang='en'
-						src='captions/vtt/sintel-en.vtt'
-						default
-					/>
-					<track
-						label='Deutsch'
-						kind='subtitles'
-						srcLang='de'
-						src='captions/vtt/sintel-de.vtt'
-					/>
-					<track
-						label='Español'
-						kind='subtitles'
-						srcLang='es'
-						src='captions/vtt/sintel-es.vtt'
-					/> */}
 					</video>
 				</div>
 				<ul
@@ -203,7 +185,7 @@ const VideoPlayer = ({ source, metaData, isLoading, thumbnail }: Props) => {
 				</ul>
 			</div>
 
-			{query.has('p') && (
+			{isPlaylistExist && (
 				<Playlist
 					vidRef={vidRef}
 					playlist={metaData.playlist}

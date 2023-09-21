@@ -43,7 +43,7 @@ const SearchPreview = ({ setSearchTerm, search, history }: SP) => {
 	const navigate = useNavigate();
 
 	return (
-		<li className='flex items-stretch hover:bg-indigo-200/50 dark:hover:bg-dark-overlay-100'>
+		<li className='flex w-full items-stretch hover:bg-indigo-200/50 dark:hover:bg-dark-overlay-100'>
 			<button
 				onClick={() => {
 					if (search) {
