@@ -270,7 +270,7 @@ const UploadVideo = () => {
 
 	return (
 		<div className='flex-1 overflow-y-scroll p-3 md:p-10'>
-			<div className='w-full bg-white dark:bg-dark-overlay-100/30 rounded-lg'>
+			<div className='w-full bg-white dark:bg-dark-overlay-100/30 dark:border border-dark-overlay-200 dark:shadow-lg rounded-lg'>
 				{/* upload process info */}
 				<div className='flex items-stretch gap-3 p-5 border-b border-slate-300 dark:border-dark-text/50'>
 					<div className='w-32 h-32 border border-indigo-300 dark:border-none rounded-lg'>
@@ -323,7 +323,7 @@ const UploadVideo = () => {
 					</div>
 				</div>
 				{/* upload metadata info */}
-				<div className='flex items-stretch gap-3'>
+				<div className='flex flex-col md:flex-row justify-center md:justify-start items-stretch gap-3'>
 					{/* video metadata form */}
 					<div className='flex-1 flex flex-col gap-3 px-5 py-3'>
 						<h2 className='font-bold text-base tracking-wide text-slate-500 dark:text-slate-300'>
@@ -366,7 +366,7 @@ const UploadVideo = () => {
 						/>
 					</div>
 					{/* video metadata aside */}
-					<div className='w-48 md:w-52 lg:w-64 p-3 sm:border-l sm:border-slate-300 dark:sm:border-dark-text/50 flex flex-col gap-1'>
+					<div className='w-full md:w-52 lg:w-64 p-3 sm:border-l sm:border-slate-300 dark:sm:border-dark-text/50 flex flex-col gap-1'>
 						<h2 className='font-bold text-base tracking-wide text-slate-500 dark:text-slate-300 mb-5'>
 							More Settings
 						</h2>
